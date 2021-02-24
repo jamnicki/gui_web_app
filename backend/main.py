@@ -1,5 +1,6 @@
 import re
 import subprocess
+import platform
 from flask import Flask, request
 from paramiko import SSHClient, ssh_exception
 from utils import close_file_objects
@@ -7,11 +8,12 @@ from utils import close_file_objects
 
 app = Flask(__name__)
 client = SSHClient()
+system = platform.system()
 
 
 @app.route('/connect', methods=['POST'])
 def connect():
-    """Connection to ROV via SSH using hostname, username and password
+    """Connect to ROV via SSH using hostname, username and password
        from POST request received data.
     """
     # TODO: docstring, hints baseing on exceptions, ?hint database?
@@ -42,6 +44,8 @@ def connect():
         response['error'] = str(e)
         # response['hint'] = ''
         print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
+    else:
+        response['connected'] = 1
 
     return response
 
@@ -50,6 +54,7 @@ def connect():
 def get_available_addresses():
     """Find available addresses on user's local network
        by executing 'arp -a' command.
+       If on linux scan only on [ssh_port] in [scan_range] using 'pnscan'.
 
     Returns on GET:
         dict:
@@ -60,11 +65,23 @@ def get_available_addresses():
                            None if not.
     """
     response = {'available_addresses': None,
-                'error': None}
+                'error': None,
+                'hint': None}
     try:
-        arp = subprocess.run(['arp', '-a'], capture_output=True, text=True)
+        if system == 'Linux':
+            scan_range = '192.168.0.2:192.168.1.255'
+            ssh_port = '22'
+            try:
+                scan_report = subprocess.run(['pnscan', scan_range, ssh_port],
+                                             capture_output=True, text=True)
+            except FileNotFoundError as e:
+                response['error'] = str(e)
+                print('"pnscan" required.\n\tTry "sudo apt install pnscan"')
+        else:
+            scan_report = subprocess.run(['arp', '-a'], capture_output=True,
+                                         text=True)
         regex = re.compile(r'192.168.[0-9]{1,3}.[0-9]{1,3}')
-        available_addresses = regex.findall(arp.stdout)
+        available_addresses = regex.findall(scan_report.stdout)
         if available_addresses:
             response['available_addresses'] = available_addresses
     except Exception as e:
