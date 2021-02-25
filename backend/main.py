@@ -2,7 +2,7 @@ import re
 import subprocess
 import platform
 from flask import Flask, request
-from paramiko import SSHClient, ssh_exception
+from paramiko import SSHClient, ssh_exception, AutoAddPolicy
 from utils import close_file_objects
 
 
@@ -26,6 +26,7 @@ def connect():
     password = request.form.get('password')
 
     try:
+        client.set_missing_host_key_policy(AutoAddPolicy)
         client.load_system_host_keys()
     except Exception as e:
         print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
