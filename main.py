@@ -1,14 +1,43 @@
+import os
+import sys
 import re
 import subprocess
 import platform
-from flask import Flask, request
+import webview
+from flask import Flask, request, send_from_directory
 from paramiko import SSHClient, ssh_exception, AutoAddPolicy
-from utils import close_file_objects
+from server.utils import close_file_objects
+
+from server.random_funny_text import get_funny_text
 
 
-app = Flask(__name__)
+DEV = True
+
+def get_static_path(path):
+    is_frozen = getattr(sys, 'frozen', False)
+    return os.path.join(sys._MEIPASS, path) if is_frozen else path
+
+app = Flask(__name__, static_folder=get_static_path('client/public'))
 client = SSHClient()
 system = platform.system()
+
+
+# Client page
+@app.route("/")
+def base():
+    return send_from_directory(app.static_folder, 'index.html')
+
+
+# Path for all the static files
+@app.route("/<path:path>")
+def home(path):
+    return send_from_directory(app.static_folder, path)
+
+
+# Connection test
+@app.route('/test')
+def test():
+    return get_funny_text()
 
 
 @app.route('/connect', methods=['POST'])
@@ -94,5 +123,9 @@ def get_available_addresses():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    if DEV:
+        app.run(debug=True)
+    else:
+        webview.create_window('Super!', app)
+        webview.start()
     client.close()
