@@ -5,21 +5,15 @@ A versatile GUI in a from of a desktop web app used for operating our underwater
 
 # Development
 
-Running on http://localhost:5000/\
-If you want the app to start in the browser (helps with debugging) set `DEV=True` in `main.py`
+To run the app in a browser (http://localhost:5000/) set `DEV=True` in `main.py`.
 
 ## Backend
 
-1. Create a virutal enviroment:\
-  Win `py -m venv venv`\
-  Linux `python3 -m venv venv`
-2. Use it:\
-  Win `venv\Scripts\activate`\
-  Linux `source venv/bin/activate`
-3. `pip install -r requirements.txt`\
-  Additionally, if using Linux:\
-  `pip install pywebview[qt]`\
-  `xargs -a packages.txt sudo apt-get install`
+1. Create a [virutal enviroment](https://docs.python.org/3/tutorial/venv.html) and activate it.
+3. Install dependencies:\
+  `pip install -r requirements.txt`\
+  (Linux) `pip install pywebview[qt]`\
+  (Linux) `xargs -a packages.txt sudo apt-get install`
 4. Run `main.py`
 
 
@@ -31,9 +25,8 @@ If you want the app to start in the browser (helps with debugging) set `DEV=True
 4. `npm run dev`\
   This command will rebuild the `client/public` folder everytime changes are detected in the `client/src` folder.
 
-Developing the Frontend requires a running Backend.  You should be running a `DEV=True` "version" of the backend to be able to live reload.
-
-Instead of working on Svelte's http://localhost:3000/ use http://localhost:5000/!
+Developing the Frontend requires a running Backend.\
+You should be running the Backend with `DEV=True` in `main.py`.
 
 
 ## Packaging
