@@ -1,7 +1,7 @@
 <script>
 	let text = '';
 	function getText() {
-		fetch('./test')
+		fetch('/test')
 			.then(d => d.text())
 			.then(d => (text = d));
 	}
