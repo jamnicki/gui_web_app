@@ -1,0 +1,13 @@
+### Python ###
+__pycache__/
+env/
+venv/
+
+### VisualStudioCode ###
+.vscode/
+.vscode/*
+*.code-workspace
+
+### Node ###
+client/node_modules/
+client/package-lock.json
