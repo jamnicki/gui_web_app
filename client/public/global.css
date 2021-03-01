@@ -1,5 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
 
+:root {
+	--bg: #121212;
+	--main: #102A43;
+	--secondary: #486581;
+	--accent: #209BAA;
+	--text: #F0F4F8;
+	--border: solid 3px #486581;
+	--border-focus: solid 3px #209BAA;
+	--border-radius: 10px;
+	--elevated:
+			0 24px 38px 3px rgba(0,0,0,0.14),
+			0 9px 46px 8px rgba(0,0,0,0.12),
+			0 11px 15px -7px rgba(0,0,0,0.20);
+	--success: #5dfda5;
+	--error: #ff7a7a;
+	--hint: #fffda1;
+}
+
+* {
+	box-sizing: border-box;
+	font-family: 'JetBrains Mono', monospace;
+	color: var(--text);
+}
+
 html, body {
 	position: relative;
 	width: 100%;
@@ -9,5 +33,52 @@ html, body {
 body {
 	margin: 0;
 	padding: 0;
-	font-family: 'JetBrains Mono', monospace;
+	background-color: var(--bg);
+}
+
+h1,h2,h3,h4,h5,h6 {
+	margin: 0;
+	padding: 0;
+}
+
+label {
+	display: block;
+	margin: 20px 0;
+}
+
+input, select {
+	display: block;
+	margin-top: 5px;
+	outline: none;
+	border: var(--border);
+	border-radius: var(--border-radius);
+	padding: 5px 10px;
+	background-color: var(--secondary);
+	color: var(--text);
+}
+input:focus {
+	border: var(--border-focus);
+}
+
+input[type="submit"] {
+	display: inline-block;
+	cursor: pointer;
+	border: var(--border-focus);
+	padding: 5px 20px;
+	background-color: var(--accent);
+	transition: box-shadow 200ms;
+}
+input[type="submit"]:hover {
+	box-shadow: var(--elevated);
+}
+
+.success {
+	color: var(--success);
+}
+.error {
+	color: var(--error);
+	font-size: 0.9rem;
+}
+.hint {
+	color: var(--hint);
 }

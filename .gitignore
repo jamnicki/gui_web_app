@@ -1,16 +1,20 @@
-### Python ###
+### Backend ###
+# Python
 __pycache__/
 env/
 venv/
-# Freezing the app
+# Packaging
 *.spec
 build/
+
+### Frontend ###
+# Node
+client/node_modules/
+client/package-lock.json
+# Rollup
+client/*.map
 
 ### VisualStudioCode ###
 .vscode/
 .vscode/*
 *.code-workspace
-
-### Node ###
-client/node_modules/
-client/package-lock.json
