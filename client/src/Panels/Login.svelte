@@ -102,6 +102,9 @@
           <span class="connect-loader">&nbsp;</span>
         {/if}
       </form>
+      {#if connected}
+        <span transition:slide class="success">Połączono</span>
+      {/if}
       {#if error}
         <span transition:slide class="error error-message">{error}</span>
       {/if}

@@ -944,7 +944,7 @@ var app = (function () {
     			append_dev(option, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*addresses*/ 64 && t_value !== (t_value = /*address*/ ctx[16] + "")) set_data_dev(t, t_value);
+    			if (dirty & /*addresses*/ 128 && t_value !== (t_value = /*address*/ ctx[16] + "")) set_data_dev(t, t_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(option);
@@ -963,7 +963,7 @@ var app = (function () {
     }
 
     // (83:8) {#if waitingForAddresses}
-    function create_if_block_3(ctx) {
+    function create_if_block_4(ctx) {
     	let loader;
     	let current;
     	loader = new Loader({ props: { type: "/" }, $$inline: true });
@@ -992,7 +992,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_3.name,
+    		id: create_if_block_4.name,
     		type: "if",
     		source: "(83:8) {#if waitingForAddresses}",
     		ctx
@@ -1034,7 +1034,7 @@ var app = (function () {
     }
 
     // (99:8) {#if waitingForConnection}
-    function create_if_block_2(ctx) {
+    function create_if_block_3(ctx) {
     	let span;
     	let loader;
     	let current;
@@ -1069,7 +1069,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block_2.name,
+    		id: create_if_block_3.name,
     		type: "if",
     		source: "(99:8) {#if waitingForConnection}",
     		ctx
@@ -1078,7 +1078,56 @@ var app = (function () {
     	return block;
     }
 
-    // (105:6) {#if error}
+    // (105:6) {#if connected}
+    function create_if_block_2(ctx) {
+    	let span;
+    	let span_transition;
+    	let current;
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			span.textContent = "Połączono";
+    			attr_dev(span, "class", "success");
+    			add_location(span, file, 105, 8, 2390);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+    			current = true;
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+
+    			add_render_callback(() => {
+    				if (!span_transition) span_transition = create_bidirectional_transition(span, slide, {}, true);
+    				span_transition.run(1);
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			if (!span_transition) span_transition = create_bidirectional_transition(span, slide, {}, false);
+    			span_transition.run(0);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    			if (detaching && span_transition) span_transition.end();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2.name,
+    		type: "if",
+    		source: "(105:6) {#if connected}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (108:6) {#if error}
     function create_if_block_1(ctx) {
     	let span;
     	let t;
@@ -1090,7 +1139,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*error*/ ctx[0]);
     			attr_dev(span, "class", "error error-message svelte-ogzlfd");
-    			add_location(span, file, 105, 8, 2386);
+    			add_location(span, file, 108, 8, 2487);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1125,14 +1174,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(105:6) {#if error}",
+    		source: "(108:6) {#if error}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (108:6) {#if hint}
+    // (111:6) {#if hint}
     function create_if_block(ctx) {
     	let span;
     	let t;
@@ -1144,7 +1193,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*hint*/ ctx[1]);
     			attr_dev(span, "class", "hint svelte-ogzlfd");
-    			add_location(span, file, 108, 8, 2492);
+    			add_location(span, file, 111, 8, 2593);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1179,7 +1228,7 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(108:6) {#if hint}",
+    		source: "(111:6) {#if hint}",
     		ctx
     	});
 
@@ -1210,10 +1259,11 @@ var app = (function () {
     	let if_block1;
     	let t9;
     	let t10;
+    	let t11;
     	let current;
     	let mounted;
     	let dispose;
-    	let each_value = /*addresses*/ ctx[6];
+    	let each_value = /*addresses*/ ctx[7];
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -1221,8 +1271,8 @@ var app = (function () {
     		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
     	}
 
-    	let if_block0 = /*waitingForAddresses*/ ctx[7] && create_if_block_3(ctx);
-    	const if_block_creators = [create_if_block_2, create_else_block];
+    	let if_block0 = /*waitingForAddresses*/ ctx[8] && create_if_block_4(ctx);
+    	const if_block_creators = [create_if_block_3, create_else_block];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
@@ -1232,8 +1282,9 @@ var app = (function () {
 
     	current_block_type_index = select_block_type(ctx);
     	if_block1 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-    	let if_block2 = /*error*/ ctx[0] && create_if_block_1(ctx);
-    	let if_block3 = /*hint*/ ctx[1] && create_if_block(ctx);
+    	let if_block2 = /*connected*/ ctx[6] && create_if_block_2(ctx);
+    	let if_block3 = /*error*/ ctx[0] && create_if_block_1(ctx);
+    	let if_block4 = /*hint*/ ctx[1] && create_if_block(ctx);
 
     	const block = {
     		c: function create() {
@@ -1267,10 +1318,12 @@ var app = (function () {
     			if (if_block2) if_block2.c();
     			t10 = space();
     			if (if_block3) if_block3.c();
+    			t11 = space();
+    			if (if_block4) if_block4.c();
     			add_location(h3, file, 76, 8, 1527);
     			attr_dev(select, "name", "addresses");
     			attr_dev(select, "class", "svelte-ogzlfd");
-    			if (/*hostname*/ ctx[2] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[10].call(select));
+    			if (/*hostname*/ ctx[2] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[11].call(select));
     			add_location(select, file, 77, 8, 1549);
     			attr_dev(div0, "class", "address svelte-ogzlfd");
     			add_location(div0, file, 75, 6, 1496);
@@ -1323,22 +1376,24 @@ var app = (function () {
     			if (if_block2) if_block2.m(div1, null);
     			append_dev(div1, t10);
     			if (if_block3) if_block3.m(div1, null);
+    			append_dev(div1, t11);
+    			if (if_block4) if_block4.m(div1, null);
     			current = true;
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(select, "change", /*select_change_handler*/ ctx[10]),
-    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[11]),
-    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[12]),
-    					listen_dev(input2, "click", prevent_default(/*click_handler*/ ctx[13]), false, true, false)
+    					listen_dev(select, "change", /*select_change_handler*/ ctx[11]),
+    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[12]),
+    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[13]),
+    					listen_dev(input2, "click", prevent_default(/*click_handler*/ ctx[14]), false, true, false)
     				];
 
     				mounted = true;
     			}
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*addresses*/ 64) {
-    				each_value = /*addresses*/ ctx[6];
+    			if (dirty & /*addresses*/ 128) {
+    				each_value = /*addresses*/ ctx[7];
     				validate_each_argument(each_value);
     				let i;
 
@@ -1365,13 +1420,13 @@ var app = (function () {
     				select_option(select, /*hostname*/ ctx[2]);
     			}
 
-    			if (/*waitingForAddresses*/ ctx[7]) {
+    			if (/*waitingForAddresses*/ ctx[8]) {
     				if (if_block0) {
-    					if (dirty & /*waitingForAddresses*/ 128) {
+    					if (dirty & /*waitingForAddresses*/ 256) {
     						transition_in(if_block0, 1);
     					}
     				} else {
-    					if_block0 = create_if_block_3(ctx);
+    					if_block0 = create_if_block_4(ctx);
     					if_block0.c();
     					transition_in(if_block0, 1);
     					if_block0.m(div0, null);
@@ -1416,15 +1471,13 @@ var app = (function () {
     				if_block1.m(form, null);
     			}
 
-    			if (/*error*/ ctx[0]) {
+    			if (/*connected*/ ctx[6]) {
     				if (if_block2) {
-    					if_block2.p(ctx, dirty);
-
-    					if (dirty & /*error*/ 1) {
+    					if (dirty & /*connected*/ 64) {
     						transition_in(if_block2, 1);
     					}
     				} else {
-    					if_block2 = create_if_block_1(ctx);
+    					if_block2 = create_if_block_2(ctx);
     					if_block2.c();
     					transition_in(if_block2, 1);
     					if_block2.m(div1, t10);
@@ -1439,24 +1492,47 @@ var app = (function () {
     				check_outros();
     			}
 
-    			if (/*hint*/ ctx[1]) {
+    			if (/*error*/ ctx[0]) {
     				if (if_block3) {
     					if_block3.p(ctx, dirty);
 
-    					if (dirty & /*hint*/ 2) {
+    					if (dirty & /*error*/ 1) {
     						transition_in(if_block3, 1);
     					}
     				} else {
-    					if_block3 = create_if_block(ctx);
+    					if_block3 = create_if_block_1(ctx);
     					if_block3.c();
     					transition_in(if_block3, 1);
-    					if_block3.m(div1, null);
+    					if_block3.m(div1, t11);
     				}
     			} else if (if_block3) {
     				group_outros();
 
     				transition_out(if_block3, 1, 1, () => {
     					if_block3 = null;
+    				});
+
+    				check_outros();
+    			}
+
+    			if (/*hint*/ ctx[1]) {
+    				if (if_block4) {
+    					if_block4.p(ctx, dirty);
+
+    					if (dirty & /*hint*/ 2) {
+    						transition_in(if_block4, 1);
+    					}
+    				} else {
+    					if_block4 = create_if_block(ctx);
+    					if_block4.c();
+    					transition_in(if_block4, 1);
+    					if_block4.m(div1, null);
+    				}
+    			} else if (if_block4) {
+    				group_outros();
+
+    				transition_out(if_block4, 1, 1, () => {
+    					if_block4 = null;
     				});
 
     				check_outros();
@@ -1468,6 +1544,7 @@ var app = (function () {
     			transition_in(if_block1);
     			transition_in(if_block2);
     			transition_in(if_block3);
+    			transition_in(if_block4);
     			current = true;
     		},
     		o: function outro(local) {
@@ -1475,6 +1552,7 @@ var app = (function () {
     			transition_out(if_block1);
     			transition_out(if_block2);
     			transition_out(if_block3);
+    			transition_out(if_block4);
     			current = false;
     		},
     		d: function destroy(detaching) {
@@ -1484,6 +1562,7 @@ var app = (function () {
     			if_blocks[current_block_type_index].d();
     			if (if_block2) if_block2.d();
     			if (if_block3) if_block3.d();
+    			if (if_block4) if_block4.d();
     			mounted = false;
     			run_all(dispose);
     		}
@@ -1513,7 +1592,7 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	box.$on("keydown", /*handleKeydown*/ ctx[9]);
+    	box.$on("keydown", /*handleKeydown*/ ctx[10]);
 
     	const block = {
     		c: function create() {
@@ -1533,7 +1612,7 @@ var app = (function () {
     		p: function update(ctx, [dirty]) {
     			const box_changes = {};
 
-    			if (dirty & /*$$scope, hint, error, waitingForConnection, password, username, waitingForAddresses, hostname, addresses*/ 524543) {
+    			if (dirty & /*$$scope, hint, error, connected, waitingForConnection, password, username, waitingForAddresses, hostname, addresses*/ 524799) {
     				box_changes.$$scope = { dirty, ctx };
     			}
 
@@ -1598,7 +1677,7 @@ var app = (function () {
     		}
 
     		$$invalidate(5, waitingForConnection = false);
-    		connected = data.connected;
+    		$$invalidate(6, connected = data.connected);
     	}
 
     	function handleKeydown(e) {
@@ -1613,10 +1692,10 @@ var app = (function () {
     	let waitingForAddresses = false;
 
     	async function getAddresses() {
-    		$$invalidate(7, waitingForAddresses = true);
+    		$$invalidate(8, waitingForAddresses = true);
     		const res = await fetch("/available-addresses");
     		const data = await res.json();
-    		$$invalidate(6, addresses = data.available_addresses);
+    		$$invalidate(7, addresses = data.available_addresses);
 
     		if (data.error) {
     			$$invalidate(0, error = data.error);
@@ -1626,7 +1705,7 @@ var app = (function () {
     			$$invalidate(1, hint = data.hint);
     		}
 
-    		$$invalidate(7, waitingForAddresses = false);
+    		$$invalidate(8, waitingForAddresses = false);
     	}
 
     	getAddresses();
@@ -1680,9 +1759,9 @@ var app = (function () {
     		if ("username" in $$props) $$invalidate(3, username = $$props.username);
     		if ("password" in $$props) $$invalidate(4, password = $$props.password);
     		if ("waitingForConnection" in $$props) $$invalidate(5, waitingForConnection = $$props.waitingForConnection);
-    		if ("connected" in $$props) connected = $$props.connected;
-    		if ("addresses" in $$props) $$invalidate(6, addresses = $$props.addresses);
-    		if ("waitingForAddresses" in $$props) $$invalidate(7, waitingForAddresses = $$props.waitingForAddresses);
+    		if ("connected" in $$props) $$invalidate(6, connected = $$props.connected);
+    		if ("addresses" in $$props) $$invalidate(7, addresses = $$props.addresses);
+    		if ("waitingForAddresses" in $$props) $$invalidate(8, waitingForAddresses = $$props.waitingForAddresses);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -1696,6 +1775,7 @@ var app = (function () {
     		username,
     		password,
     		waitingForConnection,
+    		connected,
     		addresses,
     		waitingForAddresses,
     		connect,
