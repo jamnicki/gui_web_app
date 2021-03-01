@@ -11,7 +11,7 @@ from server.utils import close_file_objects
 from server.random_funny_text import get_funny_text
 
 
-DEV = True
+DEV = False
 
 def get_static_path(path):
     is_frozen = getattr(sys, 'frozen', False)
@@ -23,13 +23,13 @@ system = platform.system()
 
 
 # Client page
-@app.route("/")
+@app.route('/')
 def base():
     return send_from_directory(app.static_folder, 'index.html')
 
 
 # Path for all the static files
-@app.route("/<path:path>")
+@app.route('/<path:path>')
 def home(path):
     return send_from_directory(app.static_folder, path)
 
@@ -126,6 +126,6 @@ if __name__ == '__main__':
     if DEV:
         app.run(debug=True)
     else:
-        webview.create_window('Super!', app)
+        webview.create_window('GUI Web App', app)
         webview.start()
     client.close()

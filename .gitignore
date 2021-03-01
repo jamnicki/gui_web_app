@@ -3,7 +3,7 @@ __pycache__/
 env/
 venv/
 # Freezing the app
-main.spec
+*.spec
 build/
 
 ### VisualStudioCode ###
