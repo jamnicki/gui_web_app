@@ -72,17 +72,17 @@ def connect():
     except ssh_exception.AuthenticationException as e:
         print(f'Exception in {connect.__name__}():\n\t{e}')
         response['error'] = str(e)
-        # response['hint'] = ''
+        response['hint'] = 'Check if the entered username or password is correct.'
         return response
     except ssh_exception.NoValidConnectionsError as e:
         print(f'Exception in {connect.__name__}():\n\t{e}')
         response['error'] = str(e)
-        # response['hint'] = ''
+        response['hint'] = 'Try different IP.'
         return response
     except Exception as e:
         print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
         response['error'] = str(e)
-        # response['hint'] = ''
+        response['hint'] = 'Oopsie Woopsie\nNie wiem\nIdź pobiegać? xd'
     else:
         response['connected'] = 1
 
@@ -116,6 +116,7 @@ def get_available_addresses():
             except FileNotFoundError as e:
                 print('"pnscan" required.\n\tTry "sudo apt install pnscan"')
                 response['error'] = str(e)
+                response['hint'] = 'Try "sudo apt install pnscan".'
                 return response
         else:
             scan_report = subprocess.run(['arp', '-a'], capture_output=True,
