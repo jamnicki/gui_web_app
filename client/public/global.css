@@ -60,6 +60,7 @@ input:focus {
 	border: var(--border-focus);
 }
 
+button,
 input[type="submit"] {
 	display: inline-block;
 	cursor: pointer;
@@ -68,6 +69,7 @@ input[type="submit"] {
 	background-color: var(--accent);
 	transition: box-shadow 200ms;
 }
+button:hover,
 input[type="submit"]:hover {
 	box-shadow: var(--elevated);
 }
