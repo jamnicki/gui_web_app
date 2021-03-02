@@ -11,7 +11,7 @@ from server.utils import close_file_objects
 from server.random_funny_text import get_funny_text
 
 
-DEV = False
+DEV = True
 
 def get_static_path(path):
     is_frozen = getattr(sys, 'frozen', False)
@@ -50,9 +50,10 @@ def connect():
                 'error': None,
                 'hint': None}
 
-    hostname = request.form.get('hostname')
-    username = request.form.get('username')
-    password = request.form.get('password')
+    json_data = request.json
+    hostname = json_data['hostname']
+    username = json_data['username']
+    password = json_data['password']
 
     try:
         client.set_missing_host_key_policy(AutoAddPolicy)

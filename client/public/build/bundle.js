@@ -933,7 +933,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (82:10) {#each addresses as address, i}
+    // (83:10) {#each addresses as address, i}
     function create_each_block(ctx) {
     	let option;
     	let t_value = /*address*/ ctx[17] + "";
@@ -945,7 +945,7 @@ var app = (function () {
     			t = text(t_value);
     			option.__value = /*i*/ ctx[19];
     			option.value = option.__value;
-    			add_location(option, file, 82, 12, 1778);
+    			add_location(option, file, 83, 12, 1816);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -963,14 +963,14 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(82:10) {#each addresses as address, i}",
+    		source: "(83:10) {#each addresses as address, i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (86:8) {#if waitingForAddresses}
+    // (87:8) {#if waitingForAddresses}
     function create_if_block_4(ctx) {
     	let loader;
     	let current;
@@ -1002,14 +1002,14 @@ var app = (function () {
     		block,
     		id: create_if_block_4.name,
     		type: "if",
-    		source: "(86:8) {#if waitingForAddresses}",
+    		source: "(87:8) {#if waitingForAddresses}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (104:8) {:else}
+    // (105:8) {:else}
     function create_else_block(ctx) {
     	let span;
 
@@ -1018,7 +1018,7 @@ var app = (function () {
     			span = element("span");
     			span.textContent = " ";
     			attr_dev(span, "class", "connect-loader svelte-ogzlfd");
-    			add_location(span, file, 104, 10, 2410);
+    			add_location(span, file, 105, 10, 2448);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1034,14 +1034,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(104:8) {:else}",
+    		source: "(105:8) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (102:8) {#if waitingForConnection}
+    // (103:8) {#if waitingForConnection}
     function create_if_block_3(ctx) {
     	let span;
     	let loader;
@@ -1053,7 +1053,7 @@ var app = (function () {
     			span = element("span");
     			create_component(loader.$$.fragment);
     			attr_dev(span, "class", "connect-loader svelte-ogzlfd");
-    			add_location(span, file, 102, 10, 2336);
+    			add_location(span, file, 103, 10, 2374);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1079,14 +1079,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3.name,
     		type: "if",
-    		source: "(102:8) {#if waitingForConnection}",
+    		source: "(103:8) {#if waitingForConnection}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (108:6) {#if connected}
+    // (109:6) {#if connected}
     function create_if_block_2(ctx) {
     	let span;
     	let span_transition;
@@ -1097,7 +1097,7 @@ var app = (function () {
     			span = element("span");
     			span.textContent = "Połączono";
     			attr_dev(span, "class", "success");
-    			add_location(span, file, 108, 8, 2515);
+    			add_location(span, file, 109, 8, 2553);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1128,14 +1128,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(108:6) {#if connected}",
+    		source: "(109:6) {#if connected}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (111:6) {#if error}
+    // (112:6) {#if error}
     function create_if_block_1(ctx) {
     	let span;
     	let t;
@@ -1147,7 +1147,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*error*/ ctx[2]);
     			attr_dev(span, "class", "error error-message svelte-ogzlfd");
-    			add_location(span, file, 111, 8, 2612);
+    			add_location(span, file, 112, 8, 2650);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1182,14 +1182,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(111:6) {#if error}",
+    		source: "(112:6) {#if error}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (114:6) {#if hint}
+    // (115:6) {#if hint}
     function create_if_block(ctx) {
     	let span;
     	let t;
@@ -1201,7 +1201,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*hint*/ ctx[3]);
     			attr_dev(span, "class", "hint svelte-ogzlfd");
-    			add_location(span, file, 114, 8, 2718);
+    			add_location(span, file, 115, 8, 2756);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1236,14 +1236,14 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(114:6) {#if hint}",
+    		source: "(115:6) {#if hint}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (76:2) <Box on:keydown={handleKeydown}>
+    // (77:2) <Box on:keydown={handleKeydown}>
     function create_default_slot(ctx) {
     	let div1;
     	let div0;
@@ -1328,28 +1328,28 @@ var app = (function () {
     			if (if_block3) if_block3.c();
     			t11 = space();
     			if (if_block4) if_block4.c();
-    			add_location(h3, file, 79, 8, 1649);
+    			add_location(h3, file, 80, 8, 1687);
     			attr_dev(select, "name", "addresses");
     			attr_dev(select, "class", "svelte-ogzlfd");
     			if (/*hostname_id*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[11].call(select));
-    			add_location(select, file, 80, 8, 1671);
+    			add_location(select, file, 81, 8, 1709);
     			attr_dev(div0, "class", "address svelte-ogzlfd");
-    			add_location(div0, file, 78, 6, 1618);
+    			add_location(div0, file, 79, 6, 1656);
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "class", "svelte-ogzlfd");
-    			add_location(input0, file, 93, 10, 2017);
-    			add_location(label0, file, 91, 8, 1978);
+    			add_location(input0, file, 94, 10, 2055);
+    			add_location(label0, file, 92, 8, 2016);
     			attr_dev(input1, "type", "password");
     			attr_dev(input1, "class", "svelte-ogzlfd");
-    			add_location(input1, file, 97, 10, 2125);
-    			add_location(label1, file, 95, 8, 2086);
+    			add_location(input1, file, 98, 10, 2163);
+    			add_location(label1, file, 96, 8, 2124);
     			attr_dev(input2, "type", "submit");
     			input2.value = "Login";
     			attr_dev(input2, "class", "svelte-ogzlfd");
-    			add_location(input2, file, 99, 8, 2198);
-    			add_location(form, file, 90, 6, 1962);
+    			add_location(input2, file, 100, 8, 2236);
+    			add_location(form, file, 91, 6, 2000);
     			attr_dev(div1, "class", "wrapper svelte-ogzlfd");
-    			add_location(div1, file, 76, 4, 1587);
+    			add_location(div1, file, 77, 4, 1625);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div1, anchor);
@@ -1580,7 +1580,7 @@ var app = (function () {
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(76:2) <Box on:keydown={handleKeydown}>",
+    		source: "(77:2) <Box on:keydown={handleKeydown}>",
     		ctx
     	});
 
@@ -1607,7 +1607,7 @@ var app = (function () {
     			main = element("main");
     			create_component(box.$$.fragment);
     			attr_dev(main, "class", "svelte-ogzlfd");
-    			add_location(main, file, 74, 0, 1539);
+    			add_location(main, file, 75, 0, 1577);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1674,6 +1674,7 @@ var app = (function () {
 
     		const res = await fetch("/connect", {
     			method: "POST",
+    			headers: { "Content-Type": "application/json" },
     			body: JSON.stringify(data_package)
     		});
 
@@ -1706,7 +1707,7 @@ var app = (function () {
     		$$invalidate(8, waitingForAddresses = true);
     		const res = await fetch("/available-addresses");
     		const data = await res.json();
-    		$$invalidate(1, addresses = data.available_addresses);
+    		$$invalidate(1, addresses = data.addresses);
 
     		if (data.error) {
     			$$invalidate(2, error = data.error);

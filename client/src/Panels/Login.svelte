@@ -19,14 +19,15 @@
   
   async function connect() {
     let data_package = {
-      'hostname': hostname,
-      'username': username,
-      'password': password
+      hostname: hostname,
+      username: username,
+      password: password
     }
     console.log(data_package);
     waitingForConnection = true;
     const res  = await fetch('/connect', {
       method: 'POST',
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(data_package)
     });
     const data = await res.json();
@@ -59,7 +60,7 @@
     waitingForAddresses = true;
     const res  = await fetch('/available-addresses');
     const data = await res.json();
-    addresses = data.available_addresses;
+    addresses = data.addresses;
     if (data.error) {
       error = data.error;
     }
