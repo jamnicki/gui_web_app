@@ -89,6 +89,19 @@ def connect():
     return response
 
 
+@app.route('/check-connection', methods=['GET'])
+def check_connection():
+    response = {'connected': 0}
+
+    get_transport = client.get_transport()
+    if get_transport is not None:
+        is_authenticated = get_transport.is_authenticated()
+        if is_authenticated:
+            response['connected'] = 1
+
+    return response
+
+
 @app.route('/available-addresses', methods=['GET'])
 def get_available_addresses():
     """Find available addresses on user's local network
@@ -108,7 +121,7 @@ def get_available_addresses():
                 'hint': None}
     try:
         if system == 'Linux':
-            scan_range = '192.168.0.2:192.168.1.255'
+            scan_range = '192.168.0.0:192.168.1.255'
             ssh_port = '22'
             try:
                 scan_report = subprocess.run(['pnscan', scan_range, ssh_port],
