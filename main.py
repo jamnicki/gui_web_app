@@ -11,7 +11,7 @@ from server.utils import close_file_objects
 from server.random_funny_text import get_funny_text
 
 
-DEV = False
+DEV = True
 
 def get_static_path(path):
     is_frozen = getattr(sys, 'frozen', False)
@@ -50,9 +50,10 @@ def connect():
                 'error': None,
                 'hint': None}
 
-    hostname = request.form.get('hostname')
-    username = request.form.get('username')
-    password = request.form.get('password')
+    json_data = request.json
+    hostname = json_data['hostname']
+    username = json_data['username']
+    password = json_data['password']
 
     try:
         client.set_missing_host_key_policy(AutoAddPolicy)
@@ -88,13 +89,13 @@ def get_available_addresses():
 
     Returns on GET:
         dict:
-            'available_addresses' (list): local IP addresses that
-                                          matching pattern '192.168.x.x'.
-                                          None if not found.
+            'addresses' (list): local IP addresses that
+                                matching pattern '192.168.x.x'.
+                                None if not found.
             'error' (str): Exception message if unexpected error occured.
                            None if not.
     """
-    response = {'available_addresses': None,
+    response = {'addresses': None,
                 'error': None,
                 'hint': None}
     try:
@@ -113,7 +114,7 @@ def get_available_addresses():
         regex = re.compile(r'192.168.[0-9]{1,3}.[0-9]{1,3}')
         available_addresses = regex.findall(scan_report.stdout)
         if available_addresses:
-            response['available_addresses'] = available_addresses
+            response['addresses'] = available_addresses
     except Exception as e:
         response['error'] = str(e)
         print(f'Unexpected exception in {get_available_addresses.__name__}(): \

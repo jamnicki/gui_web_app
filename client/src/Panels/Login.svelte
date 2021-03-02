@@ -8,7 +8,8 @@
 
   // Connecting
 
-  let hostname;
+  let hostname_id;
+  $:  hostname = addresses[hostname_id];
   let username;
   let password;
   
@@ -17,14 +18,17 @@
   let connected;
   
   async function connect() {
+    let data_package = {
+      hostname: hostname,
+      username: username,
+      password: password
+    }
+    console.log(data_package);
     waitingForConnection = true;
     const res  = await fetch('/connect', {
       method: 'POST',
-      body: {
-        'hostname': hostname,
-        'username': username,
-        'password': password
-      }
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data_package)
     });
     const data = await res.json();
     if (data.error) {
@@ -56,7 +60,7 @@
     waitingForAddresses = true;
     const res  = await fetch('/available-addresses');
     const data = await res.json();
-    addresses = data.available_addresses;
+    addresses = data.addresses;
     if (data.error) {
       error = data.error;
     }
@@ -75,7 +79,7 @@
 
       <div class="address">
         <h3>SSH</h3>
-        <select name="addresses" bind:value={hostname}>
+        <select name="addresses" bind:value={hostname_id}>
           {#each addresses as address, i}
             <option value={i}>{address}</option>
           {/each}
@@ -111,7 +115,6 @@
       {#if hint}
         <span transition:slide class="hint">{hint}</span>
       {/if}
-
     </div>
   </Box>
 </main>
