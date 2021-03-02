@@ -1058,7 +1058,7 @@ var app = (function () {
     			t = text(t_value);
     			option.__value = /*i*/ ctx[18];
     			option.value = option.__value;
-    			add_location(option, file, 96, 12, 2302);
+    			add_location(option, file, 96, 12, 2315);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -1095,7 +1095,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*addresses_error*/ ctx[5]);
     			attr_dev(span, "class", "message error svelte-1q92huv");
-    			add_location(span, file, 104, 8, 2557);
+    			add_location(span, file, 104, 8, 2570);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1149,7 +1149,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*addresses_hint*/ ctx[6]);
     			attr_dev(span, "class", "message hint svelte-1q92huv");
-    			add_location(span, file, 107, 8, 2677);
+    			add_location(span, file, 107, 8, 2690);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1202,7 +1202,7 @@ var app = (function () {
     			div = element("div");
     			div.textContent = "Połączono!";
     			attr_dev(div, "class", "message success svelte-1q92huv");
-    			add_location(div, file, 125, 8, 3241);
+    			add_location(div, file, 125, 8, 3254);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1252,7 +1252,7 @@ var app = (function () {
     			div = element("div");
     			t = text(/*login_error*/ ctx[8]);
     			attr_dev(div, "class", "message error svelte-1q92huv");
-    			add_location(div, file, 128, 8, 3351);
+    			add_location(div, file, 128, 8, 3364);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1306,7 +1306,7 @@ var app = (function () {
     			div = element("div");
     			t = text(/*login_hint*/ ctx[9]);
     			attr_dev(div, "class", "message hint svelte-1q92huv");
-    			add_location(div, file, 131, 8, 3461);
+    			add_location(div, file, 131, 8, 3474);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1451,30 +1451,30 @@ var app = (function () {
     			if (if_block3) if_block3.c();
     			t13 = space();
     			if (if_block4) if_block4.c();
-    			add_location(h3, file, 93, 8, 2193);
+    			add_location(h3, file, 93, 8, 2206);
     			attr_dev(select, "class", "svelte-1q92huv");
     			if (/*hostname*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[12].call(select));
-    			add_location(select, file, 94, 8, 2215);
+    			add_location(select, file, 94, 8, 2228);
     			attr_dev(div0, "class", "address svelte-1q92huv");
-    			add_location(div0, file, 92, 6, 2162);
+    			add_location(div0, file, 92, 6, 2175);
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "class", "svelte-1q92huv");
-    			add_location(input0, file, 112, 10, 2835);
-    			add_location(label0, file, 111, 8, 2808);
+    			add_location(input0, file, 112, 10, 2848);
+    			add_location(label0, file, 111, 8, 2821);
     			attr_dev(input1, "type", "password");
     			attr_dev(input1, "class", "svelte-1q92huv");
-    			add_location(input1, file, 115, 10, 2931);
-    			add_location(label1, file, 114, 8, 2904);
+    			add_location(input1, file, 115, 10, 2944);
+    			add_location(label1, file, 114, 8, 2917);
     			attr_dev(input2, "type", "submit");
     			input2.value = "Login";
     			attr_dev(input2, "class", "svelte-1q92huv");
-    			add_location(input2, file, 117, 8, 3004);
+    			add_location(input2, file, 117, 8, 3017);
     			attr_dev(div1, "class", "login-loader svelte-1q92huv");
-    			add_location(div1, file, 119, 8, 3092);
+    			add_location(div1, file, 119, 8, 3105);
     			attr_dev(form, "class", "svelte-1q92huv");
-    			add_location(form, file, 110, 6, 2767);
+    			add_location(form, file, 110, 6, 2780);
     			attr_dev(div2, "class", "wrapper svelte-1q92huv");
-    			add_location(div2, file, 90, 4, 2131);
+    			add_location(div2, file, 90, 4, 2144);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -1754,7 +1754,7 @@ var app = (function () {
     			main = element("main");
     			create_component(box.$$.fragment);
     			attr_dev(main, "class", "svelte-1q92huv");
-    			add_location(main, file, 88, 0, 2110);
+    			add_location(main, file, 88, 0, 2123);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1832,7 +1832,7 @@ var app = (function () {
 
     	async function getAddresses() {
     		$$invalidate(7, addresses_loading = true);
-    		const res = await fetch("/loader");
+    		const res = await fetch("/available-addresses");
 
     		try {
     			const json = await res.json();

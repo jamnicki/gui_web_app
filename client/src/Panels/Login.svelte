@@ -30,7 +30,7 @@
 
   async function getAddresses() {
     addresses_loading = true;
-    const res = await fetch('/loader');
+    const res = await fetch('/available-addresses');
     try {
       const json = await res.json();
       console.log(json);
