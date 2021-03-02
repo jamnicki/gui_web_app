@@ -65,6 +65,7 @@ input[type="submit"] {
 	display: inline-block;
 	cursor: pointer;
 	border: var(--border-focus);
+	border-radius: var(--border-radius);
 	padding: 5px 20px;
 	background-color: var(--accent);
 	transition: box-shadow 200ms;
