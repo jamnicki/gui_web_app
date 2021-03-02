@@ -88,13 +88,13 @@ def get_available_addresses():
 
     Returns on GET:
         dict:
-            'available_addresses' (list): local IP addresses that
-                                          matching pattern '192.168.x.x'.
-                                          None if not found.
+            'addresses' (list): local IP addresses that
+                                matching pattern '192.168.x.x'.
+                                None if not found.
             'error' (str): Exception message if unexpected error occured.
                            None if not.
     """
-    response = {'available_addresses': None,
+    response = {'addresses': None,
                 'error': None,
                 'hint': None}
     try:
@@ -113,7 +113,7 @@ def get_available_addresses():
         regex = re.compile(r'192.168.[0-9]{1,3}.[0-9]{1,3}')
         available_addresses = regex.findall(scan_report.stdout)
         if available_addresses:
-            response['available_addresses'] = available_addresses
+            response['addresses'] = available_addresses
     except Exception as e:
         response['error'] = str(e)
         print(f'Unexpected exception in {get_available_addresses.__name__}(): \
