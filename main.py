@@ -40,6 +40,14 @@ def test():
     return get_funny_text()
 
 
+# Testing loading animations
+@app.route('/loader', methods=['GET','POST'])
+def loader():
+    import time
+    time.sleep(5)
+    return 'Loader test response.'
+
+
 @app.route('/connect', methods=['POST'])
 def connect():
     """Connect to ROV via SSH using hostname, username and password

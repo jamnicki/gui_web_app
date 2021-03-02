@@ -3,121 +3,139 @@
   import Box from '../Components/Box.svelte';
   import Loader from '../Components/Loader.svelte';
   
-  let error;
-  let hint;
-
-  // Connecting
-
-  let hostname_id;
-  $:  hostname = addresses[hostname_id];
+  // Login data
+  let hostname;
   let username;
   let password;
-  
-  let waitingForConnection = false;
 
-  let connected;
+  // Predefined addresses
+  let addresses = [
+    '192.168.1.1',
+    '192.168.1.115'
+  ]
+
+  // SSH Connection status
+  let connected = 0;
+
+  // Obtaining addresses info
+  let addresses_error;
+  let addresses_hint;
+  let addresses_loading = false;
   
-  async function connect() {
-    let data_package = {
-      hostname: hostname,
+  // Login info
+  let login_error;
+  let login_hint;
+  let login_loading = false;
+
+
+  async function getAddresses() {
+    addresses_loading = true;
+    const res = await fetch('/available-addresses');
+    try {
+      const json = await res.json();
+      console.log(json);
+      if (json.addresses) {
+        let new_addresses = json.addresses.filter((elem)=>{
+          return !addresses.includes(elem);
+        });
+        addresses = addresses.concat(new_addresses);
+      }
+      addresses_error = (json.error) ? json.error : '';
+      addresses_hint = (json.hint) ? json.hint : '';
+    } catch (error) {
+      addresses_error = error;
+    }
+    addresses_loading = false;
+  }
+  getAddresses()
+  
+
+  async function login() {
+    login_loading = true;
+    let data = {
+      hostname: addresses[hostname],
       username: username,
       password: password
     }
-    console.log(data_package);
-    waitingForConnection = true;
-    const res  = await fetch('/connect', {
+    // filter out empty fields
+    data = Object.fromEntries(
+      Object.entries(data).filter( (val) => Boolean(val) )
+    );
+    console.log(JSON.stringify(data));
+    const res = await fetch('/connect', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(data_package)
+      body: JSON.stringify(data)
     });
-    const data = await res.json();
-    if (data.error) {
-      error = data.error;
+    try {
+      const json = await res.json();
+      connected = Boolean(json.connected);
+      login_error = (json.error) ? json.error : '';
+      login_hint = (json.hint) ? json.hint : '';
+    } catch (error) {
+      login_error = error;
     }
-    if (data.hint) {
-      hint = data.hint;
-    }
-    waitingForConnection = false;
-    connected = data.connected;
+    login_loading = false;
   }
 
-  function handleKeydown(e) {
+  function handleEnter(e) {
     if (e.key === 'Enter') {
       connect();
     }
   }
-
-  // Loading addresses
-
-  let addresses = [
-    '192.168.1.1',
-    '192.168.1.151'
-  ];
-  
-  let waitingForAddresses = false;
-
-  async function getAddresses() {
-    waitingForAddresses = true;
-    const res  = await fetch('/available-addresses');
-    const data = await res.json();
-    addresses = data.addresses;
-    if (data.error) {
-      error = data.error;
-    }
-    if (data.hint) {
-      hint = data.hint;
-    }
-    waitingForAddresses = false;
-  }
-
-  getAddresses();
 </script>
 
+
 <main>
-  <Box on:keydown={handleKeydown}>
+  <Box>
     <div class="wrapper">
 
       <div class="address">
         <h3>SSH</h3>
-        <select name="addresses" bind:value={hostname_id}>
+        <select bind:value={hostname}>
           {#each addresses as address, i}
             <option value={i}>{address}</option>
           {/each}
         </select>
-        {#if waitingForAddresses}
-          <Loader type={'/'}/>
-        {/if}
+        <Loader loading={addresses_loading} success={!addresses_error}
+          always_visible={true} type="slash"/>
       </div>
-    
-      <form>
-        <label>
-          Username
+      
+      {#if addresses_error}
+        <span transition:slide class="message error">{addresses_error}</span>
+      {/if}
+      {#if addresses_hint}
+        <span transition:slide class="message hint">{addresses_hint}</span>
+      {/if}
+
+      <form on:keydown={handleEnter}>
+        <label>Username
           <input type="text" bind:value={username}>
         </label>
-        <label>
-          Password
+        <label>Password
           <input type="password" bind:value={password}>
         </label>
         <input type="submit" value="Login"
-          on:click|preventDefault={()=>{ connect() }}>
-        {#if waitingForConnection}
-          <span class="connect-loader"><Loader/></span>
-        {:else}
-          <span class="connect-loader">&nbsp;</span>
-        {/if}
+          on:click|preventDefault={login}>
+        <div class="login-loader">
+          <Loader type="dots" loading={login_loading}/>
+        </div>
       </form>
+
       {#if connected}
-        <span transition:slide class="success">Połączono</span>
+        <div transition:slide class="message success">Połączono!</div>
       {/if}
-      {#if error}
-        <span transition:slide class="error error-message">{error}</span>
+      {#if login_error}
+        <div transition:slide class="message error">{login_error}</div>
       {/if}
-      {#if hint}
-        <span transition:slide class="hint">{hint}</span>
+      {#if login_hint}
+        <div transition:slide class="message hint">{login_hint}</div>
       {/if}
+
     </div>
   </Box>
 </main>
+
 
 <style>
   main {
@@ -127,6 +145,10 @@
     height: 100%;
   }
 
+  input {
+    width: 100%;
+  }
+
   .wrapper {
     width: 250px;
   }
@@ -134,28 +156,23 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 40px;
-  }
-
-  input {
-    width: 100%;
   }
   select {
     padding: 0;
     margin: 0 10px;
   }
 
-  .connect-loader {
-    display: block;
+  form {
+    margin-top: 40px;
+  }
+
+  .login-loader {
     margin-top: 5px;
     text-align: center;
   }
-  .error-message {
+
+  .message {
     display: block;
-    margin-top: 10px;
-  }
-  .hint {
-    display: block;
-    margin-top: 10px;
+    margin-top: 20px;
   }
 </style>

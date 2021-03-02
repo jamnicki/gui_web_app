@@ -75,10 +75,14 @@ input[type="submit"]:hover {
 .success {
 	color: var(--success);
 }
-.error {
+.error,
+.fail {
 	color: var(--error);
+}
+.error {
 	font-size: 0.9rem;
 }
-.hint {
+.hint,
+.loading {
 	color: var(--hint);
 }
