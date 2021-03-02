@@ -58,9 +58,11 @@
       password: password
     }
     // filter out empty fields
-    data = Object.fromEntries(
-      Object.entries(data).filter( (val) => Boolean(val) )
-    );
+    for (let key in data) {
+      if (data[key] === '') {
+        data[key] = undefined;
+      }
+    }
     console.log(JSON.stringify(data));
     const res = await fetch('/connect', {
       method: 'POST',
