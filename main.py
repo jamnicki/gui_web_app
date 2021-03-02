@@ -51,30 +51,38 @@ def connect():
                 'hint': None}
 
     json_data = request.json
-    hostname = json_data['hostname']
-    username = json_data['username']
-    password = json_data['password']
+    try:
+        hostname = json_data['hostname']
+        username = json_data['username']
+        password = json_data['password']
+    except KeyError as e:
+        response['error'] = f'Missing {e}'
+        return response
 
     try:
         client.set_missing_host_key_policy(AutoAddPolicy)
         client.load_system_host_keys()
     except Exception as e:
         print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
+        response['error'] = str(e)
+        return response
 
     try:
         client.connect(hostname=hostname, username=username, password=password)
     except ssh_exception.AuthenticationException as e:
+        print(f'Exception in {connect.__name__}():\n\t{e}')
         response['error'] = str(e)
         # response['hint'] = ''
-        print(f'Exception in {connect.__name__}():\n\t{e}')
+        return response
     except ssh_exception.NoValidConnectionsError as e:
-        response['error'] = str(e)
-        # response['hint'] = ''
         print(f'Exception in {connect.__name__}():\n\t{e}')
-    except Exception as e:
         response['error'] = str(e)
         # response['hint'] = ''
+        return response
+    except Exception as e:
         print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
+        response['error'] = str(e)
+        # response['hint'] = ''
     else:
         response['connected'] = 1
 
@@ -106,8 +114,9 @@ def get_available_addresses():
                 scan_report = subprocess.run(['pnscan', scan_range, ssh_port],
                                              capture_output=True, text=True)
             except FileNotFoundError as e:
-                response['error'] = str(e)
                 print('"pnscan" required.\n\tTry "sudo apt install pnscan"')
+                response['error'] = str(e)
+                return response
         else:
             scan_report = subprocess.run(['arp', '-a'], capture_output=True,
                                          text=True)
