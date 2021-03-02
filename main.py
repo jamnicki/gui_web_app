@@ -124,7 +124,7 @@ def get_available_addresses():
             'error' (str): Exception message if unexpected error occured.
                            None if not.
     """
-    response = {'addresses': None,
+    response = {'addresses': [],
                 'error': None,
                 'hint': None}
     try:
@@ -146,6 +146,8 @@ def get_available_addresses():
         available_addresses = regex.findall(scan_report.stdout)
         if available_addresses:
             response['addresses'] = available_addresses
+        else:
+            response['error'] = 'No addresses found.'
     except Exception as e:
         response['error'] = str(e)
         print(f'Unexpected exception in {get_available_addresses.__name__}(): \
