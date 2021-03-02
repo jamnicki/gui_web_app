@@ -46,7 +46,7 @@ label {
 	margin: 20px 0;
 }
 
-input, select {
+input, button, select {
 	display: block;
 	margin-top: 5px;
 	outline: none;
@@ -73,6 +73,11 @@ input[type="submit"] {
 button:hover,
 input[type="submit"]:hover {
 	box-shadow: var(--elevated);
+}
+button:disabled {
+	cursor: default;
+	border: var(--border);
+	background-color: var(--secondary);
 }
 
 .success {

@@ -1,5 +1,9 @@
 <script>
 	import Login from './Panels/Login.svelte';
+	import Tests from './Panels/Tests.svelte';
+	import Monitor from './Panels/Monitor.svelte';
+
+	let panel = 'Login'; // Login, Tests, Monitor
 
 	async function checkConnection() {
 		let res = await fetch('/check-connection');
@@ -9,7 +13,21 @@
 	let connected = checkConnection();
 </script>
 
-<Login/>
+
+{#if panel == 'Login'}
+	<Login/>
+{:else if panel == 'Tests'}
+	<Tests/>
+{:else if panel == 'Monitor'}
+	<Monitor/>
+{/if}
+
+<nav>
+	<button disabled={panel=='Login'} on:click={()=>{ panel='Login' }}>Login</button>
+	<button disabled={panel=='Tests'} on:click={()=>{ panel='Tests' }}>Tests</button>
+	<button disabled={panel=='Monitor'} on:click={()=>{ panel='Monitor' }}>Monitor</button>
+</nav>
+
 
 <div class="check-connection">
 	<button on:click={checkConnection}>Sprawdź</button>
@@ -24,7 +42,19 @@
 	{/await}
 </div>
 
+
 <style>
+	nav {
+		position: fixed;
+		top: 70px;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+	}
+	nav button {
+		margin: 0 5px;
+	}
+
 	.check-connection {
 		position: fixed;
 		top: 20px;
