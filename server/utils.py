@@ -1,3 +1,7 @@
+import os
+import sys
+
+
 def close_file_objects(file_objects):
     """Close all file objects from given list.
 
@@ -6,3 +10,27 @@ def close_file_objects(file_objects):
     """
     for file in file_objects:
         file.close()
+
+
+def connection_alive(paramiko_SSHClient):
+    """Check if the connection is still availlable.
+
+    Return (bool) : True if it's still alive, False otherwise.
+    """
+    get_transport = paramiko_SSHClient.get_transport()
+    if get_transport is not None:
+        if get_transport.is_active():
+            return True
+    else:
+        try:
+            paramiko_SSHClient.exec_command('pwd', timeout=5)
+        except AttributeError as e:
+            print(f'\tConnection lost: session not found ({e})')
+            return False
+        else:
+            return True
+
+
+def get_static_path(path):
+    is_frozen = getattr(sys, 'frozen', False)
+    return os.path.join(sys._MEIPASS, path) if is_frozen else path

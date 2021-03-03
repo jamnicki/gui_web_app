@@ -1,21 +1,16 @@
-import os
-import sys
 import re
 import subprocess
 import platform
 import webview
 from flask import Flask, request, send_from_directory
 from paramiko import SSHClient, ssh_exception, AutoAddPolicy
-from server.utils import close_file_objects
+from server.utils import connection_alive, get_static_path
 
 from server.random_funny_text import get_funny_text
 
 
-DEV = True
+DEV = False
 
-def get_static_path(path):
-    is_frozen = getattr(sys, 'frozen', False)
-    return os.path.join(sys._MEIPASS, path) if is_frozen else path
 
 app = Flask(__name__, static_folder=get_static_path('client/public'))
 client = SSHClient()
@@ -41,7 +36,7 @@ def test():
 
 
 # Testing loading animations
-@app.route('/loader', methods=['GET','POST'])
+@app.route('/loader', methods=['GET', 'POST'])
 def loader():
     import time
     time.sleep(5)
@@ -76,17 +71,44 @@ def connect():
         return response
 
     try:
-        client.connect(hostname=hostname, username=username, password=password)
+        client.connect(hostname=hostname, username=username, password=password,
+                       timeout=15)
     except ssh_exception.AuthenticationException as e:
         print(f'Exception in {connect.__name__}():\n\t{e}')
         response['error'] = str(e)
-        response['hint'] = 'Check if the entered username or password is correct.'
+        response['hint'] = '''Check if the entered username or password
+                              is correct.'''
         return response
     except ssh_exception.NoValidConnectionsError as e:
         print(f'Exception in {connect.__name__}():\n\t{e}')
         response['error'] = str(e)
         response['hint'] = 'Try different IP.'
         return response
+    except OSError as e:
+        if e.errno == 101:
+            print(f'Exception in {connect.__name__}():\n\t{e}')
+            response['error'] = 'Network is unreachable'
+            response['hint'] = '''Check your network connection status. Connection type
+                                  must be the same for both of sides!'''
+            return response
+        elif e.__class__.__name__ == 'timeout':
+            # equivalent of 'socket.timeout' which is OSError by itself
+            print(f'Exception in {connect.__name__}():\n\t{e}')
+            response['error'] = 'Connection timed out.'
+            return response
+        else:
+            print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
+            response['error'] = str(e)
+            return response
+    except TimeoutError as e:
+        if e.errno == 110:
+            print(f'Exception in {connect.__name__}():\n\t{e}')
+            response['error'] = 'Connection timed out.'
+            return response
+        else:
+            print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
+            response['error'] = str(e)
+            return response
     except Exception as e:
         print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
         response['error'] = str(e)
@@ -101,12 +123,9 @@ def connect():
 def check_connection():
     response = {'connected': 0}
 
-    get_transport = client.get_transport()
-    if get_transport is not None:
-        is_authenticated = get_transport.is_authenticated()
-        if is_authenticated:
-            response['connected'] = 1
-            
+    if connection_alive(client):
+        response['connected'] = 1
+
     return response
 
 
