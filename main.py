@@ -193,7 +193,7 @@ def run_test(id):
 
 
 if __name__ == '__main__':
-    if DEV:
+    if DESKTOP:
         app.run(debug=True)
     else:
         webview.create_window('GUI Web App', app)
