@@ -12,7 +12,8 @@ To run the app in a browser (http://localhost:5000/) set `DEV=True` in `main.py`
 1. Create a [virutal enviroment](https://docs.python.org/3/tutorial/venv.html) and activate it.
 3. Install dependencies:\
   `pip install -r requirements.txt`\
-  (Linux) `pip install pywebview[qt]`
+  (Linux) `pip install pywebview[qt]`\
+  (Linux) `xargs -a packages.txt sudo apt-get install`
 4. Run `main.py`
 
 
