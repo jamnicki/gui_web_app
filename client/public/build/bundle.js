@@ -1306,9 +1306,9 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			span = element("span");
-    			span.textContent = "LS";
+    			span.textContent = "S";
     			attr_dev(span, "class", "addresses-action svelte-1pl9smk");
-    			add_location(span, file$1, 118, 10, 3335);
+    			add_location(span, file$1, 118, 10, 3334);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1346,7 +1346,7 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			span = element("span");
-    			span.textContent = "MN";
+    			span.textContent = "M";
     			attr_dev(span, "class", "addresses-action svelte-1pl9smk");
     			add_location(span, file$1, 115, 10, 3178);
     		},
@@ -1389,7 +1389,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*addresses_error*/ ctx[6]);
     			attr_dev(span, "class", "message error svelte-1pl9smk");
-    			add_location(span, file$1, 125, 8, 3584);
+    			add_location(span, file$1, 125, 8, 3582);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1443,7 +1443,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*addresses_hint*/ ctx[7]);
     			attr_dev(span, "class", "message hint svelte-1pl9smk");
-    			add_location(span, file$1, 128, 8, 3704);
+    			add_location(span, file$1, 128, 8, 3702);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1496,7 +1496,7 @@ var app = (function () {
     			div = element("div");
     			div.textContent = "Połączono!";
     			attr_dev(div, "class", "message success svelte-1pl9smk");
-    			add_location(div, file$1, 146, 8, 4270);
+    			add_location(div, file$1, 146, 8, 4268);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1546,7 +1546,7 @@ var app = (function () {
     			div = element("div");
     			t = text(/*login_error*/ ctx[10]);
     			attr_dev(div, "class", "message error svelte-1pl9smk");
-    			add_location(div, file$1, 149, 8, 4380);
+    			add_location(div, file$1, 149, 8, 4378);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1600,7 +1600,7 @@ var app = (function () {
     			div = element("div");
     			t = text(/*login_hint*/ ctx[11]);
     			attr_dev(div, "class", "message hint svelte-1pl9smk");
-    			add_location(div, file$1, 152, 8, 4490);
+    			add_location(div, file$1, 152, 8, 4488);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1730,7 +1730,7 @@ var app = (function () {
     			if (if_block1) if_block1.c();
     			t4 = space();
     			span = element("span");
-    			span.textContent = "⭮";
+    			span.textContent = "R";
     			t6 = space();
     			if (if_block2) if_block2.c();
     			t7 = space();
@@ -1758,25 +1758,25 @@ var app = (function () {
     			attr_dev(h3, "class", "svelte-1pl9smk");
     			add_location(h3, file$1, 104, 8, 2762);
     			attr_dev(span, "class", "addresses-action svelte-1pl9smk");
-    			add_location(span, file$1, 121, 8, 3460);
+    			add_location(span, file$1, 121, 8, 3458);
     			attr_dev(div0, "class", "address svelte-1pl9smk");
     			add_location(div0, file$1, 101, 6, 2609);
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "class", "svelte-1pl9smk");
-    			add_location(input0, file$1, 133, 10, 3862);
-    			add_location(label0, file$1, 132, 8, 3835);
+    			add_location(input0, file$1, 133, 10, 3860);
+    			add_location(label0, file$1, 132, 8, 3833);
     			attr_dev(input1, "type", "password");
     			attr_dev(input1, "class", "svelte-1pl9smk");
-    			add_location(input1, file$1, 136, 10, 3958);
-    			add_location(label1, file$1, 135, 8, 3931);
+    			add_location(input1, file$1, 136, 10, 3956);
+    			add_location(label1, file$1, 135, 8, 3929);
     			attr_dev(input2, "type", "submit");
     			input2.value = "Login";
     			attr_dev(input2, "class", "svelte-1pl9smk");
-    			add_location(input2, file$1, 138, 8, 4031);
+    			add_location(input2, file$1, 138, 8, 4029);
     			attr_dev(div1, "class", "login-loader svelte-1pl9smk");
-    			add_location(div1, file$1, 140, 8, 4121);
+    			add_location(div1, file$1, 140, 8, 4119);
     			attr_dev(form, "class", "svelte-1pl9smk");
-    			add_location(form, file$1, 131, 6, 3794);
+    			add_location(form, file$1, 131, 6, 3792);
     			attr_dev(div2, "class", "wrapper svelte-1pl9smk");
     			add_location(div2, file$1, 99, 4, 2578);
     		},
