@@ -1,22 +1,15 @@
-import os
-import sys
 import re
 import subprocess
 import platform
 import webview
 from flask import Flask, request, send_from_directory
 from paramiko import SSHClient, ssh_exception, AutoAddPolicy
-from server.utils import connection_alive
+from server.utils import connection_alive, get_static_path
 
 from server.random_funny_text import get_funny_text
 
 
-DEV = True
-
-
-def get_static_path(path):
-    is_frozen = getattr(sys, 'frozen', False)
-    return os.path.join(sys._MEIPASS, path) if is_frozen else path
+DEV = False
 
 
 app = Flask(__name__, static_folder=get_static_path('client/public'))

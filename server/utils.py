@@ -1,3 +1,7 @@
+import os
+import sys
+
+
 def close_file_objects(file_objects):
     """Close all file objects from given list.
 
@@ -25,3 +29,8 @@ def connection_alive(paramiko_SSHClient):
             return False
         else:
             return True
+
+
+def get_static_path(path):
+    is_frozen = getattr(sys, 'frozen', False)
+    return os.path.join(sys._MEIPASS, path) if is_frozen else path
