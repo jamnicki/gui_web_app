@@ -1,10 +1,12 @@
 <script>
+  import { tick } from 'svelte';
   import { slide } from 'svelte/transition';
   import Box from '../Components/Box.svelte';
   import Loader from '../Components/Loader.svelte';
   
   // Login data
-  let hostname;
+  let hostname_select;
+  let hostname_input;
   let username;
   let password;
 
@@ -13,14 +15,15 @@
     '192.168.1.1',
     '192.168.1.115'
   ]
-
+  
   // SSH Connection status
   let connected = 0;
-
+  
   // Obtaining addresses info
   let addresses_error;
   let addresses_hint;
   let addresses_loading = false;
+  let addresses_form = 'SELECT';
   
   // Login info
   let login_error;
@@ -33,13 +36,13 @@
     const res = await fetch('/available-addresses');
     try {
       const json = await res.json();
-      console.log(json);
       if (json.addresses) {
         let new_addresses = json.addresses.filter((elem)=>{
           return !addresses.includes(elem);
         });
         addresses = addresses.concat(new_addresses);
       }
+      // Replace Errors and Hints if there are new ones or empty them
       addresses_error = (json.error) ? json.error : '';
       addresses_hint = (json.hint) ? json.hint : '';
     } catch (error) {
@@ -48,22 +51,32 @@
     addresses_loading = false;
   }
   getAddresses()
+
+  async function addressesToInput() {
+    addresses_form = 'INPUT';
+  }
+  async function addressesToSelect() {
+    addresses_form = 'SELECT';
+  }
   
 
   async function login() {
     login_loading = true;
     let data = {
-      hostname: addresses[hostname],
+      // Load hostname from Select or Input field
+      hostname: (addresses_form == 'SELECT')
+        ? addresses[hostname_select] : hostname_input,
       username: username,
       password: password
     }
-    // filter out empty fields
+    // Filter out empty fields
     for (let key in data) {
       if (data[key] === '') {
         data[key] = undefined;
       }
     }
     console.log(JSON.stringify(data));
+    // Send data
     const res = await fetch('/connect', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -72,6 +85,7 @@
     try {
       const json = await res.json();
       connected = Boolean(json.connected);
+      // Replace Errors and Hints if there are new ones or empty them
       login_error = (json.error) ? json.error : '';
       login_hint = (json.hint) ? json.hint : '';
     } catch (error) {
@@ -81,9 +95,7 @@
   }
 
   function handleEnter(e) {
-    if (e.key === 'Enter') {
-      connect();
-    }
+    if (e.key === 'Enter') connect();
   }
 </script>
 
@@ -93,15 +105,26 @@
     <div class="wrapper">
 
       <div class="address">
-        <h3>SSH</h3>
-        <select bind:value={hostname}>
-          {#each addresses as address, i}
-            <option value={i}>{address}</option>
-          {/each}
-        </select>
         <Loader loading={addresses_loading} success={!addresses_error}
-          always_visible={true} type="slash"/>
-        <span class="addresses-refresh" on:click={getAddresses}>F5</span>
+            always_visible={true} type="slash"/>
+        <h3>SSH</h3>
+        {#if addresses_form == 'SELECT'}
+          <select bind:value={hostname_select}>
+            {#each addresses as address, i}
+              <option value={i}>{address}</option>
+            {/each}
+          </select>
+        {:else if addresses_form == 'INPUT'}
+          <input type="text" bind:value={hostname_input}>
+        {/if}
+        <span class="addresses-action" on:click={getAddresses}>F5</span>
+        {#if addresses_form == 'SELECT'}
+          <span class="addresses-action"
+              on:click={()=>{ addresses_form = 'INPUT' }}>IN</span>
+        {:else if addresses_form == 'INPUT'}
+          <span class="addresses-action"
+              on:click={()=>{ addresses_form = 'SELECT' }}>SL</span>
+        {/if}
       </div>
       
       {#if addresses_error}
@@ -119,7 +142,7 @@
           <input type="password" bind:value={password}>
         </label>
         <input type="submit" value="Login"
-          on:click|preventDefault={login}>
+            on:click|preventDefault={login}>
         <div class="login-loader">
           <Loader type="dots" loading={login_loading}/>
         </div>
@@ -160,9 +183,16 @@
     justify-content: center;
     align-items: center;
   }
+  .address * {
+    margin: 0 5px;
+  }
   select {
-    padding: 0;
-    margin: 0 10px;
+    min-width: 140px;
+    padding: 0 5px;
+  }
+  .address > input {
+    min-width: 140px;
+    padding: 1px 8px;
   }
 
   form {
@@ -174,9 +204,8 @@
     text-align: center;
   }
 
-  .addresses-refresh {
+  .addresses-action {
     cursor: pointer;
-    margin-left: 10px;
   }
 
   .message {

@@ -264,6 +264,10 @@ var app = (function () {
             resolved_promise.then(flush);
         }
     }
+    function tick() {
+        schedule_update();
+        return resolved_promise;
+    }
     function add_render_callback(fn) {
         render_callbacks.push(fn);
     }
@@ -1122,31 +1126,164 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[16] = list[i];
-    	child_ctx[18] = i;
+    	child_ctx[23] = list[i];
+    	child_ctx[25] = i;
     	return child_ctx;
     }
 
-    // (98:10) {#each addresses as address, i}
+    // (117:44) 
+    function create_if_block_8(ctx) {
+    	let input;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			input = element("input");
+    			attr_dev(input, "type", "text");
+    			attr_dev(input, "class", "svelte-1pl9smk");
+    			add_location(input, file$1, 117, 10, 3125);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, input, anchor);
+    			set_input_value(input, /*hostname_input*/ ctx[1]);
+
+    			if (!mounted) {
+    				dispose = listen_dev(input, "input", /*input_input_handler*/ ctx[16]);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*hostname_input*/ 2 && input.value !== /*hostname_input*/ ctx[1]) {
+    				set_input_value(input, /*hostname_input*/ ctx[1]);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(input);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_8.name,
+    		type: "if",
+    		source: "(117:44) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (111:8) {#if addresses_form == 'SELECT'}
+    function create_if_block_7(ctx) {
+    	let select;
+    	let mounted;
+    	let dispose;
+    	let each_value = /*addresses*/ ctx[4];
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+    	}
+
+    	const block = {
+    		c: function create() {
+    			select = element("select");
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			attr_dev(select, "class", "svelte-1pl9smk");
+    			if (/*hostname_select*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[15].call(select));
+    			add_location(select, file$1, 111, 10, 2891);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, select, anchor);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(select, null);
+    			}
+
+    			select_option(select, /*hostname_select*/ ctx[0]);
+
+    			if (!mounted) {
+    				dispose = listen_dev(select, "change", /*select_change_handler*/ ctx[15]);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*addresses*/ 16) {
+    				each_value = /*addresses*/ ctx[4];
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(select, null);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value.length;
+    			}
+
+    			if (dirty & /*hostname_select*/ 1) {
+    				select_option(select, /*hostname_select*/ ctx[0]);
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(select);
+    			destroy_each(each_blocks, detaching);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_7.name,
+    		type: "if",
+    		source: "(111:8) {#if addresses_form == 'SELECT'}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (113:12) {#each addresses as address, i}
     function create_each_block(ctx) {
     	let option;
-    	let t_value = /*address*/ ctx[16] + "";
+    	let t_value = /*address*/ ctx[23] + "";
     	let t;
 
     	const block = {
     		c: function create() {
     			option = element("option");
     			t = text(t_value);
-    			option.__value = /*i*/ ctx[18];
+    			option.__value = /*i*/ ctx[25];
     			option.value = option.__value;
-    			add_location(option, file$1, 98, 12, 2323);
+    			attr_dev(option, "class", "svelte-1pl9smk");
+    			add_location(option, file$1, 113, 14, 2989);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
     			append_dev(option, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*addresses*/ 8 && t_value !== (t_value = /*address*/ ctx[16] + "")) set_data_dev(t, t_value);
+    			if (dirty & /*addresses*/ 16 && t_value !== (t_value = /*address*/ ctx[23] + "")) set_data_dev(t, t_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(option);
@@ -1157,14 +1294,94 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(98:10) {#each addresses as address, i}",
+    		source: "(113:12) {#each addresses as address, i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (107:6) {#if addresses_error}
+    // (124:44) 
+    function create_if_block_6(ctx) {
+    	let span;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			span.textContent = "SL";
+    			attr_dev(span, "class", "addresses-action svelte-1pl9smk");
+    			add_location(span, file$1, 124, 10, 3472);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(span, "click", /*click_handler_1*/ ctx[18], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_6.name,
+    		type: "if",
+    		source: "(124:44) ",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (121:8) {#if addresses_form == 'SELECT'}
+    function create_if_block_5(ctx) {
+    	let span;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			span = element("span");
+    			span.textContent = "IN";
+    			attr_dev(span, "class", "addresses-action svelte-1pl9smk");
+    			add_location(span, file$1, 121, 10, 3315);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, span, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(span, "click", /*click_handler*/ ctx[17], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(span);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_5.name,
+    		type: "if",
+    		source: "(121:8) {#if addresses_form == 'SELECT'}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (130:6) {#if addresses_error}
     function create_if_block_4(ctx) {
     	let span;
     	let t;
@@ -1174,9 +1391,9 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			span = element("span");
-    			t = text(/*addresses_error*/ ctx[5]);
-    			attr_dev(span, "class", "message error svelte-g06n01");
-    			add_location(span, file$1, 107, 8, 2653);
+    			t = text(/*addresses_error*/ ctx[6]);
+    			attr_dev(span, "class", "message error svelte-1pl9smk");
+    			add_location(span, file$1, 130, 8, 3648);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1184,7 +1401,7 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (!current || dirty & /*addresses_error*/ 32) set_data_dev(t, /*addresses_error*/ ctx[5]);
+    			if (!current || dirty & /*addresses_error*/ 64) set_data_dev(t, /*addresses_error*/ ctx[6]);
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -1211,14 +1428,14 @@ var app = (function () {
     		block,
     		id: create_if_block_4.name,
     		type: "if",
-    		source: "(107:6) {#if addresses_error}",
+    		source: "(130:6) {#if addresses_error}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (110:6) {#if addresses_hint}
+    // (133:6) {#if addresses_hint}
     function create_if_block_3$1(ctx) {
     	let span;
     	let t;
@@ -1228,9 +1445,9 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			span = element("span");
-    			t = text(/*addresses_hint*/ ctx[6]);
-    			attr_dev(span, "class", "message hint svelte-g06n01");
-    			add_location(span, file$1, 110, 8, 2773);
+    			t = text(/*addresses_hint*/ ctx[7]);
+    			attr_dev(span, "class", "message hint svelte-1pl9smk");
+    			add_location(span, file$1, 133, 8, 3768);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1238,7 +1455,7 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (!current || dirty & /*addresses_hint*/ 64) set_data_dev(t, /*addresses_hint*/ ctx[6]);
+    			if (!current || dirty & /*addresses_hint*/ 128) set_data_dev(t, /*addresses_hint*/ ctx[7]);
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -1265,14 +1482,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3$1.name,
     		type: "if",
-    		source: "(110:6) {#if addresses_hint}",
+    		source: "(133:6) {#if addresses_hint}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (128:6) {#if connected}
+    // (151:6) {#if connected}
     function create_if_block_2$1(ctx) {
     	let div;
     	let div_transition;
@@ -1282,8 +1499,8 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			div.textContent = "Połączono!";
-    			attr_dev(div, "class", "message success svelte-g06n01");
-    			add_location(div, file$1, 128, 8, 3337);
+    			attr_dev(div, "class", "message success svelte-1pl9smk");
+    			add_location(div, file$1, 151, 8, 4334);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1314,14 +1531,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2$1.name,
     		type: "if",
-    		source: "(128:6) {#if connected}",
+    		source: "(151:6) {#if connected}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (131:6) {#if login_error}
+    // (154:6) {#if login_error}
     function create_if_block_1$1(ctx) {
     	let div;
     	let t;
@@ -1331,9 +1548,9 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			div = element("div");
-    			t = text(/*login_error*/ ctx[8]);
-    			attr_dev(div, "class", "message error svelte-g06n01");
-    			add_location(div, file$1, 131, 8, 3447);
+    			t = text(/*login_error*/ ctx[10]);
+    			attr_dev(div, "class", "message error svelte-1pl9smk");
+    			add_location(div, file$1, 154, 8, 4444);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1341,7 +1558,7 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (!current || dirty & /*login_error*/ 256) set_data_dev(t, /*login_error*/ ctx[8]);
+    			if (!current || dirty & /*login_error*/ 1024) set_data_dev(t, /*login_error*/ ctx[10]);
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -1368,14 +1585,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1$1.name,
     		type: "if",
-    		source: "(131:6) {#if login_error}",
+    		source: "(154:6) {#if login_error}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (134:6) {#if login_hint}
+    // (157:6) {#if login_hint}
     function create_if_block$1(ctx) {
     	let div;
     	let t;
@@ -1385,9 +1602,9 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			div = element("div");
-    			t = text(/*login_hint*/ ctx[9]);
-    			attr_dev(div, "class", "message hint svelte-g06n01");
-    			add_location(div, file$1, 134, 8, 3557);
+    			t = text(/*login_hint*/ ctx[11]);
+    			attr_dev(div, "class", "message hint svelte-1pl9smk");
+    			add_location(div, file$1, 157, 8, 4554);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1395,7 +1612,7 @@ var app = (function () {
     			current = true;
     		},
     		p: function update(ctx, dirty) {
-    			if (!current || dirty & /*login_hint*/ 512) set_data_dev(t, /*login_hint*/ ctx[9]);
+    			if (!current || dirty & /*login_hint*/ 2048) set_data_dev(t, /*login_hint*/ ctx[11]);
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -1422,199 +1639,197 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(134:6) {#if login_hint}",
+    		source: "(157:6) {#if login_hint}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (92:2) <Box>
+    // (104:2) <Box>
     function create_default_slot(ctx) {
     	let div2;
     	let div0;
-    	let h3;
-    	let t1;
-    	let select;
-    	let t2;
     	let loader0;
+    	let t0;
+    	let h3;
+    	let t2;
     	let t3;
     	let span;
     	let t5;
     	let t6;
     	let t7;
+    	let t8;
     	let form;
     	let label0;
-    	let t8;
-    	let input0;
     	let t9;
-    	let label1;
+    	let input0;
     	let t10;
-    	let input1;
+    	let label1;
     	let t11;
-    	let input2;
+    	let input1;
     	let t12;
+    	let input2;
+    	let t13;
     	let div1;
     	let loader1;
-    	let t13;
     	let t14;
     	let t15;
+    	let t16;
     	let current;
     	let mounted;
     	let dispose;
-    	let each_value = /*addresses*/ ctx[3];
-    	validate_each_argument(each_value);
-    	let each_blocks = [];
-
-    	for (let i = 0; i < each_value.length; i += 1) {
-    		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
-    	}
 
     	loader0 = new Loader({
     			props: {
-    				loading: /*addresses_loading*/ ctx[7],
-    				success: !/*addresses_error*/ ctx[5],
+    				loading: /*addresses_loading*/ ctx[8],
+    				success: !/*addresses_error*/ ctx[6],
     				always_visible: true,
     				type: "slash"
     			},
     			$$inline: true
     		});
 
-    	let if_block0 = /*addresses_error*/ ctx[5] && create_if_block_4(ctx);
-    	let if_block1 = /*addresses_hint*/ ctx[6] && create_if_block_3$1(ctx);
+    	function select_block_type(ctx, dirty) {
+    		if (/*addresses_form*/ ctx[9] == "SELECT") return create_if_block_7;
+    		if (/*addresses_form*/ ctx[9] == "INPUT") return create_if_block_8;
+    	}
+
+    	let current_block_type = select_block_type(ctx);
+    	let if_block0 = current_block_type && current_block_type(ctx);
+
+    	function select_block_type_1(ctx, dirty) {
+    		if (/*addresses_form*/ ctx[9] == "SELECT") return create_if_block_5;
+    		if (/*addresses_form*/ ctx[9] == "INPUT") return create_if_block_6;
+    	}
+
+    	let current_block_type_1 = select_block_type_1(ctx);
+    	let if_block1 = current_block_type_1 && current_block_type_1(ctx);
+    	let if_block2 = /*addresses_error*/ ctx[6] && create_if_block_4(ctx);
+    	let if_block3 = /*addresses_hint*/ ctx[7] && create_if_block_3$1(ctx);
 
     	loader1 = new Loader({
     			props: {
     				type: "dots",
-    				loading: /*login_loading*/ ctx[10]
+    				loading: /*login_loading*/ ctx[12]
     			},
     			$$inline: true
     		});
 
-    	let if_block2 = /*connected*/ ctx[4] && create_if_block_2$1(ctx);
-    	let if_block3 = /*login_error*/ ctx[8] && create_if_block_1$1(ctx);
-    	let if_block4 = /*login_hint*/ ctx[9] && create_if_block$1(ctx);
+    	let if_block4 = /*connected*/ ctx[5] && create_if_block_2$1(ctx);
+    	let if_block5 = /*login_error*/ ctx[10] && create_if_block_1$1(ctx);
+    	let if_block6 = /*login_hint*/ ctx[11] && create_if_block$1(ctx);
 
     	const block = {
     		c: function create() {
     			div2 = element("div");
     			div0 = element("div");
+    			create_component(loader0.$$.fragment);
+    			t0 = space();
     			h3 = element("h3");
     			h3.textContent = "SSH";
-    			t1 = space();
-    			select = element("select");
-
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].c();
-    			}
-
     			t2 = space();
-    			create_component(loader0.$$.fragment);
+    			if (if_block0) if_block0.c();
     			t3 = space();
     			span = element("span");
     			span.textContent = "F5";
     			t5 = space();
-    			if (if_block0) if_block0.c();
-    			t6 = space();
     			if (if_block1) if_block1.c();
+    			t6 = space();
+    			if (if_block2) if_block2.c();
     			t7 = space();
+    			if (if_block3) if_block3.c();
+    			t8 = space();
     			form = element("form");
     			label0 = element("label");
-    			t8 = text("Username\r\n          ");
+    			t9 = text("Username\r\n          ");
     			input0 = element("input");
-    			t9 = space();
+    			t10 = space();
     			label1 = element("label");
-    			t10 = text("Password\r\n          ");
+    			t11 = text("Password\r\n          ");
     			input1 = element("input");
-    			t11 = space();
-    			input2 = element("input");
     			t12 = space();
+    			input2 = element("input");
+    			t13 = space();
     			div1 = element("div");
     			create_component(loader1.$$.fragment);
-    			t13 = space();
-    			if (if_block2) if_block2.c();
     			t14 = space();
-    			if (if_block3) if_block3.c();
-    			t15 = space();
     			if (if_block4) if_block4.c();
-    			add_location(h3, file$1, 95, 8, 2214);
-    			attr_dev(select, "class", "svelte-g06n01");
-    			if (/*hostname*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[13].call(select));
-    			add_location(select, file$1, 96, 8, 2236);
-    			attr_dev(span, "class", "addresses-refresh svelte-g06n01");
-    			add_location(span, file$1, 103, 8, 2527);
-    			attr_dev(div0, "class", "address svelte-g06n01");
-    			add_location(div0, file$1, 94, 6, 2183);
+    			t15 = space();
+    			if (if_block5) if_block5.c();
+    			t16 = space();
+    			if (if_block6) if_block6.c();
+    			attr_dev(h3, "class", "svelte-1pl9smk");
+    			add_location(h3, file$1, 109, 8, 2825);
+    			attr_dev(span, "class", "addresses-action svelte-1pl9smk");
+    			add_location(span, file$1, 119, 8, 3197);
+    			attr_dev(div0, "class", "address svelte-1pl9smk");
+    			add_location(div0, file$1, 106, 6, 2672);
     			attr_dev(input0, "type", "text");
-    			attr_dev(input0, "class", "svelte-g06n01");
-    			add_location(input0, file$1, 115, 10, 2931);
-    			add_location(label0, file$1, 114, 8, 2904);
+    			attr_dev(input0, "class", "svelte-1pl9smk");
+    			add_location(input0, file$1, 138, 10, 3926);
+    			add_location(label0, file$1, 137, 8, 3899);
     			attr_dev(input1, "type", "password");
-    			attr_dev(input1, "class", "svelte-g06n01");
-    			add_location(input1, file$1, 118, 10, 3027);
-    			add_location(label1, file$1, 117, 8, 3000);
+    			attr_dev(input1, "class", "svelte-1pl9smk");
+    			add_location(input1, file$1, 141, 10, 4022);
+    			add_location(label1, file$1, 140, 8, 3995);
     			attr_dev(input2, "type", "submit");
     			input2.value = "Login";
-    			attr_dev(input2, "class", "svelte-g06n01");
-    			add_location(input2, file$1, 120, 8, 3100);
-    			attr_dev(div1, "class", "login-loader svelte-g06n01");
-    			add_location(div1, file$1, 122, 8, 3188);
-    			attr_dev(form, "class", "svelte-g06n01");
-    			add_location(form, file$1, 113, 6, 2863);
-    			attr_dev(div2, "class", "wrapper svelte-g06n01");
-    			add_location(div2, file$1, 92, 4, 2152);
+    			attr_dev(input2, "class", "svelte-1pl9smk");
+    			add_location(input2, file$1, 143, 8, 4095);
+    			attr_dev(div1, "class", "login-loader svelte-1pl9smk");
+    			add_location(div1, file$1, 145, 8, 4185);
+    			attr_dev(form, "class", "svelte-1pl9smk");
+    			add_location(form, file$1, 136, 6, 3858);
+    			attr_dev(div2, "class", "wrapper svelte-1pl9smk");
+    			add_location(div2, file$1, 104, 4, 2641);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
     			append_dev(div2, div0);
-    			append_dev(div0, h3);
-    			append_dev(div0, t1);
-    			append_dev(div0, select);
-
-    			for (let i = 0; i < each_blocks.length; i += 1) {
-    				each_blocks[i].m(select, null);
-    			}
-
-    			select_option(select, /*hostname*/ ctx[0]);
-    			append_dev(div0, t2);
     			mount_component(loader0, div0, null);
+    			append_dev(div0, t0);
+    			append_dev(div0, h3);
+    			append_dev(div0, t2);
+    			if (if_block0) if_block0.m(div0, null);
     			append_dev(div0, t3);
     			append_dev(div0, span);
-    			append_dev(div2, t5);
-    			if (if_block0) if_block0.m(div2, null);
+    			append_dev(div0, t5);
+    			if (if_block1) if_block1.m(div0, null);
     			append_dev(div2, t6);
-    			if (if_block1) if_block1.m(div2, null);
+    			if (if_block2) if_block2.m(div2, null);
     			append_dev(div2, t7);
+    			if (if_block3) if_block3.m(div2, null);
+    			append_dev(div2, t8);
     			append_dev(div2, form);
     			append_dev(form, label0);
-    			append_dev(label0, t8);
+    			append_dev(label0, t9);
     			append_dev(label0, input0);
-    			set_input_value(input0, /*username*/ ctx[1]);
-    			append_dev(form, t9);
+    			set_input_value(input0, /*username*/ ctx[2]);
+    			append_dev(form, t10);
     			append_dev(form, label1);
-    			append_dev(label1, t10);
+    			append_dev(label1, t11);
     			append_dev(label1, input1);
-    			set_input_value(input1, /*password*/ ctx[2]);
-    			append_dev(form, t11);
-    			append_dev(form, input2);
+    			set_input_value(input1, /*password*/ ctx[3]);
     			append_dev(form, t12);
+    			append_dev(form, input2);
+    			append_dev(form, t13);
     			append_dev(form, div1);
     			mount_component(loader1, div1, null);
-    			append_dev(div2, t13);
-    			if (if_block2) if_block2.m(div2, null);
     			append_dev(div2, t14);
-    			if (if_block3) if_block3.m(div2, null);
-    			append_dev(div2, t15);
     			if (if_block4) if_block4.m(div2, null);
+    			append_dev(div2, t15);
+    			if (if_block5) if_block5.m(div2, null);
+    			append_dev(div2, t16);
+    			if (if_block6) if_block6.m(div2, null);
     			current = true;
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(select, "change", /*select_change_handler*/ ctx[13]),
-    					listen_dev(span, "click", /*getAddresses*/ ctx[11], false, false, false),
-    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[14]),
-    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[15]),
-    					listen_dev(input2, "click", prevent_default(/*login*/ ctx[12]), false, true, false),
+    					listen_dev(span, "click", /*getAddresses*/ ctx[13], false, false, false),
+    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[19]),
+    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[20]),
+    					listen_dev(input2, "click", prevent_default(/*login*/ ctx[14]), false, true, false),
     					listen_dev(form, "keydown", handleEnter, false, false, false)
     				];
 
@@ -1622,107 +1837,47 @@ var app = (function () {
     			}
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*addresses*/ 8) {
-    				each_value = /*addresses*/ ctx[3];
-    				validate_each_argument(each_value);
-    				let i;
-
-    				for (i = 0; i < each_value.length; i += 1) {
-    					const child_ctx = get_each_context(ctx, each_value, i);
-
-    					if (each_blocks[i]) {
-    						each_blocks[i].p(child_ctx, dirty);
-    					} else {
-    						each_blocks[i] = create_each_block(child_ctx);
-    						each_blocks[i].c();
-    						each_blocks[i].m(select, null);
-    					}
-    				}
-
-    				for (; i < each_blocks.length; i += 1) {
-    					each_blocks[i].d(1);
-    				}
-
-    				each_blocks.length = each_value.length;
-    			}
-
-    			if (dirty & /*hostname*/ 1) {
-    				select_option(select, /*hostname*/ ctx[0]);
-    			}
-
     			const loader0_changes = {};
-    			if (dirty & /*addresses_loading*/ 128) loader0_changes.loading = /*addresses_loading*/ ctx[7];
-    			if (dirty & /*addresses_error*/ 32) loader0_changes.success = !/*addresses_error*/ ctx[5];
+    			if (dirty & /*addresses_loading*/ 256) loader0_changes.loading = /*addresses_loading*/ ctx[8];
+    			if (dirty & /*addresses_error*/ 64) loader0_changes.success = !/*addresses_error*/ ctx[6];
     			loader0.$set(loader0_changes);
 
-    			if (/*addresses_error*/ ctx[5]) {
+    			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block0) {
+    				if_block0.p(ctx, dirty);
+    			} else {
+    				if (if_block0) if_block0.d(1);
+    				if_block0 = current_block_type && current_block_type(ctx);
+
     				if (if_block0) {
-    					if_block0.p(ctx, dirty);
-
-    					if (dirty & /*addresses_error*/ 32) {
-    						transition_in(if_block0, 1);
-    					}
-    				} else {
-    					if_block0 = create_if_block_4(ctx);
     					if_block0.c();
-    					transition_in(if_block0, 1);
-    					if_block0.m(div2, t6);
+    					if_block0.m(div0, t3);
     				}
-    			} else if (if_block0) {
-    				group_outros();
-
-    				transition_out(if_block0, 1, 1, () => {
-    					if_block0 = null;
-    				});
-
-    				check_outros();
     			}
 
-    			if (/*addresses_hint*/ ctx[6]) {
+    			if (current_block_type_1 === (current_block_type_1 = select_block_type_1(ctx)) && if_block1) {
+    				if_block1.p(ctx, dirty);
+    			} else {
+    				if (if_block1) if_block1.d(1);
+    				if_block1 = current_block_type_1 && current_block_type_1(ctx);
+
     				if (if_block1) {
-    					if_block1.p(ctx, dirty);
-
-    					if (dirty & /*addresses_hint*/ 64) {
-    						transition_in(if_block1, 1);
-    					}
-    				} else {
-    					if_block1 = create_if_block_3$1(ctx);
     					if_block1.c();
-    					transition_in(if_block1, 1);
-    					if_block1.m(div2, t7);
+    					if_block1.m(div0, null);
     				}
-    			} else if (if_block1) {
-    				group_outros();
-
-    				transition_out(if_block1, 1, 1, () => {
-    					if_block1 = null;
-    				});
-
-    				check_outros();
     			}
 
-    			if (dirty & /*username*/ 2 && input0.value !== /*username*/ ctx[1]) {
-    				set_input_value(input0, /*username*/ ctx[1]);
-    			}
-
-    			if (dirty & /*password*/ 4 && input1.value !== /*password*/ ctx[2]) {
-    				set_input_value(input1, /*password*/ ctx[2]);
-    			}
-
-    			const loader1_changes = {};
-    			if (dirty & /*login_loading*/ 1024) loader1_changes.loading = /*login_loading*/ ctx[10];
-    			loader1.$set(loader1_changes);
-
-    			if (/*connected*/ ctx[4]) {
+    			if (/*addresses_error*/ ctx[6]) {
     				if (if_block2) {
-    					if (dirty & /*connected*/ 16) {
+    					if_block2.p(ctx, dirty);
+
+    					if (dirty & /*addresses_error*/ 64) {
     						transition_in(if_block2, 1);
     					}
     				} else {
-    					if_block2 = create_if_block_2$1(ctx);
+    					if_block2 = create_if_block_4(ctx);
     					if_block2.c();
     					transition_in(if_block2, 1);
-    					if_block2.m(div2, t14);
+    					if_block2.m(div2, t7);
     				}
     			} else if (if_block2) {
     				group_outros();
@@ -1734,18 +1889,18 @@ var app = (function () {
     				check_outros();
     			}
 
-    			if (/*login_error*/ ctx[8]) {
+    			if (/*addresses_hint*/ ctx[7]) {
     				if (if_block3) {
     					if_block3.p(ctx, dirty);
 
-    					if (dirty & /*login_error*/ 256) {
+    					if (dirty & /*addresses_hint*/ 128) {
     						transition_in(if_block3, 1);
     					}
     				} else {
-    					if_block3 = create_if_block_1$1(ctx);
+    					if_block3 = create_if_block_3$1(ctx);
     					if_block3.c();
     					transition_in(if_block3, 1);
-    					if_block3.m(div2, t15);
+    					if_block3.m(div2, t8);
     				}
     			} else if (if_block3) {
     				group_outros();
@@ -1757,18 +1912,28 @@ var app = (function () {
     				check_outros();
     			}
 
-    			if (/*login_hint*/ ctx[9]) {
-    				if (if_block4) {
-    					if_block4.p(ctx, dirty);
+    			if (dirty & /*username*/ 4 && input0.value !== /*username*/ ctx[2]) {
+    				set_input_value(input0, /*username*/ ctx[2]);
+    			}
 
-    					if (dirty & /*login_hint*/ 512) {
+    			if (dirty & /*password*/ 8 && input1.value !== /*password*/ ctx[3]) {
+    				set_input_value(input1, /*password*/ ctx[3]);
+    			}
+
+    			const loader1_changes = {};
+    			if (dirty & /*login_loading*/ 4096) loader1_changes.loading = /*login_loading*/ ctx[12];
+    			loader1.$set(loader1_changes);
+
+    			if (/*connected*/ ctx[5]) {
+    				if (if_block4) {
+    					if (dirty & /*connected*/ 32) {
     						transition_in(if_block4, 1);
     					}
     				} else {
-    					if_block4 = create_if_block$1(ctx);
+    					if_block4 = create_if_block_2$1(ctx);
     					if_block4.c();
     					transition_in(if_block4, 1);
-    					if_block4.m(div2, null);
+    					if_block4.m(div2, t15);
     				}
     			} else if (if_block4) {
     				group_outros();
@@ -1779,38 +1944,92 @@ var app = (function () {
 
     				check_outros();
     			}
+
+    			if (/*login_error*/ ctx[10]) {
+    				if (if_block5) {
+    					if_block5.p(ctx, dirty);
+
+    					if (dirty & /*login_error*/ 1024) {
+    						transition_in(if_block5, 1);
+    					}
+    				} else {
+    					if_block5 = create_if_block_1$1(ctx);
+    					if_block5.c();
+    					transition_in(if_block5, 1);
+    					if_block5.m(div2, t16);
+    				}
+    			} else if (if_block5) {
+    				group_outros();
+
+    				transition_out(if_block5, 1, 1, () => {
+    					if_block5 = null;
+    				});
+
+    				check_outros();
+    			}
+
+    			if (/*login_hint*/ ctx[11]) {
+    				if (if_block6) {
+    					if_block6.p(ctx, dirty);
+
+    					if (dirty & /*login_hint*/ 2048) {
+    						transition_in(if_block6, 1);
+    					}
+    				} else {
+    					if_block6 = create_if_block$1(ctx);
+    					if_block6.c();
+    					transition_in(if_block6, 1);
+    					if_block6.m(div2, null);
+    				}
+    			} else if (if_block6) {
+    				group_outros();
+
+    				transition_out(if_block6, 1, 1, () => {
+    					if_block6 = null;
+    				});
+
+    				check_outros();
+    			}
     		},
     		i: function intro(local) {
     			if (current) return;
     			transition_in(loader0.$$.fragment, local);
-    			transition_in(if_block0);
-    			transition_in(if_block1);
-    			transition_in(loader1.$$.fragment, local);
     			transition_in(if_block2);
     			transition_in(if_block3);
+    			transition_in(loader1.$$.fragment, local);
     			transition_in(if_block4);
+    			transition_in(if_block5);
+    			transition_in(if_block6);
     			current = true;
     		},
     		o: function outro(local) {
     			transition_out(loader0.$$.fragment, local);
-    			transition_out(if_block0);
-    			transition_out(if_block1);
-    			transition_out(loader1.$$.fragment, local);
     			transition_out(if_block2);
     			transition_out(if_block3);
+    			transition_out(loader1.$$.fragment, local);
     			transition_out(if_block4);
+    			transition_out(if_block5);
+    			transition_out(if_block6);
     			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div2);
-    			destroy_each(each_blocks, detaching);
     			destroy_component(loader0);
-    			if (if_block0) if_block0.d();
-    			if (if_block1) if_block1.d();
-    			destroy_component(loader1);
+
+    			if (if_block0) {
+    				if_block0.d();
+    			}
+
+    			if (if_block1) {
+    				if_block1.d();
+    			}
+
     			if (if_block2) if_block2.d();
     			if (if_block3) if_block3.d();
+    			destroy_component(loader1);
     			if (if_block4) if_block4.d();
+    			if (if_block5) if_block5.d();
+    			if (if_block6) if_block6.d();
     			mounted = false;
     			run_all(dispose);
     		}
@@ -1820,7 +2039,7 @@ var app = (function () {
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(92:2) <Box>",
+    		source: "(104:2) <Box>",
     		ctx
     	});
 
@@ -1844,8 +2063,8 @@ var app = (function () {
     		c: function create() {
     			main = element("main");
     			create_component(box.$$.fragment);
-    			attr_dev(main, "class", "svelte-g06n01");
-    			add_location(main, file$1, 90, 0, 2131);
+    			attr_dev(main, "class", "svelte-1pl9smk");
+    			add_location(main, file$1, 102, 0, 2620);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1858,7 +2077,7 @@ var app = (function () {
     		p: function update(ctx, [dirty]) {
     			const box_changes = {};
 
-    			if (dirty & /*$$scope, login_hint, login_error, connected, login_loading, password, username, addresses_hint, addresses_error, addresses_loading, hostname, addresses*/ 526335) {
+    			if (dirty & /*$$scope, login_hint, login_error, connected, login_loading, password, username, addresses_hint, addresses_error, addresses_form, hostname_select, addresses, hostname_input, addresses_loading*/ 67117055) {
     				box_changes.$$scope = { dirty, ctx };
     			}
 
@@ -1891,15 +2110,14 @@ var app = (function () {
     }
 
     function handleEnter(e) {
-    	if (e.key === "Enter") {
-    		connect();
-    	}
+    	if (e.key === "Enter") connect();
     }
 
     function instance$3($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("Login", slots, []);
-    	let hostname;
+    	let hostname_select;
+    	let hostname_input;
     	let username;
     	let password;
 
@@ -1914,6 +2132,7 @@ var app = (function () {
 
     	let addresses_hint;
     	let addresses_loading = false;
+    	let addresses_form = "SELECT";
 
     	// Login info
     	let login_error;
@@ -1922,42 +2141,54 @@ var app = (function () {
     	let login_loading = false;
 
     	async function getAddresses() {
-    		$$invalidate(7, addresses_loading = true);
+    		$$invalidate(8, addresses_loading = true);
     		const res = await fetch("/available-addresses");
 
     		try {
     			const json = await res.json();
-    			console.log(json);
 
     			if (json.addresses) {
     				let new_addresses = json.addresses.filter(elem => {
     					return !addresses.includes(elem);
     				});
 
-    				$$invalidate(3, addresses = addresses.concat(new_addresses));
+    				$$invalidate(4, addresses = addresses.concat(new_addresses));
     			}
 
-    			$$invalidate(5, addresses_error = json.error ? json.error : "");
-    			$$invalidate(6, addresses_hint = json.hint ? json.hint : "");
+    			// Replace Errors and Hints if there are new ones or empty them
+    			$$invalidate(6, addresses_error = json.error ? json.error : "");
+
+    			$$invalidate(7, addresses_hint = json.hint ? json.hint : "");
     		} catch(error) {
-    			$$invalidate(5, addresses_error = error);
+    			$$invalidate(6, addresses_error = error);
     		}
 
-    		$$invalidate(7, addresses_loading = false);
+    		$$invalidate(8, addresses_loading = false);
     	}
 
     	getAddresses();
 
+    	async function addressesToInput() {
+    		$$invalidate(9, addresses_form = "INPUT");
+    	}
+
+    	async function addressesToSelect() {
+    		$$invalidate(9, addresses_form = "SELECT");
+    	}
+
     	async function login() {
-    		$$invalidate(10, login_loading = true);
+    		$$invalidate(12, login_loading = true);
 
     		let data = {
-    			hostname: addresses[hostname],
+    			// Load hostname from Select or Input field
+    			hostname: addresses_form == "SELECT"
+    			? addresses[hostname_select]
+    			: hostname_input,
     			username,
     			password
     		};
 
-    		// filter out empty fields
+    		// Filter out empty fields
     		for (let key in data) {
     			if (data[key] === "") {
     				data[key] = undefined;
@@ -1966,6 +2197,7 @@ var app = (function () {
 
     		console.log(JSON.stringify(data));
 
+    		// Send data
     		const res = await fetch("/connect", {
     			method: "POST",
     			headers: { "Content-Type": "application/json" },
@@ -1974,14 +2206,17 @@ var app = (function () {
 
     		try {
     			const json = await res.json();
-    			$$invalidate(4, connected = Boolean(json.connected));
-    			$$invalidate(8, login_error = json.error ? json.error : "");
-    			$$invalidate(9, login_hint = json.hint ? json.hint : "");
+    			$$invalidate(5, connected = Boolean(json.connected));
+
+    			// Replace Errors and Hints if there are new ones or empty them
+    			$$invalidate(10, login_error = json.error ? json.error : "");
+
+    			$$invalidate(11, login_hint = json.hint ? json.hint : "");
     		} catch(error) {
-    			$$invalidate(8, login_error = error);
+    			$$invalidate(10, login_error = error);
     		}
 
-    		$$invalidate(10, login_loading = false);
+    		$$invalidate(12, login_loading = false);
     	}
 
     	const writable_props = [];
@@ -1991,25 +2226,40 @@ var app = (function () {
     	});
 
     	function select_change_handler() {
-    		hostname = select_value(this);
-    		$$invalidate(0, hostname);
+    		hostname_select = select_value(this);
+    		$$invalidate(0, hostname_select);
     	}
+
+    	function input_input_handler() {
+    		hostname_input = this.value;
+    		$$invalidate(1, hostname_input);
+    	}
+
+    	const click_handler = () => {
+    		$$invalidate(9, addresses_form = "INPUT");
+    	};
+
+    	const click_handler_1 = () => {
+    		$$invalidate(9, addresses_form = "SELECT");
+    	};
 
     	function input0_input_handler() {
     		username = this.value;
-    		$$invalidate(1, username);
+    		$$invalidate(2, username);
     	}
 
     	function input1_input_handler() {
     		password = this.value;
-    		$$invalidate(2, password);
+    		$$invalidate(3, password);
     	}
 
     	$$self.$capture_state = () => ({
+    		tick,
     		slide,
     		Box,
     		Loader,
-    		hostname,
+    		hostname_select,
+    		hostname_input,
     		username,
     		password,
     		addresses,
@@ -2017,26 +2267,31 @@ var app = (function () {
     		addresses_error,
     		addresses_hint,
     		addresses_loading,
+    		addresses_form,
     		login_error,
     		login_hint,
     		login_loading,
     		getAddresses,
+    		addressesToInput,
+    		addressesToSelect,
     		login,
     		handleEnter
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ("hostname" in $$props) $$invalidate(0, hostname = $$props.hostname);
-    		if ("username" in $$props) $$invalidate(1, username = $$props.username);
-    		if ("password" in $$props) $$invalidate(2, password = $$props.password);
-    		if ("addresses" in $$props) $$invalidate(3, addresses = $$props.addresses);
-    		if ("connected" in $$props) $$invalidate(4, connected = $$props.connected);
-    		if ("addresses_error" in $$props) $$invalidate(5, addresses_error = $$props.addresses_error);
-    		if ("addresses_hint" in $$props) $$invalidate(6, addresses_hint = $$props.addresses_hint);
-    		if ("addresses_loading" in $$props) $$invalidate(7, addresses_loading = $$props.addresses_loading);
-    		if ("login_error" in $$props) $$invalidate(8, login_error = $$props.login_error);
-    		if ("login_hint" in $$props) $$invalidate(9, login_hint = $$props.login_hint);
-    		if ("login_loading" in $$props) $$invalidate(10, login_loading = $$props.login_loading);
+    		if ("hostname_select" in $$props) $$invalidate(0, hostname_select = $$props.hostname_select);
+    		if ("hostname_input" in $$props) $$invalidate(1, hostname_input = $$props.hostname_input);
+    		if ("username" in $$props) $$invalidate(2, username = $$props.username);
+    		if ("password" in $$props) $$invalidate(3, password = $$props.password);
+    		if ("addresses" in $$props) $$invalidate(4, addresses = $$props.addresses);
+    		if ("connected" in $$props) $$invalidate(5, connected = $$props.connected);
+    		if ("addresses_error" in $$props) $$invalidate(6, addresses_error = $$props.addresses_error);
+    		if ("addresses_hint" in $$props) $$invalidate(7, addresses_hint = $$props.addresses_hint);
+    		if ("addresses_loading" in $$props) $$invalidate(8, addresses_loading = $$props.addresses_loading);
+    		if ("addresses_form" in $$props) $$invalidate(9, addresses_form = $$props.addresses_form);
+    		if ("login_error" in $$props) $$invalidate(10, login_error = $$props.login_error);
+    		if ("login_hint" in $$props) $$invalidate(11, login_hint = $$props.login_hint);
+    		if ("login_loading" in $$props) $$invalidate(12, login_loading = $$props.login_loading);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -2044,7 +2299,8 @@ var app = (function () {
     	}
 
     	return [
-    		hostname,
+    		hostname_select,
+    		hostname_input,
     		username,
     		password,
     		addresses,
@@ -2052,12 +2308,16 @@ var app = (function () {
     		addresses_error,
     		addresses_hint,
     		addresses_loading,
+    		addresses_form,
     		login_error,
     		login_hint,
     		login_loading,
     		getAddresses,
     		login,
     		select_change_handler,
+    		input_input_handler,
+    		click_handler,
+    		click_handler_1,
     		input0_input_handler,
     		input1_input_handler
     	];
@@ -2364,7 +2624,7 @@ var app = (function () {
     			span = element("span");
     			span.textContent = "Brak połączenia";
     			attr_dev(span, "class", "fail svelte-19x6nzg");
-    			add_location(span, file, 42, 3, 1064);
+    			add_location(span, file, 42, 3, 1085);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -2394,7 +2654,7 @@ var app = (function () {
     			span = element("span");
     			span.textContent = "Połączenie utrzymane";
     			attr_dev(span, "class", "success svelte-19x6nzg");
-    			add_location(span, file, 40, 3, 999);
+    			add_location(span, file, 40, 3, 1020);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -2424,7 +2684,7 @@ var app = (function () {
     			span = element("span");
     			span.textContent = "Sprawdzam...";
     			attr_dev(span, "class", "success svelte-19x6nzg");
-    			add_location(span, file, 37, 2, 921);
+    			add_location(span, file, 37, 2, 942);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -2520,15 +2780,15 @@ var app = (function () {
     			add_location(button0, file, 25, 1, 534);
     			button1.disabled = button1_disabled_value = /*panel*/ ctx[0] == "Tests";
     			attr_dev(button1, "class", "svelte-19x6nzg");
-    			add_location(button1, file, 27, 1, 621);
+    			add_location(button1, file, 27, 1, 628);
     			button2.disabled = button2_disabled_value = /*panel*/ ctx[0] == "Monitor";
     			attr_dev(button2, "class", "svelte-19x6nzg");
-    			add_location(button2, file, 29, 1, 708);
+    			add_location(button2, file, 29, 1, 722);
     			attr_dev(nav, "class", "svelte-19x6nzg");
     			add_location(nav, file, 24, 0, 526);
-    			add_location(button3, file, 35, 1, 845);
+    			add_location(button3, file, 35, 1, 866);
     			attr_dev(div, "class", "check-connection svelte-19x6nzg");
-    			add_location(div, file, 34, 0, 812);
+    			add_location(div, file, 34, 0, 833);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
