@@ -9,7 +9,7 @@ from server.utils import connection_alive, get_static_path
 from server.random_funny_text import get_funny_text
 
 
-DEV = False
+DESKTOP = True
 
 
 app = Flask(__name__, static_folder=get_static_path('client/public'))
@@ -171,6 +171,23 @@ def get_available_addresses():
         response['error'] = str(e)
         print(f'Unexpected exception in {get_available_addresses.__name__}(): \
                 \n\t{e}')
+
+    return response
+
+
+@app.route('/tests/info', methods=['GET'])
+def get_tests_info():
+    """{'tests_info': [{},
+                       {}, ...]}
+    """
+    response = {'tests_info': []}
+
+    return response
+
+
+@app.route('/tests/run/<int:id>', methods=['GET'])
+def run_test(id):
+    response = {'passed': 0}
 
     return response
 

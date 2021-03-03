@@ -27,6 +27,9 @@ def connection_alive(paramiko_SSHClient):
         except AttributeError as e:
             print(f'\tConnection lost: session not found ({e})')
             return False
+        except Exception as e:
+            print(f'Unexpected exception in connection checking: {e}')
+            return False
         else:
             return True
 
