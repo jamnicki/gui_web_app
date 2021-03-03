@@ -9,7 +9,7 @@ from server.utils import connection_alive, get_static_path
 from server.random_funny_text import get_funny_text
 
 
-DEV = False
+DESKTOP = True
 
 
 app = Flask(__name__, static_folder=get_static_path('client/public'))
@@ -175,8 +175,25 @@ def get_available_addresses():
     return response
 
 
+@app.route('/tests/info', methods=['GET'])
+def get_tests_info():
+    """{'tests_info': [{},
+                       {}, ...]}
+    """
+    response = {'tests_info': []}
+
+    return response
+
+
+@app.route('/tests/run/<int:id>', methods=['GET'])
+def run_test(id):
+    response = {'passed': 0}
+
+    return response
+
+
 if __name__ == '__main__':
-    if DEV:
+    if DESKTOP:
         app.run(debug=True)
     else:
         webview.create_window('GUI Web App', app)
