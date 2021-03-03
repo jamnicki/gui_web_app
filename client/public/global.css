@@ -6,8 +6,8 @@
 	--secondary: #486581;
 	--accent: #209BAA;
 	--text: #F0F4F8;
-	--border: solid 3px #486581;
-	--border-focus: solid 3px #209BAA;
+	--border: solid 2px #486581;
+	--border-focus: solid 2px #209BAA;
 	--border-radius: 10px;
 	--elevated:
 			0 24px 38px 3px rgba(0,0,0,0.14),
@@ -46,7 +46,7 @@ label {
 	margin: 20px 0;
 }
 
-input, select {
+input, button, select {
 	display: block;
 	margin-top: 5px;
 	outline: none;
@@ -56,6 +56,7 @@ input, select {
 	background-color: var(--secondary);
 	color: var(--text);
 }
+select:focus,
 input:focus {
 	border: var(--border-focus);
 }
@@ -65,6 +66,7 @@ input[type="submit"] {
 	display: inline-block;
 	cursor: pointer;
 	border: var(--border-focus);
+	border-radius: var(--border-radius);
 	padding: 5px 20px;
 	background-color: var(--accent);
 	transition: box-shadow 200ms;
@@ -72,6 +74,11 @@ input[type="submit"] {
 button:hover,
 input[type="submit"]:hover {
 	box-shadow: var(--elevated);
+}
+button:disabled {
+	cursor: default;
+	border: var(--border);
+	background-color: var(--secondary);
 }
 
 .success {
