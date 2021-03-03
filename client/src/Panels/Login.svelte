@@ -101,6 +101,7 @@
         </select>
         <Loader loading={addresses_loading} success={!addresses_error}
           always_visible={true} type="slash"/>
+        <span class="addresses-refresh" on:click={getAddresses}>F5</span>
       </div>
       
       {#if addresses_error}
@@ -171,6 +172,11 @@
   .login-loader {
     margin-top: 5px;
     text-align: center;
+  }
+
+  .addresses-refresh {
+    cursor: pointer;
+    margin-left: 10px;
   }
 
   .message {

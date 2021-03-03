@@ -23,9 +23,12 @@
 {/if}
 
 <nav>
-	<button disabled={panel=='Login'} on:click={()=>{ panel='Login' }}>Login</button>
-	<button disabled={panel=='Tests'} on:click={()=>{ panel='Tests' }}>Tests</button>
-	<button disabled={panel=='Monitor'} on:click={()=>{ panel='Monitor' }}>Monitor</button>
+	<button disabled={panel=='Login'}
+		on:click={()=>{ panel='Login' }}>Login</button>
+	<button disabled={panel=='Tests'}
+		on:click={()=>{ panel='Tests' }}>Tests</button>
+	<button disabled={panel=='Monitor'}
+		on:click={()=>{ panel='Monitor' }}>Monitor</button>
 </nav>
 
 
