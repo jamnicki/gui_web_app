@@ -25,7 +25,7 @@ def connection_alive(paramiko_SSHClient):
         try:
             paramiko_SSHClient.exec_command('pwd', timeout=5)
         except AttributeError as e:
-            print(f'Connection lost: session not found ({e})')
+            print(f'\tConnection lost: session not found ({e})')
             return False
         else:
             return True
