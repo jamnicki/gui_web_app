@@ -13,7 +13,6 @@ To run the app in a browser (http://localhost:5000/) set `DEV=True` in `main.py`
 3. Install dependencies:\
   `pip install -r requirements.txt`\
   (Linux) `pip install pywebview[qt]`\
-  (Linux) `xargs -a packages.txt sudo apt-get install`
 4. Run `main.py`
 
 
