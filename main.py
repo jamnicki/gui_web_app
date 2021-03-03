@@ -71,7 +71,8 @@ def connect():
         return response
 
     try:
-        client.connect(hostname=hostname, username=username, password=password)
+        client.connect(hostname=hostname, username=username, password=password,
+                       timeout=15)
     except ssh_exception.AuthenticationException as e:
         print(f'Exception in {connect.__name__}():\n\t{e}')
         response['error'] = str(e)
@@ -90,8 +91,24 @@ def connect():
             response['hint'] = '''Check your network connection status. Connection type
                                   must be the same for both of sides!'''
             return response
+        elif e.__class__.__name__ == 'timeout':
+            # equivalent of 'socket.timeout' which is OSError by itself
+            print(f'Exception in {connect.__name__}():\n\t{e}')
+            response['error'] = 'Connection timed out.'
+            return response
         else:
-            raise
+            print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
+            response['error'] = str(e)
+            return response
+    except TimeoutError as e:
+        if e.errno == 110:
+            print(f'Exception in {connect.__name__}():\n\t{e}')
+            response['error'] = 'Connection timed out.'
+            return response
+        else:
+            print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
+            response['error'] = str(e)
+            return response
     except Exception as e:
         print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
         response['error'] = str(e)
