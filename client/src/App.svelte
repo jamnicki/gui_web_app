@@ -5,12 +5,14 @@
 
 	let panel = 'Login'; // Login, Tests, Monitor
 
+	let connected = checkConnection();
+
 	async function checkConnection() {
 		let res = await fetch('/check-connection');
 		let json = await res.json()
+		console.log(json.connected);
 		return json.connected;
 	}
-	let connected = checkConnection();
 </script>
 
 
@@ -33,9 +35,9 @@
 
 
 <div class="check-connection">
-	<button on:click={checkConnection}>Sprawdź</button>
+	<button on:click={()=>{ connected = checkConnection() }}>Sprawdź</button>
 	{#await connected}
-		<span class="success">Sprawdzam...</span>
+		<span class="loading">Sprawdzam...</span>
 	{:then value} 
 		{#if value}
 			<span class="success">Połączenie utrzymane</span>

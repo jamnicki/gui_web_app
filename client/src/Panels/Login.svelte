@@ -114,12 +114,12 @@
         {/if}
         {#if addresses_form == 'SELECT'}
           <span class="addresses-action"
-              on:click={()=>{ addresses_form = 'INPUT' }}>MN</span>
+              on:click={()=>{ addresses_form = 'INPUT' }}>M</span>
         {:else if addresses_form == 'INPUT'}
           <span class="addresses-action"
-              on:click={()=>{ addresses_form = 'SELECT' }}>LS</span>
+              on:click={()=>{ addresses_form = 'SELECT' }}>S</span>
         {/if}
-        <span class="addresses-action" on:click={getAddresses}>⭮</span>
+        <span class="addresses-action" on:click={getAddresses}>R</span>
       </div>
       
       {#if addresses_error}
