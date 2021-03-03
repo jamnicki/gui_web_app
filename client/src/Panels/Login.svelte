@@ -1,5 +1,4 @@
 <script>
-  import { tick } from 'svelte';
   import { slide } from 'svelte/transition';
   import Box from '../Components/Box.svelte';
   import Loader from '../Components/Loader.svelte';
@@ -33,13 +32,16 @@
 
   async function getAddresses() {
     addresses_loading = true;
+    // Get data
     const res = await fetch('/available-addresses');
     try {
       const json = await res.json();
       if (json.addresses) {
+        // Filter out addresses that are already on the list
         let new_addresses = json.addresses.filter((elem)=>{
           return !addresses.includes(elem);
         });
+        // Combine the old and new addresses
         addresses = addresses.concat(new_addresses);
       }
       // Replace Errors and Hints if there are new ones or empty them
@@ -51,13 +53,6 @@
     addresses_loading = false;
   }
   getAddresses()
-
-  async function addressesToInput() {
-    addresses_form = 'INPUT';
-  }
-  async function addressesToSelect() {
-    addresses_form = 'SELECT';
-  }
   
 
   async function login() {
@@ -117,14 +112,14 @@
         {:else if addresses_form == 'INPUT'}
           <input type="text" bind:value={hostname_input}>
         {/if}
-        <span class="addresses-action" on:click={getAddresses}>F5</span>
         {#if addresses_form == 'SELECT'}
           <span class="addresses-action"
-              on:click={()=>{ addresses_form = 'INPUT' }}>IN</span>
+              on:click={()=>{ addresses_form = 'INPUT' }}>MN</span>
         {:else if addresses_form == 'INPUT'}
           <span class="addresses-action"
-              on:click={()=>{ addresses_form = 'SELECT' }}>SL</span>
+              on:click={()=>{ addresses_form = 'SELECT' }}>LS</span>
         {/if}
+        <span class="addresses-action" on:click={getAddresses}>⭮</span>
       </div>
       
       {#if addresses_error}
