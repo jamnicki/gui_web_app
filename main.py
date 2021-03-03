@@ -106,7 +106,7 @@ def check_connection():
         is_authenticated = get_transport.is_authenticated()
         if is_authenticated:
             response['connected'] = 1
-
+            
     return response
 
 
