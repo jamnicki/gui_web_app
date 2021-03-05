@@ -1138,7 +1138,7 @@ var app = (function () {
     			input = element("input");
     			attr_dev(input, "type", "text");
     			attr_dev(input, "class", "svelte-1pl9smk");
-    			add_location(input, file$1, 112, 10, 3062);
+    			add_location(input, file$1, 112, 10, 3087);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, input, anchor);
@@ -1195,7 +1195,7 @@ var app = (function () {
 
     			attr_dev(select, "class", "svelte-1pl9smk");
     			if (/*hostname_select*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[15].call(select));
-    			add_location(select, file$1, 106, 10, 2828);
+    			add_location(select, file$1, 106, 10, 2853);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, select, anchor);
@@ -1272,7 +1272,7 @@ var app = (function () {
     			option.__value = /*i*/ ctx[23];
     			option.value = option.__value;
     			attr_dev(option, "class", "svelte-1pl9smk");
-    			add_location(option, file$1, 108, 14, 2926);
+    			add_location(option, file$1, 108, 14, 2951);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -1308,7 +1308,7 @@ var app = (function () {
     			span = element("span");
     			span.textContent = "S";
     			attr_dev(span, "class", "addresses-action svelte-1pl9smk");
-    			add_location(span, file$1, 118, 10, 3334);
+    			add_location(span, file$1, 118, 10, 3359);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1348,7 +1348,7 @@ var app = (function () {
     			span = element("span");
     			span.textContent = "M";
     			attr_dev(span, "class", "addresses-action svelte-1pl9smk");
-    			add_location(span, file$1, 115, 10, 3178);
+    			add_location(span, file$1, 115, 10, 3203);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1389,7 +1389,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*addresses_error*/ ctx[6]);
     			attr_dev(span, "class", "message error svelte-1pl9smk");
-    			add_location(span, file$1, 125, 8, 3582);
+    			add_location(span, file$1, 125, 8, 3607);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1443,7 +1443,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*addresses_hint*/ ctx[7]);
     			attr_dev(span, "class", "message hint svelte-1pl9smk");
-    			add_location(span, file$1, 128, 8, 3702);
+    			add_location(span, file$1, 128, 8, 3727);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1642,7 +1642,7 @@ var app = (function () {
     	return block;
     }
 
-    // (99:2) <Box>
+    // (99:2) <Box on:keydown={handleEnter}>
     function create_default_slot(ctx) {
     	let div2;
     	let div0;
@@ -1756,11 +1756,11 @@ var app = (function () {
     			t16 = space();
     			if (if_block6) if_block6.c();
     			attr_dev(h3, "class", "svelte-1pl9smk");
-    			add_location(h3, file$1, 104, 8, 2762);
+    			add_location(h3, file$1, 104, 8, 2787);
     			attr_dev(span, "class", "addresses-action svelte-1pl9smk");
-    			add_location(span, file$1, 121, 8, 3458);
+    			add_location(span, file$1, 121, 8, 3483);
     			attr_dev(div0, "class", "address svelte-1pl9smk");
-    			add_location(div0, file$1, 101, 6, 2609);
+    			add_location(div0, file$1, 101, 6, 2634);
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "class", "svelte-1pl9smk");
     			add_location(input0, file$1, 133, 10, 3860);
@@ -1776,9 +1776,9 @@ var app = (function () {
     			attr_dev(div1, "class", "login-loader svelte-1pl9smk");
     			add_location(div1, file$1, 140, 8, 4119);
     			attr_dev(form, "class", "svelte-1pl9smk");
-    			add_location(form, file$1, 131, 6, 3792);
+    			add_location(form, file$1, 131, 6, 3817);
     			attr_dev(div2, "class", "wrapper svelte-1pl9smk");
-    			add_location(div2, file$1, 99, 4, 2578);
+    			add_location(div2, file$1, 99, 4, 2603);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div2, anchor);
@@ -1825,8 +1825,7 @@ var app = (function () {
     					listen_dev(span, "click", /*getAddresses*/ ctx[13], false, false, false),
     					listen_dev(input0, "input", /*input0_input_handler*/ ctx[19]),
     					listen_dev(input1, "input", /*input1_input_handler*/ ctx[20]),
-    					listen_dev(input2, "click", prevent_default(/*login*/ ctx[14]), false, true, false),
-    					listen_dev(form, "keydown", handleEnter, false, false, false)
+    					listen_dev(input2, "click", prevent_default(/*login*/ ctx[14]), false, true, false)
     				];
 
     				mounted = true;
@@ -2035,7 +2034,7 @@ var app = (function () {
     		block,
     		id: create_default_slot.name,
     		type: "slot",
-    		source: "(99:2) <Box>",
+    		source: "(99:2) <Box on:keydown={handleEnter}>",
     		ctx
     	});
 
@@ -2054,6 +2053,8 @@ var app = (function () {
     			},
     			$$inline: true
     		});
+
+    	box.$on("keydown", handleEnter);
 
     	const block = {
     		c: function create() {
@@ -2552,7 +2553,7 @@ var app = (function () {
     	return block;
     }
 
-    // (1:0) <script>   import Login from './Panels/Login.svelte';   import Tests from './Panels/Tests.svelte';   import Monitor from './Panels/Monitor.svelte';     let panel = 'Login'; // Login, Tests, Monitor     let connected = checkConnection();     async function checkConnection() {    let res = await fetch('/check-connection');    let json = await res.json()    console.log(json.connected);    return json.connected;   }
+    // (1:0) <script>   import Login from './Panels/Login.svelte';   import Tests from './Panels/Tests.svelte';   import Monitor from './Panels/Monitor.svelte';     let panel = 'Login'; // Login, Tests, Monitor     let connected = checkConnection();     async function checkConnection() {    let res = await fetch('/check-connection');    let json = await res.json()    console.log('Connection check: '+json.connected);    return json.connected;   }
     function create_catch_block(ctx) {
     	const block = { c: noop, m: noop, p: noop, d: noop };
 
@@ -2560,7 +2561,7 @@ var app = (function () {
     		block,
     		id: create_catch_block.name,
     		type: "catch",
-    		source: "(1:0) <script>   import Login from './Panels/Login.svelte';   import Tests from './Panels/Tests.svelte';   import Monitor from './Panels/Monitor.svelte';     let panel = 'Login'; // Login, Tests, Monitor     let connected = checkConnection();     async function checkConnection() {    let res = await fetch('/check-connection');    let json = await res.json()    console.log(json.connected);    return json.connected;   }",
+    		source: "(1:0) <script>   import Login from './Panels/Login.svelte';   import Tests from './Panels/Tests.svelte';   import Monitor from './Panels/Monitor.svelte';     let panel = 'Login'; // Login, Tests, Monitor     let connected = checkConnection();     async function checkConnection() {    let res = await fetch('/check-connection');    let json = await res.json()    console.log('Connection check: '+json.connected);    return json.connected;   }",
     		ctx
     	});
 
@@ -2625,7 +2626,7 @@ var app = (function () {
     			span = element("span");
     			span.textContent = "Brak połączenia";
     			attr_dev(span, "class", "fail svelte-19x6nzg");
-    			add_location(span, file, 44, 3, 1141);
+    			add_location(span, file, 44, 3, 1162);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -2655,7 +2656,7 @@ var app = (function () {
     			span = element("span");
     			span.textContent = "Połączenie utrzymane";
     			attr_dev(span, "class", "success svelte-19x6nzg");
-    			add_location(span, file, 42, 3, 1076);
+    			add_location(span, file, 42, 3, 1097);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -2685,7 +2686,7 @@ var app = (function () {
     			span = element("span");
     			span.textContent = "Sprawdzam...";
     			attr_dev(span, "class", "loading svelte-19x6nzg");
-    			add_location(span, file, 39, 2, 998);
+    			add_location(span, file, 39, 2, 1019);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -2779,18 +2780,18 @@ var app = (function () {
     			info.block.c();
     			button0.disabled = button0_disabled_value = /*panel*/ ctx[0] == "Login";
     			attr_dev(button0, "class", "svelte-19x6nzg");
-    			add_location(button0, file, 27, 1, 568);
+    			add_location(button0, file, 27, 1, 589);
     			button1.disabled = button1_disabled_value = /*panel*/ ctx[0] == "Tests";
     			attr_dev(button1, "class", "svelte-19x6nzg");
-    			add_location(button1, file, 29, 1, 662);
+    			add_location(button1, file, 29, 1, 683);
     			button2.disabled = button2_disabled_value = /*panel*/ ctx[0] == "Monitor";
     			attr_dev(button2, "class", "svelte-19x6nzg");
-    			add_location(button2, file, 31, 1, 756);
+    			add_location(button2, file, 31, 1, 777);
     			attr_dev(nav, "class", "svelte-19x6nzg");
-    			add_location(nav, file, 26, 0, 560);
-    			add_location(button3, file, 37, 1, 900);
+    			add_location(nav, file, 26, 0, 581);
+    			add_location(button3, file, 37, 1, 921);
     			attr_dev(div, "class", "check-connection svelte-19x6nzg");
-    			add_location(div, file, 36, 0, 867);
+    			add_location(div, file, 36, 0, 888);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2921,7 +2922,7 @@ var app = (function () {
     async function checkConnection() {
     	let res = await fetch("/check-connection");
     	let json = await res.json();
-    	console.log(json.connected);
+    	console.log("Connection check: " + json.connected);
     	return json.connected;
     }
 

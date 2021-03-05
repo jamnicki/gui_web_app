@@ -10,7 +10,7 @@
 	async function checkConnection() {
 		let res = await fetch('/check-connection');
 		let json = await res.json()
-		console.log(json.connected);
+		console.log('Connection check: '+json.connected);
 		return json.connected;
 	}
 </script>

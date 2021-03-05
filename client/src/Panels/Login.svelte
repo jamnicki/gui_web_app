@@ -96,7 +96,7 @@
 
 
 <main>
-  <Box>
+  <Box on:keydown={handleEnter}>
     <div class="wrapper">
 
       <div class="address">
@@ -129,7 +129,7 @@
         <span transition:slide class="message hint">{addresses_hint}</span>
       {/if}
 
-      <form on:keydown={handleEnter}>
+      <form>
         <label>Username
           <input type="text" bind:value={username}>
         </label>
