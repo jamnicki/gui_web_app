@@ -178,28 +178,36 @@ def get_available_addresses():
 @app.route('/tests/info', methods=['GET'])
 def get_tests_info():
     """
+    Get info about available tests by remotely running a dedicated script.
+
+    Returns on GET:
+        dict:
+            'tests_info' (list): JSON: ? (not static, depents on what is in
+            previously mentioned script and actual test scripts)
+                
     """
+    #TODO: error handling
+    #ask about documentation
     stdin, stdout, stderr = client.exec_command('python3 get_tests_info.py')
     tests_info_output = #which of 3 is the one with corect print?
     tests_info_output = tests_info_output.decode('utf-8')
+
     regex = re.compile(r'\{.+\}')
     matches = re.findall(regex, tests_info_output)
 
-    tests_info = []
-    
+    tests_info_list = []
+
     for match in matches:
         j = json.loads(match)
-        tests_list.append(j)
+        tests_info_list.append(j)
 
-    
-
-    response = {'tests_info': []}
+    response = {'tests_info': tests_info_list}
 
     return response
 
 
 @app.route('/tests/run/<int:id>', methods=['GET'])
-def run_test(id):
+def run_test(id): #0-> run all tests one after another?
     response = {'passed': 0}
 
     return response
