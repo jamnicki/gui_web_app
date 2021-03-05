@@ -182,15 +182,20 @@ def get_tests_info():
 
     Returns on GET:
         dict:
-            'tests_info' (list): JSON: ? (not static, depents on what is in
+            'tests_info' (list): dict: ? (not static, depents on what is in
             previously mentioned script and actual test scripts)
                 
     """
     #TODO: error handling
     #ask about documentation
-    stdin, stdout, stderr = client.exec_command('python3 get_tests_info.py')
-    tests_info_output = #which of 3 is the one with corect print?
-    tests_info_output = tests_info_output.decode('utf-8')
+    try:
+        stdin, stdout, stderr = client.exec_command('python3 get_tests_info.py')
+        stdout.channel.recv_exit_status()
+        tests_info_output = stdout #which of 3 is the one with corect print?
+        tests_info_output = tests_info_output.decode('utf-8')
+    except Exception as e:
+        response = {'error': str(e)}
+
 
     regex = re.compile(r'\{.+\}')
     matches = re.findall(regex, tests_info_output)
@@ -207,7 +212,7 @@ def get_tests_info():
 
 
 @app.route('/tests/run/<int:id>', methods=['GET'])
-def run_test(id): #0-> run all tests one after another?
+def run_test(id):
     response = {'passed': 0}
 
     return response
