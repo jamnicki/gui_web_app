@@ -177,9 +177,22 @@ def get_available_addresses():
 
 @app.route('/tests/info', methods=['GET'])
 def get_tests_info():
-    """{'tests_info': [{},
-                       {}, ...]}
     """
+    """
+    stdin, stdout, stderr = client.exec_command('python3 get_tests_info.py')
+    tests_info_output = #which of 3 is the one with corect print?
+    tests_info_output = tests_info_output.decode('utf-8')
+    regex = re.compile(r'\{.+\}')
+    matches = re.findall(regex, tests_info_output)
+
+    tests_info = []
+    
+    for match in matches:
+        j = json.loads(match)
+        tests_list.append(j)
+
+    
+
     response = {'tests_info': []}
 
     return response
