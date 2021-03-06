@@ -3,26 +3,17 @@
 	import Tests from './Panels/Tests.svelte';
 	import Monitor from './Panels/Monitor.svelte';
 
-	let panel = 'Login'; // Login, Tests, Monitor
-
 	let connected = checkConnection();
+	let panel = 'Login'; // Login, Tests, Monitor
 
 	async function checkConnection() {
 		let res = await fetch('/check-connection');
 		let json = await res.json()
-		console.log('Connection check: '+json.connected);
+		console.log('Połączenie: '+Boolean(json.connected));
 		return json.connected;
 	}
 </script>
 
-
-{#if panel == 'Login'}
-	<Login/>
-{:else if panel == 'Tests'}
-	<Tests/>
-{:else if panel == 'Monitor'}
-	<Monitor/>
-{/if}
 
 <nav>
 	<button disabled={ panel == 'Login' }
@@ -32,7 +23,6 @@
 	<button disabled={ panel == 'Monitor' }
 			on:click={()=>{ panel = 'Monitor' }}>Monitor</button>
 </nav>
-
 
 <div class="check-connection">
 	<button on:click={()=>{ connected = checkConnection() }}>Sprawdź</button>
@@ -47,6 +37,12 @@
 	{/await}
 </div>
 
+<main>
+	<Login/>
+	<Tests/>
+	<Monitor/>
+</main>
+
 
 <style>
 	nav {
@@ -58,6 +54,11 @@
 	}
 	nav button {
 		margin: 0 5px;
+	}
+
+	main {
+		width: 100%;
+		height: 100%;
 	}
 
 	.check-connection {

@@ -95,71 +95,75 @@
 </script>
 
 
-<main>
-  <Box on:keydown={handleEnter}>
-    <div class="wrapper">
+<div class="panel">
+  <Box>
 
-      <div class="address">
-        <Loader loading={addresses_loading} success={!addresses_error}
-            always_visible={true} type="slash"/>
-        <h3>SSH</h3>
-        {#if addresses_form == 'SELECT'}
-          <select bind:value={hostname_select}>
-            {#each addresses as address, i}
-              <option value={i}>{address}</option>
-            {/each}
-          </select>
-        {:else if addresses_form == 'INPUT'}
-          <input type="text" bind:value={hostname_input}>
-        {/if}
-        {#if addresses_form == 'SELECT'}
-          <span class="addresses-action"
-              on:click={()=>{ addresses_form = 'INPUT' }}>M</span>
-        {:else if addresses_form == 'INPUT'}
-          <span class="addresses-action"
-              on:click={()=>{ addresses_form = 'SELECT' }}>S</span>
-        {/if}
-        <span class="addresses-action" on:click={getAddresses}>R</span>
-      </div>
-      
-      {#if addresses_error}
-        <span transition:slide class="message error">{addresses_error}</span>
+    <div class="address"> 
+      <Loader loading={addresses_loading} success={!addresses_error}
+          always_visible={true} type="slash"/>
+      <h3>SSH</h3>
+      {#if addresses_form == 'SELECT'}
+        <select bind:value={hostname_select}>
+          {#each addresses as address, i}
+            <option value={i}>{address}</option>
+          {/each}
+        </select>
+      {:else if addresses_form == 'INPUT'}
+        <input type="text" bind:value={hostname_input}>
       {/if}
-      {#if addresses_hint}
-        <span transition:slide class="message hint">{addresses_hint}</span>
-      {/if}
-
-      <form>
-        <label>Username
-          <input type="text" bind:value={username}>
-        </label>
-        <label>Password
-          <input type="password" bind:value={password}>
-        </label>
-        <input type="submit" value="Login"
-            on:click|preventDefault={login}>
-        <div class="login-loader">
-          <Loader type="dots" loading={login_loading}/>
+      {#if addresses_form == 'SELECT'}
+        <div class="addresses-action"
+            on:click={()=>{ addresses_form = 'INPUT' }}>
+          <img src="icon/edit.svg" alt="input">
         </div>
-      </form>
-
-      {#if connected}
-        <div transition:slide class="message success">Połączono!</div>
+      {:else if addresses_form == 'INPUT'}
+        <div class="addresses-action"
+            on:click={()=>{ addresses_form = 'SELECT' }}>
+          <img src="icon/list.svg" alt="select">
+        </div>
       {/if}
-      {#if login_error}
-        <div transition:slide class="message error">{login_error}</div>
-      {/if}
-      {#if login_hint}
-        <div transition:slide class="message hint">{login_hint}</div>
-      {/if}
-
+      <div class="addresses-action" on:click={getAddresses}>
+        <img src="icon/refresh.svg" alt="select">
+      </div>
     </div>
+      
+    {#if addresses_error}
+      <span transition:slide class="message error">{addresses_error}</span>
+    {/if}
+    {#if addresses_hint}
+      <span transition:slide class="message hint">{addresses_hint}</span>
+    {/if}
+
+    <form on:keydown={handleEnter}>
+      <label>Username
+        <input type="text" bind:value={username}>
+      </label>
+      <label>Password
+        <input type="password" bind:value={password}>
+      </label>
+      <input type="submit" value="Login"
+          on:click|preventDefault={login}>
+      <div class="login-loader">
+        <Loader type="dots" loading={login_loading}/>
+      </div>
+    </form>
+
+    {#if connected}
+      <div transition:slide class="message success">Połączono!</div>
+    {/if}
+    {#if login_error}
+      <div transition:slide class="message error">{login_error}</div>
+    {/if}
+    {#if login_hint}
+      <div transition:slide class="message hint">{login_hint}</div>
+    {/if}
+
   </Box>
-</main>
+</div>
 
 
 <style>
-  main {
+  .panel {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -170,23 +174,20 @@
     width: 100%;
   }
 
-  .wrapper {
-    width: 250px;
-  }
   .address {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  .address * {
+  .address > * {
     margin: 0 5px;
   }
-  select {
-    min-width: 140px;
+  .address > select {
+    width: 140px;
     padding: 0 5px;
   }
   .address > input {
-    min-width: 140px;
+    width: 140px;
     padding: 1px 8px;
   }
 
@@ -200,7 +201,11 @@
   }
 
   .addresses-action {
+    display: flex;
+    justify-content: center;
     cursor: pointer;
+    width: 18px;
+    height: 18px;
   }
 
   .message {
