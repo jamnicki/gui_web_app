@@ -226,7 +226,7 @@ def run_test(id):
         return response
 
     err = stderr.read().decode()
-    if err is None:
+    if not err:
         response['passed'] = 1
 
     return response
