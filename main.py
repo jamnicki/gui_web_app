@@ -225,7 +225,7 @@ def run_test(id):
         response['error'] = str(e)
         return response
 
-    err = stderr.read().encode()
+    err = stderr.read().decode()
     if err is None:
         response['passed'] = 1
 
