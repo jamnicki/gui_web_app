@@ -2,9 +2,10 @@ import re
 import subprocess
 import platform
 import webview
+import json
 from flask import Flask, request, send_from_directory
 from paramiko import SSHClient, ssh_exception, AutoAddPolicy
-from server.utils import connection_alive, get_static_path
+from server.utils import connection_alive, get_static_path, close_file_objects
 
 from server.random_funny_text import get_funny_text
 
@@ -182,23 +183,30 @@ def get_tests_info():
 
     Returns on GET:
         dict:
-            'tests_info' (list): dict: ? (not static, depents on what is in
-            previously mentioned script and actual test scripts)
-                
+            'tests_info' (list):
+                				dict:
+                                   	 'id' (int): Unique test id.
+                                     'script_name' (str): Filename of the test.
+                                     'test_name' (str): Name of the test.
+                                     'description' (str): Short description of the test.
+                                     None if an error occured.
+            'error' (str): Exception message if unexpected error occured.
+            			   None if not.
     """
-    #TODO: error handling, docstring
-    #ask about documentation
+    response = {'error': None, 'tests_info': None}
+
     try:
         stdin, stdout, stderr = client.exec_command('python3 get_tests_info.py')
         stdout.channel.recv_exit_status()
         tests_info_output = stdout 
         tests_info_output = tests_info_output.decode('utf-8')
+        regex = re.compile(r'\{.+\}')
+        matches = re.findall(regex, tests_info_output)
+        file_objects = stdin, stdout, stderr
+        close_file_objects(list(file_objects))
     except Exception as e:
-        response = {'error': str(e)}
-
-
-    regex = re.compile(r'\{.+\}')
-    matches = re.findall(regex, tests_info_output)
+        response['error'] = str(e)
+        return response
 
     tests_info_list = []
 
@@ -206,7 +214,7 @@ def get_tests_info():
         j = json.loads(match)
         tests_info_list.append(j)
 
-    response = {'tests_info': tests_info_list}
+    response['tests_info'] = tests_info_list
 
     return response
 
