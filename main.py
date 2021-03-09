@@ -194,17 +194,16 @@ def get_tests_info():
     				None if not.
 
     """
-    response = {'error': None, 'tests_info': None}
+    response = {'tests_info': None,
+                'error': None}
 
     try:
         stdin, stdout, stderr = client.exec_command('python3 get_tests_info.py')
         stdout.channel.recv_exit_status()
-        tests_info_output = stdout 
-        tests_info_output = tests_info_output.decode('utf-8')
+        tests_info_output = stdout.decode('utf-8')
         regex = re.compile(r'\{.+\}')
         matches = re.findall(regex, tests_info_output)
-        file_objects = stdin, stdout, stderr
-        close_file_objects(list(file_objects))
+        close_file_objects([stdin, stdout, stderr])
     except Exception as e:
         response['error'] = str(e)
         return response
