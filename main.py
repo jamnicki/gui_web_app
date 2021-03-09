@@ -191,7 +191,7 @@ def get_tests_info():
     				'description' (str): Short description of the test.
     				None if an error occured.
     		'error' (str):	Exception message if an unexpected error occured.
-    						None if not.
+    				None if not.
 
     """
     response = {'error': None, 'tests_info': None}
