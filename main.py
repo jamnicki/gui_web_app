@@ -141,7 +141,7 @@ def get_available_addresses():
             'addresses' (list): local IP addresses that
                                 matching pattern '192.168.x.x'.
                                 None if not found.
-            'error' (str): Exception message if unexpected error occured.
+            'error' (str): Exception message if an unexpected error occured.
                            None if not.
     """
     response = {'addresses': [],
@@ -182,16 +182,17 @@ def get_tests_info():
     Get info about available tests by remotely running a dedicated script.
 
     Returns on GET:
-        dict:
-            'tests_info' (list):
-                				dict:
-                                   	 'id' (int): Unique test id.
-                                     'script_name' (str): Filename of the test.
-                                     'test_name' (str): Name of the test.
-                                     'description' (str): Short description of the test.
-                                     None if an error occured.
-            'error' (str): Exception message if unexpected error occured.
-            			   None if not.
+    	dict:
+    		'tests_info' (list):
+    			dict:
+    				'id' (int): Unique test id.
+    				'script_name' (str): Tests filename.
+    				'test_name' (str): Tests name.
+    				'description' (str): Short description of the test.
+    				None if an error occured.
+    		'error' (str):	Exception message if an unexpected error occured.
+    						None if not.
+
     """
     response = {'error': None, 'tests_info': None}
 
