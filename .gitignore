@@ -18,3 +18,6 @@ client/*.map
 .vscode/
 .vscode/*
 *.code-workspace
+
+### PyCharm ###
+/.idea/

@@ -6,7 +6,7 @@ import json
 import time
 from flask import Flask, request, send_from_directory
 from paramiko import SSHClient, ssh_exception, AutoAddPolicy
-from server.utils import connection_alive, get_static_path
+from server.utils import connection_alive, get_static_path, close_file_objects
 
 from server.random_funny_text import get_funny_text
 
@@ -142,7 +142,7 @@ def get_available_addresses():
             'addresses' (list): local IP addresses that
                                 matching pattern '192.168.x.x'.
                                 None if not found.
-            'error' (str): Exception message if unexpected error occured.
+            'error' (str): Exception message if an unexpected error occured.
                            None if not.
     """
     response = {'addresses': [],
@@ -179,10 +179,43 @@ def get_available_addresses():
 
 @app.route('/tests/info', methods=['GET'])
 def get_tests_info():
-    """{'tests_info': [{},
-                       {}, ...]}
     """
-    response = {'tests_info': []}
+    Get info about available tests by remotely running a dedicated script.
+
+    Returns on GET:
+    	dict:
+    		'tests_info' (list):
+    			dict:
+    				'id' (int): Unique test id.
+    				'script_name' (str): Tests filename.
+    				'test_name' (str): Tests name.
+    				'description' (str): Short description of the test.
+    				None if an error occured.
+    		'error' (str):	Exception message if an unexpected error occured.
+    				None if not.
+
+    """
+    response = {'tests_info': None,
+                'error': None}
+
+    try:
+        stdin, stdout, stderr = client.exec_command('python3 get_tests_info.py')
+        stdout.channel.recv_exit_status()
+        tests_info_output = stdout.decode('utf-8')
+        regex = re.compile(r'\{.+\}')
+        matches = re.findall(regex, tests_info_output)
+        close_file_objects([stdin, stdout, stderr])
+    except Exception as e:
+        response['error'] = str(e)
+        return response
+
+    tests_info_list = []
+
+    for match in matches:
+        j = json.loads(match)
+        tests_info_list.append(j)
+
+    response['tests_info'] = tests_info_list
 
     return response
 
