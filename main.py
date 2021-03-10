@@ -3,6 +3,7 @@ import subprocess
 import platform
 import webview
 import json
+import time
 from flask import Flask, request, send_from_directory
 from paramiko import SSHClient, ssh_exception, AutoAddPolicy
 from server.utils import connection_alive, get_static_path, close_file_objects
@@ -221,8 +222,54 @@ def get_tests_info():
 
 @app.route('/tests/run/<int:id>', methods=['GET'])
 def run_test(id):
-    response = {'passed': 0}
+    """
+    Run test with given id.
 
+    Returns on GET:
+    	dict:
+    		'passed' (int): 1 if test passed.
+    		                0 if not.
+    		'error' (str):	Exception message if an unexpected error occurred.
+    				        None if not.
+    """
+
+    # TODO: actual path to tests json file
+
+    response = {'passed': 0,
+                'error': None}
+
+    path = "path/to/tests.json"
+    with open(path, 'r') as json_file:
+        test_data = json.load(json_file)
+
+    try:
+        current_test = test_data[str(id)]
+    except KeyError as e:
+        print(f'Exception in {run_test.__name__}():\n\t{e}')
+        response['error'] = str(e)
+        return response
+
+    try:
+        script_name = current_test['script_name']
+    except KeyError as e:
+        print(f'Exception in {run_test.__name__}():\n\t{e}')
+        response['error'] = str(e)
+        return response
+
+    command = '{} {} {}'.format('python', script_name, 'run')
+    try:
+        stdin, stdout, stderr = client.exec_command(command)
+        time.sleep(2)
+    except ssh_exception.SSHException as e:
+        print(f'Exception in {run_test.__name__}():\n\t{e}')
+        response['error'] = str(e)
+        return response
+
+    err = stderr.read().decode()
+    if not err:
+        response['passed'] = 1
+
+    close_file_objects([stdin, stdout, stderr])
     return response
 
 
