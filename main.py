@@ -189,18 +189,25 @@ def get_tests_info():
 
 @app.route('/tests/run/<int:id>', methods=['GET'])
 def run_test(id):
-    # TODO: docstring, actual path to tests json file
+    """
+    Run test with given id.
+
+    Returns on GET:
+    	dict:
+    		'passed' (int): 1 if test passed.
+    		                0 if not.
+    		'error' (str):	Exception message if an unexpected error occurred.
+    				        None if not.
+    """
+
+    # TODO: actual path to tests json file
+
     response = {'passed': 0,
                 'error': None}
 
     path = "path/to/tests.json"
-    try:
-        json_file = open(path, 'r')
+    with open(path, 'r') as json_file:
         test_data = json.load(json_file)
-    except IOError as e:
-        print(f'Exception in {run_test.__name__}():\n\t{e}')
-        response['error'] = str(e)
-        return response
 
     try:
         current_test = test_data[str(id)]
@@ -229,6 +236,7 @@ def run_test(id):
     if not err:
         response['passed'] = 1
 
+    close_file_objects([stdin, stdout, stderr])
     return response
 
 
