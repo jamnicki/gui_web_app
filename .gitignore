@@ -1,4 +1,5 @@
 ### Backend ###
+tests.json
 # Python
 __pycache__/
 env/
@@ -18,3 +19,6 @@ client/*.map
 .vscode/
 .vscode/*
 *.code-workspace
+
+### PyCharm ###
+/.idea/
