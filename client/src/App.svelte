@@ -1,73 +1,106 @@
 <script>
+  import { panel, connected, debug } from './stores.js';
   import Login from './Panels/Login.svelte';
   import Tests from './Panels/Tests.svelte';
   import Monitor from './Panels/Monitor.svelte';
-
-  let connected = checkConnection();
-  let panel = 'Login'; // Login, Tests, Monitor
+  import Loader from './Components/Loader.svelte';
 
   async function checkConnection() {
     let res = await fetch('/check-connection');
     let json = await res.json();
     console.log('Połączenie: ' + Boolean(json.connected));
-    return json.connected;
+    $connected = json.connected;
   }
+  function connect() {
+    $connected = 1;
+  }
+  function disconnect() {
+    $connected = 0;
+  }
+
+  $: if ($connected) {
+    $panel = 'Tests';
+  } else {
+    $panel = 'Login';
+  }
+
+  async function checkDebugMode() {
+    const res = await fetch('/debug');
+    const mess = await res.json();
+    $debug = mess;
+  }
+  checkDebugMode();
 </script>
 
 <nav>
-  <button
-    disabled={panel == 'Login'}
+  <span
+    class="button"
     on:click={() => {
-      panel = 'Login';
-    }}>Login</button
+      $panel = 'Login';
+    }}>Login</span
   >
-  <button
-    disabled={panel == 'Tests'}
-    on:click={() => {
-      panel = 'Tests';
-    }}>Tests</button
-  >
-  <button
-    disabled={panel == 'Monitor'}
-    on:click={() => {
-      panel = 'Monitor';
-    }}>Monitor</button
-  >
+  {#if $connected}
+    {#if $panel == 'Tests'}
+      <span>&nbsp;{'>'}&nbsp;</span>
+      <span
+        class="button"
+        on:click={() => {
+          $panel = 'Tests';
+        }}>Tests</span
+      >
+    {/if}
+    {#if $panel == 'Monitor'}
+      <span>&nbsp;{'>'}&nbsp;</span>
+      <span
+        class="button"
+        on:click={() => {
+          $panel = 'Monitor';
+        }}>Monitor</span
+      >
+    {/if}
+  {/if}
 </nav>
 
-<div class="check-connection">
-  <button
-    on:click={() => {
-      connected = checkConnection();
-    }}>Sprawdź</button
-  >
-  {#await connected}
-    <span class="loading">Sprawdzam...</span>
-  {:then value}
-    {#if value}
-      <span class="success">Połączenie utrzymane</span>
-    {:else}
-      <span class="fail">Brak połączenia</span>
-    {/if}
-  {/await}
-</div>
-
 <main>
-  <Login />
-  <Tests />
-  <Monitor />
+  {#if $panel == 'Login'}
+    <Login />
+  {:else if $panel == 'Tests'}
+    <Tests />
+  {:else if $panel == 'Monitor'}
+    <Monitor />
+  {/if}
 </main>
+
+{#if $debug}
+  <div class="check-connection">
+    {#await $connected}
+      <Loader />
+    {:then value}
+      {#if value}
+        <span class="success">Connection alive</span>
+      {:else}
+        <span class="fail">Connection failed</span>
+      {/if}
+    {/await}
+    <button on:click={checkConnection}>Check</button>
+    <button on:click={connect}>Connect</button>
+    <button on:click={disconnect}>Disconnect</button>
+  </div>
+{/if}
 
 <style>
   nav {
+    z-index: 100;
     position: fixed;
-    top: 70px;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
   }
-  nav button {
-    margin: 0 5px;
+  nav > .button:hover {
+    cursor: pointer;
+    font-weight: 900;
+    color: var(--accent);
   }
 
   main {
@@ -76,13 +109,14 @@
   }
 
   .check-connection {
+    z-index: 100;
     position: fixed;
-    top: 20px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     white-space: nowrap;
   }
   .check-connection span {
-    margin-left: 10px;
+    margin-right: 10px;
   }
 </style>

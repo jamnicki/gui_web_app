@@ -11,6 +11,7 @@ from server.random_funny_text import get_funny_text
 
 
 DESKTOP = False
+DEBUG = True
 
 
 app = Flask(__name__, static_folder=get_static_path('client/public'))
@@ -34,6 +35,12 @@ def home(path):
 @app.route('/test')
 def test():
     return get_funny_text()
+
+
+# Check if in DEBUG MODE
+@app.route('/debug')
+def debug():
+    return str(int(DEBUG))
 
 
 # Testing loading animations
@@ -193,6 +200,52 @@ def get_tests_info():
     response = {'tests_info': [],
                 'error': None}
 
+    # Jokes aside, I need something of a mockup script, that would simulate the
+    # behaviours of the real boat. Maybe create a /mockup folder in the root
+    # and have a main.py script there. And the scripts here would use the
+    # mockup with some variable like MOCKUP set to True. We need something like
+    # this while the real boat's scripts are still in dev.
+    if DEBUG:
+        response['tests_info'] = [
+            {'id': 1,
+             'script_name': 'fuck_you.py',
+             'test_name':   'Fuck you',
+             'description': 'Just go fuck yourselves'},
+            {'id': 2,
+             'script_name': 'ehh.py',
+             'test_name':   'This is not my job',
+             'description': 'Why am I doing this'},
+            {'id': 3,
+             'script_name': 'god_dammit.py',
+             'test_name':   'Fucking backend devs',
+             'description': 'Always have to do everyting by myself'},
+            {'id': 4,
+             'script_name': 'millenials.py',
+             'test_name':   'Millenials these days',
+             'description': 'Can you start thinking of stuff like this?'},
+            {'id': 5,
+             'script_name': 'just.py',
+             'test_name':   'Like fuck dammit',
+             'description': 'Where am I supposed to find fucking boat tests huh? What the fuck.'},
+            {'id': 6,
+             'script_name': 'like.py',
+             'test_name':   'Like am i supposed to',
+             'description': 'Go to a fucking shop and ask for a boat?'},
+            {'id': 7,
+             'script_name': 'jesus.py',
+             'test_name':   'Fuck do you even',
+             'description': 'Know how much it costs to buy a fucking boat?'},
+            {'id': 8,
+             'script_name': 'yeah.py',
+             'test_name':   'Thats what I thot',
+             'description': 'Hehe get it.'},
+            {'id': 9,
+             'script_name': 'okay.py',
+             'test_name':   'Im done',
+             'description': 'Like fucking done how do I work like this. Get me a goddamn mockup boat.'}
+        ]
+        return response
+
     command = 'python3 get_tests_info.py'
     try:
         stdin, stdout, stderr = client.exec_command(command)
@@ -244,6 +297,14 @@ def run_test(id):
 
     response = {'passed': 0,
                 'error': None}
+
+    if DEBUG:
+        tests_to_pass = [1, 2, 4, 5, 9]
+        if id in tests_to_pass:
+            response['passed'] = 1
+        else:
+            response['error'] = 'Because fuck you <3'
+        return response
 
     path = "server/data/tests.json"
     with open(path, 'r') as json_file:

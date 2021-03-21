@@ -1,6 +1,6 @@
 <script>
-  import { slide } from 'svelte/transition';
-  import Box from '../Components/Box.svelte';
+  import { slide, fly } from 'svelte/transition';
+  import { connected } from '../stores.js';
   import Loader from '../Components/Loader.svelte';
 
   // Login data
@@ -12,10 +12,7 @@
   // Predefined addresses
   let addresses = ['192.168.1.1', '192.168.1.115'];
 
-  // SSH Connection status
-  let connected = 0;
-
-  // Obtaining addresses info
+  // Addresses info
   let addresses_error;
   let addresses_hint;
   let addresses_loading = false;
@@ -76,7 +73,7 @@
     });
     try {
       const json = await res.json();
-      connected = Boolean(json.connected);
+      $connected = Boolean(json.connected);
       // Replace Errors and Hints if there are new ones or empty them
       login_error = json.error ? json.error : '';
       login_hint = json.hint ? json.hint : '';
@@ -91,14 +88,13 @@
   }
 </script>
 
-<div class="panel">
-  <Box>
+<div in:fly={{ delay: 400 }} out:fly class="wrapper">
+  <div class="login">
     <div class="address">
       <Loader
         loading={addresses_loading}
         success={!addresses_error}
         always_visible={true}
-        type="slash"
       />
       <h3>SSH</h3>
       {#if addresses_form == 'SELECT'}
@@ -156,7 +152,7 @@
       </div>
     </form>
 
-    {#if connected}
+    {#if $connected}
       <div transition:slide class="message success">Połączono!</div>
     {/if}
     {#if login_error}
@@ -165,15 +161,22 @@
     {#if login_hint}
       <div transition:slide class="message hint">{login_hint}</div>
     {/if}
-  </Box>
+  </div>
 </div>
 
 <style>
-  .panel {
+  .wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
+  }
+  .login {
+    border-radius: var(--border-radius);
+    padding: 40px 200px;
+    width: 700px;
+    background-color: var(--main);
+    box-shadow: var(--elevated);
   }
 
   input {

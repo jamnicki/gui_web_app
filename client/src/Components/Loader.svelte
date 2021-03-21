@@ -1,7 +1,7 @@
 <script>
   import { onDestroy } from 'svelte';
 
-  export let type = 'squares';
+  export let type = 'slash';
   export let timer = 300;
   export let loading = true;
   export let success = false;
