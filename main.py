@@ -6,6 +6,7 @@ import json
 from flask import Flask, request, send_from_directory
 from paramiko import SSHClient, ssh_exception, AutoAddPolicy
 from server.utils import connection_alive, get_static_path, close_file_objects
+from server.tools import shorten_exception_message
 
 from server.random_funny_text import get_funny_text
 
