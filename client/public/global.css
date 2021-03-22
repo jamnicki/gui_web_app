@@ -1,97 +1,104 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
 
 :root {
-	--bg: #121212;
-	--main: #102A43;
-	--secondary: #486581;
-	--accent: #209BAA;
-	--text: #F0F4F8;
-	--border: solid 2px #486581;
-	--border-focus: solid 2px #209BAA;
-	--border-radius: 10px;
-	--elevated:
-			0 24px 38px 3px rgba(0,0,0,0.14),
-			0 9px 46px 8px rgba(0,0,0,0.12),
-			0 11px 15px -7px rgba(0,0,0,0.20);
-	--success: #5dfda5;
-	--error: #ff7a7a;
-	--hint: #fffda1;
+  --bg: #121212;
+  --main: #102a43;
+  --secondary: #486581;
+  --accent: #209baa;
+  --text: #f0f4f8;
+  --text-secondary: #b9d1e7;
+  --border: solid 2px #486581;
+  --border-focus: solid 2px #209baa;
+  --border-radius: 10px;
+  --elevated: 0 24px 38px 3px rgba(0, 0, 0, 0.14),
+    0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.2);
+  --success: #5dfda5;
+  --error: #ff7a7a;
+  --hint: #fffda1;
 }
 
 * {
-	box-sizing: border-box;
-	font-family: 'JetBrains Mono', monospace;
-	color: var(--text);
+  box-sizing: border-box;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text);
 }
 
-html, body {
-	position: relative;
-	width: 100%;
-	height: 100%;
+html,
+body {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 body {
-	margin: 0;
-	padding: 0;
-	background-color: var(--bg);
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
 }
 
-h1,h2,h3,h4,h5,h6 {
-	margin: 0;
-	padding: 0;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
 }
 
 label {
-	display: block;
-	margin: 20px 0;
+  display: block;
+  margin: 20px 0;
 }
 
-input, button, select {
-	display: block;
-	margin-top: 5px;
-	outline: none;
-	border: var(--border);
-	border-radius: var(--border-radius);
-	padding: 5px 10px;
-	background-color: var(--secondary);
-	color: var(--text);
+input,
+button,
+select {
+  display: block;
+  margin-top: 5px;
+  outline: none;
+  border: var(--border);
+  border-radius: var(--border-radius);
+  padding: 5px 10px;
+  background-color: var(--secondary);
+  color: var(--text);
 }
 select:focus,
 input:focus {
-	border: var(--border-focus);
+  border: var(--border-focus);
 }
 
 button,
-input[type="submit"] {
-	display: inline-block;
-	cursor: pointer;
-	border: var(--border-focus);
-	border-radius: var(--border-radius);
-	padding: 5px 20px;
-	background-color: var(--accent);
-	transition: box-shadow 200ms;
+input[type='submit'] {
+  display: inline-block;
+  cursor: pointer;
+  border: var(--border-focus);
+  border-radius: var(--border-radius);
+  padding: 5px 20px;
+  background-color: var(--accent);
+  transition: box-shadow 200ms;
 }
 button:hover,
-input[type="submit"]:hover {
-	box-shadow: var(--elevated);
+input[type='submit']:hover {
+  box-shadow: var(--elevated);
 }
 button:disabled {
-	cursor: default;
-	border: var(--border);
-	background-color: var(--secondary);
+  cursor: default;
+  border: var(--border);
+  background-color: var(--secondary);
 }
 
 .success {
-	color: var(--success);
+  color: var(--success);
 }
 .error,
 .fail {
-	color: var(--error);
+  color: var(--error);
 }
 .error {
-	font-size: 0.9rem;
+  font-size: 0.9rem;
 }
 .hint,
 .loading {
-	color: var(--hint);
+  color: var(--hint);
 }
