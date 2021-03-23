@@ -73,7 +73,7 @@
     });
     try {
       const json = await res.json();
-      $connected = Boolean(json.connected);
+      $connected = json.connected;
       // Replace Errors and Hints if there are new ones or empty them
       login_error = json.error ? json.error : '';
       login_hint = json.hint ? json.hint : '';

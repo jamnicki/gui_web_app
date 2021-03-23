@@ -36,7 +36,9 @@
   <span
     class="button"
     on:click={() => {
-      $panel = 'Login';
+      if (confirm('You will have to login again. Continue?')) {
+        $connected = 0;
+      }
     }}>Login</span
   >
   {#if $connected}

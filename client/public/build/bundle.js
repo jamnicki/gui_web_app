@@ -1249,7 +1249,7 @@ var app = (function () {
     			input = element("input");
     			attr_dev(input, "type", "text");
     			attr_dev(input, "class", "svelte-1brpval");
-    			add_location(input, file$3, 106, 8, 2907);
+    			add_location(input, file$3, 106, 8, 2898);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, input, anchor);
@@ -1306,7 +1306,7 @@ var app = (function () {
 
     			attr_dev(select, "class", "svelte-1brpval");
     			if (/*hostname_select*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[15].call(select));
-    			add_location(select, file$3, 100, 8, 2691);
+    			add_location(select, file$3, 100, 8, 2682);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, select, anchor);
@@ -1382,7 +1382,7 @@ var app = (function () {
     			t = text(t_value);
     			option.__value = /*i*/ ctx[23];
     			option.value = option.__value;
-    			add_location(option, file$3, 102, 12, 2783);
+    			add_location(option, file$3, 102, 12, 2774);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -1421,9 +1421,9 @@ var app = (function () {
     			img = element("img");
     			if (img.src !== (img_src_value = "icon/list.svg")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "select");
-    			add_location(img, file$3, 124, 10, 3401);
+    			add_location(img, file$3, 124, 10, 3392);
     			attr_dev(div, "class", "addresses-action svelte-1brpval");
-    			add_location(div, file$3, 118, 8, 3261);
+    			add_location(div, file$3, 118, 8, 3252);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1467,9 +1467,9 @@ var app = (function () {
     			img = element("img");
     			if (img.src !== (img_src_value = "icon/edit.svg")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "input");
-    			add_location(img, file$3, 115, 10, 3155);
+    			add_location(img, file$3, 115, 10, 3146);
     			attr_dev(div, "class", "addresses-action svelte-1brpval");
-    			add_location(div, file$3, 109, 8, 3016);
+    			add_location(div, file$3, 109, 8, 3007);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1511,7 +1511,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*addresses_error*/ ctx[5]);
     			attr_dev(span, "class", "message error svelte-1brpval");
-    			add_location(span, file$3, 133, 6, 3639);
+    			add_location(span, file$3, 133, 6, 3630);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1565,7 +1565,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*addresses_hint*/ ctx[6]);
     			attr_dev(span, "class", "message hint svelte-1brpval");
-    			add_location(span, file$3, 136, 6, 3750);
+    			add_location(span, file$3, 136, 6, 3741);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1618,7 +1618,7 @@ var app = (function () {
     			div = element("div");
     			div.textContent = "Połączono!";
     			attr_dev(div, "class", "message success svelte-1brpval");
-    			add_location(div, file$3, 155, 6, 4282);
+    			add_location(div, file$3, 155, 6, 4273);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1668,7 +1668,7 @@ var app = (function () {
     			div = element("div");
     			t = text(/*login_error*/ ctx[9]);
     			attr_dev(div, "class", "message error svelte-1brpval");
-    			add_location(div, file$3, 158, 6, 4383);
+    			add_location(div, file$3, 158, 6, 4374);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1722,7 +1722,7 @@ var app = (function () {
     			div = element("div");
     			t = text(/*login_hint*/ ctx[10]);
     			attr_dev(div, "class", "message hint svelte-1brpval");
-    			add_location(div, file$3, 161, 6, 4484);
+    			add_location(div, file$3, 161, 6, 4475);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1882,34 +1882,34 @@ var app = (function () {
     			t15 = space();
     			if (if_block6) if_block6.c();
     			attr_dev(h3, "class", "svelte-1brpval");
-    			add_location(h3, file$3, 98, 6, 2631);
+    			add_location(h3, file$3, 98, 6, 2622);
     			if (img.src !== (img_src_value = "icon/refresh.svg")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "select");
-    			add_location(img, file$3, 128, 8, 3538);
+    			add_location(img, file$3, 128, 8, 3529);
     			attr_dev(div0, "class", "addresses-action svelte-1brpval");
-    			add_location(div0, file$3, 127, 6, 3475);
+    			add_location(div0, file$3, 127, 6, 3466);
     			attr_dev(div1, "class", "address svelte-1brpval");
-    			add_location(div1, file$3, 92, 4, 2479);
+    			add_location(div1, file$3, 92, 4, 2470);
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "class", "svelte-1brpval");
-    			add_location(input0, file$3, 142, 8, 3904);
-    			add_location(label0, file$3, 140, 6, 3871);
+    			add_location(input0, file$3, 142, 8, 3895);
+    			add_location(label0, file$3, 140, 6, 3862);
     			attr_dev(input1, "type", "password");
     			attr_dev(input1, "class", "svelte-1brpval");
-    			add_location(input1, file$3, 146, 8, 4002);
-    			add_location(label1, file$3, 144, 6, 3969);
+    			add_location(input1, file$3, 146, 8, 3993);
+    			add_location(label1, file$3, 144, 6, 3960);
     			attr_dev(input2, "type", "submit");
     			input2.value = "Login";
     			attr_dev(input2, "class", "svelte-1brpval");
-    			add_location(input2, file$3, 148, 6, 4071);
+    			add_location(input2, file$3, 148, 6, 4062);
     			attr_dev(div2, "class", "login-loader svelte-1brpval");
-    			add_location(div2, file$3, 149, 6, 4147);
+    			add_location(div2, file$3, 149, 6, 4138);
     			attr_dev(form, "class", "svelte-1brpval");
-    			add_location(form, file$3, 139, 4, 3833);
+    			add_location(form, file$3, 139, 4, 3824);
     			attr_dev(div3, "class", "login svelte-1brpval");
-    			add_location(div3, file$3, 91, 2, 2455);
+    			add_location(div3, file$3, 91, 2, 2446);
     			attr_dev(div4, "class", "wrapper svelte-1brpval");
-    			add_location(div4, file$3, 90, 0, 2399);
+    			add_location(div4, file$3, 90, 0, 2390);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2281,7 +2281,7 @@ var app = (function () {
 
     		try {
     			const json = await res.json();
-    			set_store_value(connected, $connected = Boolean(json.connected), $connected);
+    			set_store_value(connected, $connected = json.connected, $connected);
 
     			// Replace Errors and Hints if there are new ones or empty them
     			$$invalidate(9, login_error = json.error ? json.error : "");
@@ -3624,7 +3624,7 @@ var app = (function () {
     const { console: console_1 } = globals;
     const file = "src/App.svelte";
 
-    // (42:2) {#if $connected}
+    // (44:2) {#if $connected}
     function create_if_block_5(ctx) {
     	let t;
     	let if_block1_anchor;
@@ -3683,14 +3683,14 @@ var app = (function () {
     		block,
     		id: create_if_block_5.name,
     		type: "if",
-    		source: "(42:2) {#if $connected}",
+    		source: "(44:2) {#if $connected}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (43:4) {#if $panel == 'Tests'}
+    // (45:4) {#if $panel == 'Tests'}
     function create_if_block_7(ctx) {
     	let span0;
     	let t3;
@@ -3705,9 +3705,9 @@ var app = (function () {
     			t3 = space();
     			span1 = element("span");
     			span1.textContent = "Tests";
-    			add_location(span0, file, 43, 6, 971);
+    			add_location(span0, file, 45, 6, 1043);
     			attr_dev(span1, "class", "button svelte-xp5i5m");
-    			add_location(span1, file, 44, 6, 1008);
+    			add_location(span1, file, 46, 6, 1080);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span0, anchor);
@@ -3733,14 +3733,14 @@ var app = (function () {
     		block,
     		id: create_if_block_7.name,
     		type: "if",
-    		source: "(43:4) {#if $panel == 'Tests'}",
+    		source: "(45:4) {#if $panel == 'Tests'}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (52:4) {#if $panel == 'Monitor'}
+    // (54:4) {#if $panel == 'Monitor'}
     function create_if_block_6(ctx) {
     	let span0;
     	let t3;
@@ -3755,9 +3755,9 @@ var app = (function () {
     			t3 = space();
     			span1 = element("span");
     			span1.textContent = "Monitor";
-    			add_location(span0, file, 52, 6, 1168);
+    			add_location(span0, file, 54, 6, 1240);
     			attr_dev(span1, "class", "button svelte-xp5i5m");
-    			add_location(span1, file, 53, 6, 1205);
+    			add_location(span1, file, 55, 6, 1277);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span0, anchor);
@@ -3783,14 +3783,14 @@ var app = (function () {
     		block,
     		id: create_if_block_6.name,
     		type: "if",
-    		source: "(52:4) {#if $panel == 'Monitor'}",
+    		source: "(54:4) {#if $panel == 'Monitor'}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (69:32) 
+    // (71:32) 
     function create_if_block_4(ctx) {
     	let monitor;
     	let current;
@@ -3822,14 +3822,14 @@ var app = (function () {
     		block,
     		id: create_if_block_4.name,
     		type: "if",
-    		source: "(69:32) ",
+    		source: "(71:32) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (67:30) 
+    // (69:30) 
     function create_if_block_3(ctx) {
     	let tests;
     	let current;
@@ -3861,14 +3861,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3.name,
     		type: "if",
-    		source: "(67:30) ",
+    		source: "(69:30) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (65:2) {#if $panel == 'Login'}
+    // (67:2) {#if $panel == 'Login'}
     function create_if_block_2(ctx) {
     	let login;
     	let current;
@@ -3900,14 +3900,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(65:2) {#if $panel == 'Login'}",
+    		source: "(67:2) {#if $panel == 'Login'}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (74:0) {#if $debug}
+    // (76:0) {#if $debug}
     function create_if_block(ctx) {
     	let div;
     	let promise;
@@ -3948,11 +3948,11 @@ var app = (function () {
     			t4 = space();
     			button2 = element("button");
     			button2.textContent = "Disconnect";
-    			add_location(button0, file, 84, 4, 1779);
-    			add_location(button1, file, 85, 4, 1833);
-    			add_location(button2, file, 86, 4, 1881);
+    			add_location(button0, file, 86, 4, 1851);
+    			add_location(button1, file, 87, 4, 1905);
+    			add_location(button2, file, 88, 4, 1953);
     			attr_dev(div, "class", "check-connection svelte-xp5i5m");
-    			add_location(div, file, 74, 2, 1522);
+    			add_location(div, file, 76, 2, 1594);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -4014,7 +4014,7 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(74:0) {#if $debug}",
+    		source: "(76:0) {#if $debug}",
     		ctx
     	});
 
@@ -4043,7 +4043,7 @@ var app = (function () {
     	return block;
     }
 
-    // (78:4) {:then value}
+    // (80:4) {:then value}
     function create_then_block(ctx) {
     	let if_block_anchor;
 
@@ -4087,14 +4087,14 @@ var app = (function () {
     		block,
     		id: create_then_block.name,
     		type: "then",
-    		source: "(78:4) {:then value}",
+    		source: "(80:4) {:then value}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (81:6) {:else}
+    // (83:6) {:else}
     function create_else_block(ctx) {
     	let span;
 
@@ -4103,7 +4103,7 @@ var app = (function () {
     			span = element("span");
     			span.textContent = "Connection failed";
     			attr_dev(span, "class", "fail svelte-xp5i5m");
-    			add_location(span, file, 81, 8, 1706);
+    			add_location(span, file, 83, 8, 1778);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -4117,14 +4117,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(81:6) {:else}",
+    		source: "(83:6) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (79:6) {#if value}
+    // (81:6) {#if value}
     function create_if_block_1(ctx) {
     	let span;
 
@@ -4133,7 +4133,7 @@ var app = (function () {
     			span = element("span");
     			span.textContent = "Connection alive";
     			attr_dev(span, "class", "success svelte-xp5i5m");
-    			add_location(span, file, 79, 8, 1638);
+    			add_location(span, file, 81, 8, 1710);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -4147,14 +4147,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(79:6) {#if value}",
+    		source: "(81:6) {#if value}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (76:23)        <Loader />     {:then value}
+    // (78:23)        <Loader />     {:then value}
     function create_pending_block(ctx) {
     	let loader;
     	let current;
@@ -4187,7 +4187,7 @@ var app = (function () {
     		block,
     		id: create_pending_block.name,
     		type: "pending",
-    		source: "(76:23)        <Loader />     {:then value}",
+    		source: "(78:23)        <Loader />     {:then value}",
     		ctx
     	});
 
@@ -4242,7 +4242,7 @@ var app = (function () {
     			attr_dev(nav, "class", "svelte-xp5i5m");
     			add_location(nav, file, 34, 0, 816);
     			attr_dev(main, "class", "svelte-xp5i5m");
-    			add_location(main, file, 63, 0, 1349);
+    			add_location(main, file, 65, 0, 1421);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4417,7 +4417,9 @@ var app = (function () {
     	});
 
     	const click_handler = () => {
-    		set_store_value(panel, $panel = "Login", $panel);
+    		if (confirm("You will have to login again. Continue?")) {
+    			set_store_value(connected, $connected = 0, $connected);
+    		}
     	};
 
     	const click_handler_1 = () => {
