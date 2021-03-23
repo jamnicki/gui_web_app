@@ -6,7 +6,6 @@ import json
 from flask import Flask, request, send_from_directory
 from paramiko import SSHClient, ssh_exception, AutoAddPolicy
 from server.utils import connection_alive, get_static_path, close_file_objects
-from server.tools import shorten_exception_message
 
 from server.random_funny_text import get_funny_text
 
@@ -60,7 +59,6 @@ def connect():
     # TODO: docstring, hints baseing on exceptions, ?hint database?
     response = {'connected': 0,
                 'error': None,
-                'error_full': None,
                 'hint': None}
 
     json_data = request.json
@@ -77,8 +75,7 @@ def connect():
         client.load_system_host_keys()
     except Exception as e:
         print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
-        response['error_full'] = str(e)
-        response['error'] = shorten_exception_message(response['error_full'])
+        response['error'] = str(e)
         return response
 
     try:
@@ -86,15 +83,13 @@ def connect():
                        timeout=15)
     except ssh_exception.AuthenticationException as e:
         print(f'Exception in {connect.__name__}():\n\t{e}')
-        response['error_full'] = str(e)
-        response['error'] = shorten_exception_message(response['error_full'])
+        response['error'] = str(e)
         response['hint'] = '''Check if the entered username or password
                               is correct.'''
         return response
     except ssh_exception.NoValidConnectionsError as e:
         print(f'Exception in {connect.__name__}():\n\t{e}')
-        response['error_full'] = str(e)
-        response['error'] = shorten_exception_message(response['error_full'])
+        response['error'] = str(e)
         response['hint'] = 'Try different IP.'
         return response
     except OSError as e:
@@ -111,8 +106,7 @@ def connect():
             return response
         else:
             print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
-            response['error_full'] = str(e)
-            response['error'] = shorten_exception_message(response['error_full'])
+            response['error'] = str(e)
             return response
     except TimeoutError as e:
         if e.errno == 110:
@@ -121,13 +115,11 @@ def connect():
             return response
         else:
             print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
-            response['error_full'] = str(e)
-            response['error'] = shorten_exception_message(response['error_full'])
+            response['error'] = str(e)
             return response
     except Exception as e:
         print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
-        response['error_full'] = str(e)
-        response['error'] = shorten_exception_message(response['error_full'])
+        response['error'] = str(e)
         response['hint'] = 'Oopsie Woopsie\nNie wiem\nIdź pobiegać? xd'
     else:
         response['connected'] = 1
@@ -156,14 +148,11 @@ def get_available_addresses():
             'addresses' (list): local IP addresses that
                                 matching pattern '192.168.x.x'.
                                 None if not found.
-            'error' (str): Shortened exception message if an unexpected error occured.
-                           None if not.
-            'error_full' (str): Raw exception message if an unexpected error occured.
+            'error' (str): Exception message if an unexpected error occured.
                            None if not.
     """
     response = {'addresses': [],
                 'error': None,
-                'error_full': None,
                 'hint': None}
     try:
         if system == 'Linux':
@@ -174,8 +163,7 @@ def get_available_addresses():
                                              capture_output=True, text=True)
             except FileNotFoundError as e:
                 print('"pnscan" required.\n\tTry "sudo apt install pnscan"')
-                response['error_full'] = str(e)
-                response['error'] = shorten_exception_message(response['error_full'])
+                response['error'] = str(e)
                 response['hint'] = 'Try "sudo apt install pnscan".'
                 return response
         else:
@@ -188,8 +176,7 @@ def get_available_addresses():
         else:
             response['error'] = 'No addresses found.'
     except Exception as e:
-        response['error_full'] = str(e)
-        response['error'] = shorten_exception_message(response['error_full'])
+        response['error'] = str(e)
         print(f'Unexpected exception in {get_available_addresses.__name__}(): \
                 \n\t{e}')
 
@@ -207,14 +194,11 @@ def get_tests_info():
                 'script_name' (str): Tests filename.
                 'test_name' (str): Tests name.
                 'description' (str): Short description of the test.}, ...
-            'error' (str):	Shortened exception message if an unexpected error occured.
-                            None if not.
-            'error_full' (str):	Raw exception message if an unexpected error occured.
+            'error' (str):	Exception message if an unexpected error occured.
                             None if not.
     """
     response = {'tests_info': [],
-                'error': None,
-                'error_full': None}
+                'error': None}
 
     # Jokes aside, I need something of a mockup script, that would simulate the
     # behaviours of the real boat. Maybe create a /mockup folder in the root
@@ -272,13 +256,11 @@ def get_tests_info():
         close_file_objects([stdin, stdout, stderr])
     except ssh_exception.SSHException as e:
         print(f'Exception in {get_tests_info.__name__}():\n\t{e}')
-        response['error_full'] = str(e)
-        response['error'] = shorten_exception_message(response['error_full'])
+        response['error'] = str(e)
         return response
     except Exception as e:
         print(f'Unexpected exception in {get_tests_info.__name__}():\n\t{e}')
-        response['error_full'] = str(e)
-        response['error'] = shorten_exception_message(response['error_full'])
+        response['error'] = str(e)
         return response
 
     for match in matches:
@@ -307,17 +289,14 @@ def run_test(id):
         dict:
             'passed' (int): 1 if test passed.
                             0 if not.
-            'error' (str):	Shortened exception message if an unexpected error occurred.
-                            None if not.
-            'error_full' (str):	Raw exception message if an unexpected error occurred.
+            'error' (str):	Exception message if an unexpected error occurred.
                             None if not.
     """
 
     # TODO: actual path to tests json file
 
     response = {'passed': 0,
-                'error': None,
-                'error_full': None}
+                'error': None}
 
     if DEBUG:
         tests_to_pass = [1, 2, 4, 5, 9]
@@ -335,8 +314,7 @@ def run_test(id):
         current_test = test_data[str(id)]
     except KeyError as e:
         print(f'Exception in {run_test.__name__}():\n\t{e}')
-        response['error_full'] = str(e)
-        response['error'] = shorten_exception_message(response['error_full'])
+        response['error'] = str(e)
         return response
 
     try:
@@ -344,8 +322,7 @@ def run_test(id):
         module_name = script_name.split('.')[0]
     except KeyError as e:
         print(f'Exception in {run_test.__name__}():\n\t{e}')
-        response['error_full'] = str(e)
-        response['error'] = shorten_exception_message(response['error_full'])
+        response['error'] = str(e)
         return response
 
     command = f'python3 -m tests.{module_name} run'
@@ -356,8 +333,7 @@ def run_test(id):
         close_file_objects([stdin, stdout, stderr])
     except ssh_exception.SSHException as e:
         print(f'Exception in {run_test.__name__}():\n\t{e}')
-        response['error_full'] = str(e)
-        response['error'] = shorten_exception_message(response['error_full'])
+        response['error'] = str(e)
         return response
     except Exception as e:
         print(f'Unexpected exception in {run_test.__name__}():\n\t{e}')
@@ -367,8 +343,7 @@ def run_test(id):
         if not err:
             response['passed'] = 1
         else:
-            response['error_full'] = err
-            response['error'] = shorten_exception_message(response['error_full'])
+            response['error'] = err
             print(f'ROV test error:\n{err}')
 
     return response
