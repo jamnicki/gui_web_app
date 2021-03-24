@@ -302,8 +302,9 @@ def run_test(id):
         if not err:
             response['passed'] = 1
         else:
-            response['error'] = err
-            print(f'ROV test error:\n{err}')
+            response['error_full'] = err
+            response['error'] = shorten_exception_message(err)
+            print(f'ROV test error:\n{response['error']}')
 
     return response
 
