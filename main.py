@@ -5,7 +5,8 @@ import webview
 import json
 from flask import Flask, request, send_from_directory
 from paramiko import SSHClient, ssh_exception, AutoAddPolicy
-from server.utils import connection_alive, get_static_path, close_file_objects
+from server.utils import connection_alive, get_static_path, close_file_objects,
+			 shorten_exception_message
 
 from server.random_funny_text import get_funny_text
 
@@ -182,6 +183,7 @@ def get_available_addresses():
             response['error'] = 'No addresses found.'
     except Exception as e:
         response['error'] = str(e)
+
         print(f'Unexpected exception in {get_available_addresses.__name__}(): \
                 \n\t{e}')
 
@@ -348,8 +350,9 @@ def run_test(id):
         if not err:
             response['passed'] = 1
         else:
-            response['error'] = err
-            print(f'ROV test error:\n{err}')
+            response['error_full'] = err
+            response['error'] = shorten_exception_message(err)
+            print(f'ROV test error:\n{response['error']}')
 
     return response
 
