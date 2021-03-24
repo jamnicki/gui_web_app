@@ -15,7 +15,9 @@
     $connected = 1;
   }
   function disconnect() {
-    $connected = 0;
+    if (confirm('You will have to login again. Continue?')) {
+      $connected = 0;
+    }
   }
 
   $: if ($connected) {
@@ -33,14 +35,9 @@
 </script>
 
 <nav>
-  <span
-    class="button"
-    on:click={() => {
-      $panel = 'Login';
-    }}>Login</span
-  >
+  <span class="button" on:click={disconnect}>Login</span>
   {#if $connected}
-    {#if $panel == 'Tests'}
+    {#if $panel == 'Tests' || $panel == 'Monitor'}
       <span>&nbsp;{'>'}&nbsp;</span>
       <span
         class="button"

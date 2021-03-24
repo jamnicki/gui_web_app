@@ -1,7 +1,8 @@
 <script>
   import { fly, slide } from 'svelte/transition';
+  import { flip } from 'svelte/animate';
+  import { panel } from '../stores.js';
   import Loader from '../Components/Loader.svelte';
-  import Box from '../Components/Box.svelte';
 
   // Obtaining tests info
   let tests = [];
@@ -15,6 +16,15 @@
       }
     }
     return false;
+  })();
+
+  $: all_passed = (() => {
+    for (let test of tests) {
+      if (test.passed != 1) {
+        return false;
+      }
+    }
+    return true;
   })();
 
   async function getTests() {
@@ -50,6 +60,22 @@
     const res = await fetch(`/tests/run/${test.id}`);
     try {
       const json = await res.json();
+      // elevate a failed test to the top of the list
+      if (json.passed == 0 && test.passed != 0) {
+        tests = tests.filter((t) => t.id != test.id);
+        tests.unshift(test);
+      }
+      // find a proper place for a resolved test
+      else if (json.passed == 1 && test.passed == 0) {
+        tests = tests.filter((t) => t.id != test.id);
+        let index = 0;
+        for (let t of tests) {
+          if (t.id < test.id) {
+            index = tests.indexOf(t) + 1;
+          }
+        }
+        tests.splice(index, 0, test);
+      }
       test.passed = json.passed;
       // Replace Errors if there are new ones or empty them
       test.error = json.error ? json.error : '';
@@ -66,11 +92,15 @@
       testRun(i);
     }
   }
+
+  function startMonitor() {
+    $panel = 'Monitor';
+  }
 </script>
 
 <div in:fly={{ delay: 400 }} out:fly class="wrapper">
   <h1><Loader loading={tests_loading} /> Tests</h1>
-  <div class="tests-controls">
+  <div class="controls">
     <button on:click={runAllTests}>
       {#if any_test_running}
         &nbsp;&nbsp;&nbsp;<Loader />&nbsp;&nbsp;&nbsp;
@@ -78,13 +108,20 @@
         Run all
       {/if}
     </button>
+    {#if all_passed}
+      <button class="success" on:click={startMonitor}>Start engines</button>
+    {/if}
   </div>
   {#if tests_error}
     <span transition:slide class="message error">{tests_error}</span>
   {/if}
   <div class="tests">
-    {#each tests as test, i}
-      <Box>
+    {#each tests as test, i (test.id)}
+      <div
+        class="test big"
+        class:big={test.passed == 0}
+        animate:flip={{ duration: 400 }}
+      >
         <div class="test-wrapper">
           <div class="test-bar">
             <span>
@@ -116,16 +153,12 @@
             {/if}
           </div>
         </div>
-      </Box>
+      </div>
     {/each}
   </div>
 </div>
 
 <style>
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
   .wrapper {
     position: relative;
     left: 50%;
@@ -135,10 +168,18 @@
     min-height: 100%;
   }
 
-  .tests-controls {
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .controls {
     display: flex;
     justify-content: center;
     margin-bottom: 50px;
+  }
+
+  button.success {
+    margin-left: 20px;
   }
 
   .tests {
@@ -148,10 +189,20 @@
     row-gap: 30px;
   }
 
+  .test {
+    border-radius: var(--border-radius);
+    background-color: var(--main);
+    box-shadow: var(--elevated);
+  }
+  .test.big {
+    grid-column: 1 / span 2;
+  }
+
   .test-wrapper {
     border-radius: var(--border-radius);
     background: var(--secondary);
   }
+
   .test-bar {
     display: flex;
     padding: 10px 20px;
@@ -164,11 +215,13 @@
     margin: 0;
     padding: 0 20px;
   }
+
   .test-content {
     padding: 20px;
     border-radius: var(--border-radius);
     background: var(--main);
   }
+
   .test-name {
     font-weight: 900;
   }

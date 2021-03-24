@@ -87,6 +87,11 @@ button:disabled {
   border: var(--border);
   background-color: var(--secondary);
 }
+button.success {
+  color: #000;
+  border-color: var(--success);
+  background-color: var(--success);
+}
 
 .success {
   color: var(--success);
