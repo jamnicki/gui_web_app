@@ -1,8 +1,8 @@
 <script>
-  import { slide } from 'svelte/transition';
-  import Box from '../Components/Box.svelte';
+  import { slide, fly } from 'svelte/transition';
+  import { connected } from '../stores.js';
   import Loader from '../Components/Loader.svelte';
-  
+
   // Login data
   let hostname_select;
   let hostname_input;
@@ -10,25 +10,18 @@
   let password;
 
   // Predefined addresses
-  let addresses = [
-    '192.168.1.1',
-    '192.168.1.115'
-  ]
-  
-  // SSH Connection status
-  let connected = 0;
-  
-  // Obtaining addresses info
+  let addresses = ['192.168.1.1', '192.168.1.115'];
+
+  // Addresses info
   let addresses_error;
   let addresses_hint;
   let addresses_loading = false;
   let addresses_form = 'SELECT';
-  
+
   // Login info
   let login_error;
   let login_hint;
   let login_loading = false;
-
 
   async function getAddresses() {
     addresses_loading = true;
@@ -38,32 +31,33 @@
       const json = await res.json();
       if (json.addresses) {
         // Filter out addresses that are already on the list
-        let new_addresses = json.addresses.filter((elem)=>{
+        let new_addresses = json.addresses.filter((elem) => {
           return !addresses.includes(elem);
         });
         // Combine the old and new addresses
         addresses = addresses.concat(new_addresses);
       }
       // Replace Errors and Hints if there are new ones or empty them
-      addresses_error = (json.error) ? json.error : '';
-      addresses_hint = (json.hint) ? json.hint : '';
+      addresses_error = json.error ? json.error : '';
+      addresses_hint = json.hint ? json.hint : '';
     } catch (error) {
       addresses_error = error;
     }
     addresses_loading = false;
   }
-  getAddresses()
-  
+  getAddresses();
 
   async function login() {
     login_loading = true;
     let data = {
       // Load hostname from Select or Input field
-      hostname: (addresses_form == 'SELECT')
-        ? addresses[hostname_select] : hostname_input,
+      hostname:
+        addresses_form == 'SELECT'
+          ? addresses[hostname_select]
+          : hostname_input,
       username: username,
-      password: password
-    }
+      password: password,
+    };
     // Filter out empty fields
     for (let key in data) {
       if (data[key] === '') {
@@ -74,15 +68,15 @@
     // Send data
     const res = await fetch('/connect', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(data)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
     });
     try {
       const json = await res.json();
-      connected = Boolean(json.connected);
+      $connected = json.connected;
       // Replace Errors and Hints if there are new ones or empty them
-      login_error = (json.error) ? json.error : '';
-      login_hint = (json.hint) ? json.hint : '';
+      login_error = json.error ? json.error : '';
+      login_hint = json.hint ? json.hint : '';
     } catch (error) {
       login_error = error;
     }
@@ -94,99 +88,115 @@
   }
 </script>
 
-
-<main>
-  <Box>
-    <div class="wrapper">
-
-      <div class="address">
-        <Loader loading={addresses_loading} success={!addresses_error}
-            always_visible={true} type="slash"/>
-        <h3>SSH</h3>
-        {#if addresses_form == 'SELECT'}
-          <select bind:value={hostname_select}>
-            {#each addresses as address, i}
-              <option value={i}>{address}</option>
-            {/each}
-          </select>
-        {:else if addresses_form == 'INPUT'}
-          <input type="text" bind:value={hostname_input}>
-        {/if}
-        {#if addresses_form == 'SELECT'}
-          <span class="addresses-action"
-              on:click={()=>{ addresses_form = 'INPUT' }}>M</span>
-        {:else if addresses_form == 'INPUT'}
-          <span class="addresses-action"
-              on:click={()=>{ addresses_form = 'SELECT' }}>S</span>
-        {/if}
-        <span class="addresses-action" on:click={getAddresses}>R</span>
-      </div>
-      
-      {#if addresses_error}
-        <span transition:slide class="message error">{addresses_error}</span>
+<div in:fly={{ delay: 400 }} out:fly class="wrapper">
+  <div class="login">
+    <div class="address">
+      <Loader
+        loading={addresses_loading}
+        success={!addresses_error}
+        always_visible={true}
+      />
+      <h3>SSH</h3>
+      {#if addresses_form == 'SELECT'}
+        <select bind:value={hostname_select}>
+          {#each addresses as address, i}
+            <option value={i}>{address}</option>
+          {/each}
+        </select>
+      {:else if addresses_form == 'INPUT'}
+        <input type="text" bind:value={hostname_input} />
       {/if}
-      {#if addresses_hint}
-        <span transition:slide class="message hint">{addresses_hint}</span>
-      {/if}
-
-      <form on:keydown={handleEnter}>
-        <label>Username
-          <input type="text" bind:value={username}>
-        </label>
-        <label>Password
-          <input type="password" bind:value={password}>
-        </label>
-        <input type="submit" value="Login"
-            on:click|preventDefault={login}>
-        <div class="login-loader">
-          <Loader type="dots" loading={login_loading}/>
+      {#if addresses_form == 'SELECT'}
+        <div
+          class="addresses-action"
+          on:click={() => {
+            addresses_form = 'INPUT';
+          }}
+        >
+          <img src="icon/edit.svg" alt="input" />
         </div>
-      </form>
-
-      {#if connected}
-        <div transition:slide class="message success">Połączono!</div>
+      {:else if addresses_form == 'INPUT'}
+        <div
+          class="addresses-action"
+          on:click={() => {
+            addresses_form = 'SELECT';
+          }}
+        >
+          <img src="icon/list.svg" alt="select" />
+        </div>
       {/if}
-      {#if login_error}
-        <div transition:slide class="message error">{login_error}</div>
-      {/if}
-      {#if login_hint}
-        <div transition:slide class="message hint">{login_hint}</div>
-      {/if}
-
+      <div class="addresses-action" on:click={getAddresses}>
+        <img src="icon/refresh.svg" alt="select" />
+      </div>
     </div>
-  </Box>
-</main>
 
+    {#if addresses_error}
+      <span transition:slide class="message error">{addresses_error}</span>
+    {/if}
+    {#if addresses_hint}
+      <span transition:slide class="message hint">{addresses_hint}</span>
+    {/if}
+
+    <form on:keydown={handleEnter}>
+      <label
+        >Username
+        <input type="text" bind:value={username} />
+      </label>
+      <label
+        >Password
+        <input type="password" bind:value={password} />
+      </label>
+      <input type="submit" value="Login" on:click|preventDefault={login} />
+      <div class="login-loader">
+        <Loader type="dots" loading={login_loading} />
+      </div>
+    </form>
+
+    {#if $connected}
+      <div transition:slide class="message success">Połączono!</div>
+    {/if}
+    {#if login_error}
+      <div transition:slide class="message error">{login_error}</div>
+    {/if}
+    {#if login_hint}
+      <div transition:slide class="message hint">{login_hint}</div>
+    {/if}
+  </div>
+</div>
 
 <style>
-  main {
+  .wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
+  }
+  .login {
+    border-radius: var(--border-radius);
+    padding: 40px 200px;
+    width: 700px;
+    background-color: var(--main);
+    box-shadow: var(--elevated);
   }
 
   input {
     width: 100%;
   }
 
-  .wrapper {
-    width: 250px;
-  }
   .address {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  .address * {
+  .address > * {
     margin: 0 5px;
   }
-  select {
-    min-width: 140px;
+  .address > select {
+    width: 140px;
     padding: 0 5px;
   }
   .address > input {
-    min-width: 140px;
+    width: 140px;
     padding: 1px 8px;
   }
 
@@ -200,7 +210,11 @@
   }
 
   .addresses-action {
+    display: flex;
+    justify-content: center;
     cursor: pointer;
+    width: 18px;
+    height: 18px;
   }
 
   .message {
