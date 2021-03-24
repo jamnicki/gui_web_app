@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
 
-:root {
+/* :root {
   --scroll-thumb: #3d3d3d;
   --scroll-track: #121212;
   --bg: #121212;
@@ -11,6 +11,24 @@
   --text-secondary: #b9d1e7;
   --border: solid 2px #486581;
   --border-focus: solid 2px #209baa;
+  --border-radius: 10px;
+  --elevated: 0 24px 38px 3px rgba(0, 0, 0, 0.14),
+    0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.2);
+  --success: #5dfda5;
+  --error: #ff7a7a;
+  --hint: #fffda1;
+} */
+:root {
+  --scroll-thumb: #151619;
+  --scroll-track: #222327;
+  --bg: #222327;
+  --main: #151619;
+  --secondary: #222327;
+  --accent: #19a7e7;
+  --text: #f0f4f8;
+  --text-secondary: #b9d1e7;
+  --border: solid 2px #222327;
+  --border-focus: solid 2px #19a7e7;
   --border-radius: 10px;
   --elevated: 0 24px 38px 3px rgba(0, 0, 0, 0.14),
     0 9px 46px 8px rgba(0, 0, 0, 0.12), 0 11px 15px -7px rgba(0, 0, 0, 0.2);

@@ -118,40 +118,38 @@
   <div class="tests">
     {#each tests as test, i (test.id)}
       <div
-        class="test big"
+        class="test"
         class:big={test.passed == 0}
         animate:flip={{ duration: 400 }}
       >
-        <div class="test-wrapper">
-          <div class="test-bar">
-            <span>
-              {test.id}
-              {test.script_name}
-            </span>
-            <button
-              on:click={() => {
-                testRun(i);
-              }}
-            >
-              {#if test.running}
-                &nbsp;<Loader />&nbsp;
-              {:else}
-                Run
-              {/if}
-            </button>
-          </div>
-          <div class="test-content">
-            <p class="test-name">{test.test_name}</p>
-            <p>{test.description}</p>
-            {#if test.passed == 1}
-              <span transition:slide class="message success">Passing</span>
-            {:else if test.passed == 0}
-              <span transition:slide class="message error">Failing</span>
+        <div class="test-bar">
+          <span>
+            {test.id}
+            {test.script_name}
+          </span>
+          <button
+            on:click={() => {
+              testRun(i);
+            }}
+          >
+            {#if test.running}
+              &nbsp;<Loader />&nbsp;
+            {:else}
+              Run
             {/if}
-            {#if test.error}
-              <span transition:slide class="message error">{test.error}</span>
-            {/if}
-          </div>
+          </button>
+        </div>
+        <div class="test-content">
+          <p class="test-name">{test.test_name}</p>
+          <p>{test.description}</p>
+          {#if test.passed == 1}
+            <span transition:slide class="message success">Passing</span>
+          {:else if test.passed == 0}
+            <span transition:slide class="message error">Failing</span>
+          {/if}
+          {#if test.error}
+            <span transition:slide class="message error">{test.error}</span>
+          {/if}
         </div>
       </div>
     {/each}
@@ -189,23 +187,16 @@
     row-gap: 30px;
   }
 
-  .test {
-    border-radius: var(--border-radius);
-    background-color: var(--main);
-    box-shadow: var(--elevated);
-  }
   .test.big {
     grid-column: 1 / span 2;
-  }
-
-  .test-wrapper {
-    border-radius: var(--border-radius);
-    background: var(--secondary);
   }
 
   .test-bar {
     display: flex;
     padding: 10px 20px;
+    margin-bottom: 5px;
+    border-radius: var(--border-radius);
+    background-color: var(--main);
   }
   .test-bar > span {
     flex: 1;
@@ -219,7 +210,7 @@
   .test-content {
     padding: 20px;
     border-radius: var(--border-radius);
-    background: var(--main);
+    background-color: var(--main);
   }
 
   .test-name {
