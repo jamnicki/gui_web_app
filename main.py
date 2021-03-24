@@ -11,8 +11,9 @@ from server.utils import (connection_alive, get_static_path, close_file_objects,
 from server.random_funny_text import get_funny_text
 
 
-DESKTOP = True
+DESKTOP = False
 DEBUG = True
+DEBUG_TESTS_FAILING = []
 
 
 app = Flask(__name__, static_folder=get_static_path('client/public'))
@@ -306,8 +307,7 @@ def run_test(id):
                 'error': None}
 
     if DEBUG:
-        failed = []
-        if id not in failed:
+        if id not in DEBUG_TESTS_FAILING:
             response['passed'] = 1
         else:
             response['error'] = 'Our programmers are working day and night to solve this issue. Stay still. Stay positive. Hydrate yourself.'

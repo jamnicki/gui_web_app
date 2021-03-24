@@ -176,7 +176,7 @@
     padding: 40px 200px;
     width: 700px;
     background-color: var(--main);
-    box-shadow: var(--elevated);
+    /* box-shadow: var(--elevated); */
   }
 
   input {

@@ -1372,7 +1372,7 @@ var app = (function () {
     		c: function create() {
     			input = element("input");
     			attr_dev(input, "type", "text");
-    			attr_dev(input, "class", "svelte-1brpval");
+    			attr_dev(input, "class", "svelte-1bbvwex");
     			add_location(input, file$3, 106, 8, 2898);
     		},
     		m: function mount(target, anchor) {
@@ -1428,7 +1428,7 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(select, "class", "svelte-1brpval");
+    			attr_dev(select, "class", "svelte-1bbvwex");
     			if (/*hostname_select*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[15].call(select));
     			add_location(select, file$3, 100, 8, 2682);
     		},
@@ -1546,7 +1546,7 @@ var app = (function () {
     			if (img.src !== (img_src_value = "icon/list.svg")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "select");
     			add_location(img, file$3, 124, 10, 3392);
-    			attr_dev(div, "class", "addresses-action svelte-1brpval");
+    			attr_dev(div, "class", "addresses-action svelte-1bbvwex");
     			add_location(div, file$3, 118, 8, 3252);
     		},
     		m: function mount(target, anchor) {
@@ -1592,7 +1592,7 @@ var app = (function () {
     			if (img.src !== (img_src_value = "icon/edit.svg")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "input");
     			add_location(img, file$3, 115, 10, 3146);
-    			attr_dev(div, "class", "addresses-action svelte-1brpval");
+    			attr_dev(div, "class", "addresses-action svelte-1bbvwex");
     			add_location(div, file$3, 109, 8, 3007);
     		},
     		m: function mount(target, anchor) {
@@ -1634,7 +1634,7 @@ var app = (function () {
     		c: function create() {
     			span = element("span");
     			t = text(/*addresses_error*/ ctx[5]);
-    			attr_dev(span, "class", "message error svelte-1brpval");
+    			attr_dev(span, "class", "message error svelte-1bbvwex");
     			add_location(span, file$3, 133, 6, 3630);
     		},
     		m: function mount(target, anchor) {
@@ -1688,7 +1688,7 @@ var app = (function () {
     		c: function create() {
     			span = element("span");
     			t = text(/*addresses_hint*/ ctx[6]);
-    			attr_dev(span, "class", "message hint svelte-1brpval");
+    			attr_dev(span, "class", "message hint svelte-1bbvwex");
     			add_location(span, file$3, 136, 6, 3741);
     		},
     		m: function mount(target, anchor) {
@@ -1741,7 +1741,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			div.textContent = "Połączono!";
-    			attr_dev(div, "class", "message success svelte-1brpval");
+    			attr_dev(div, "class", "message success svelte-1bbvwex");
     			add_location(div, file$3, 155, 6, 4273);
     		},
     		m: function mount(target, anchor) {
@@ -1791,7 +1791,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			t = text(/*login_error*/ ctx[9]);
-    			attr_dev(div, "class", "message error svelte-1brpval");
+    			attr_dev(div, "class", "message error svelte-1bbvwex");
     			add_location(div, file$3, 158, 6, 4374);
     		},
     		m: function mount(target, anchor) {
@@ -1845,7 +1845,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			t = text(/*login_hint*/ ctx[10]);
-    			attr_dev(div, "class", "message hint svelte-1brpval");
+    			attr_dev(div, "class", "message hint svelte-1bbvwex");
     			add_location(div, file$3, 161, 6, 4475);
     		},
     		m: function mount(target, anchor) {
@@ -2005,34 +2005,34 @@ var app = (function () {
     			if (if_block5) if_block5.c();
     			t15 = space();
     			if (if_block6) if_block6.c();
-    			attr_dev(h3, "class", "svelte-1brpval");
+    			attr_dev(h3, "class", "svelte-1bbvwex");
     			add_location(h3, file$3, 98, 6, 2622);
     			if (img.src !== (img_src_value = "icon/refresh.svg")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "select");
     			add_location(img, file$3, 128, 8, 3529);
-    			attr_dev(div0, "class", "addresses-action svelte-1brpval");
+    			attr_dev(div0, "class", "addresses-action svelte-1bbvwex");
     			add_location(div0, file$3, 127, 6, 3466);
-    			attr_dev(div1, "class", "address svelte-1brpval");
+    			attr_dev(div1, "class", "address svelte-1bbvwex");
     			add_location(div1, file$3, 92, 4, 2470);
     			attr_dev(input0, "type", "text");
-    			attr_dev(input0, "class", "svelte-1brpval");
+    			attr_dev(input0, "class", "svelte-1bbvwex");
     			add_location(input0, file$3, 142, 8, 3895);
     			add_location(label0, file$3, 140, 6, 3862);
     			attr_dev(input1, "type", "password");
-    			attr_dev(input1, "class", "svelte-1brpval");
+    			attr_dev(input1, "class", "svelte-1bbvwex");
     			add_location(input1, file$3, 146, 8, 3993);
     			add_location(label1, file$3, 144, 6, 3960);
     			attr_dev(input2, "type", "submit");
     			input2.value = "Login";
-    			attr_dev(input2, "class", "svelte-1brpval");
+    			attr_dev(input2, "class", "svelte-1bbvwex");
     			add_location(input2, file$3, 148, 6, 4062);
-    			attr_dev(div2, "class", "login-loader svelte-1brpval");
+    			attr_dev(div2, "class", "login-loader svelte-1bbvwex");
     			add_location(div2, file$3, 149, 6, 4138);
-    			attr_dev(form, "class", "svelte-1brpval");
+    			attr_dev(form, "class", "svelte-1bbvwex");
     			add_location(form, file$3, 139, 4, 3824);
-    			attr_dev(div3, "class", "login svelte-1brpval");
+    			attr_dev(div3, "class", "login svelte-1bbvwex");
     			add_location(div3, file$3, 91, 2, 2446);
-    			attr_dev(div4, "class", "wrapper svelte-1brpval");
+    			attr_dev(div4, "class", "wrapper svelte-1bbvwex");
     			add_location(div4, file$3, 90, 0, 2390);
     		},
     		l: function claim(nodes) {
@@ -2648,7 +2648,7 @@ var app = (function () {
     		c: function create() {
     			button = element("button");
     			button.textContent = "Start engines";
-    			attr_dev(button, "class", "success svelte-8757eo");
+    			attr_dev(button, "class", "success svelte-1huot15");
     			add_location(button, file$2, 111, 6, 2814);
     		},
     		m: function mount(target, anchor) {
@@ -2689,7 +2689,7 @@ var app = (function () {
     		c: function create() {
     			span = element("span");
     			t = text(/*tests_error*/ ctx[1]);
-    			attr_dev(span, "class", "message error svelte-8757eo");
+    			attr_dev(span, "class", "message error svelte-1huot15");
     			add_location(span, file$2, 115, 4, 2928);
     		},
     		m: function mount(target, anchor) {
@@ -2732,7 +2732,7 @@ var app = (function () {
     	return block;
     }
 
-    // (138:14) {:else}
+    // (137:12) {:else}
     function create_else_block$1(ctx) {
     	let t;
 
@@ -2754,14 +2754,14 @@ var app = (function () {
     		block,
     		id: create_else_block$1.name,
     		type: "else",
-    		source: "(138:14) {:else}",
+    		source: "(137:12) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (136:14) {#if test.running}
+    // (135:12) {#if test.running}
     function create_if_block_3$1(ctx) {
     	let t0;
     	let loader;
@@ -2801,14 +2801,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3$1.name,
     		type: "if",
-    		source: "(136:14) {#if test.running}",
+    		source: "(135:12) {#if test.running}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (148:39) 
+    // (147:37) 
     function create_if_block_2$1(ctx) {
     	let span;
     	let span_transition;
@@ -2818,8 +2818,8 @@ var app = (function () {
     		c: function create() {
     			span = element("span");
     			span.textContent = "Failing";
-    			attr_dev(span, "class", "message error svelte-8757eo");
-    			add_location(span, file$2, 148, 14, 3927);
+    			attr_dev(span, "class", "message error svelte-1huot15");
+    			add_location(span, file$2, 147, 12, 3840);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -2850,14 +2850,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2$1.name,
     		type: "if",
-    		source: "(148:39) ",
+    		source: "(147:37) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (146:12) {#if test.passed == 1}
+    // (145:10) {#if test.passed == 1}
     function create_if_block_1$1(ctx) {
     	let span;
     	let span_transition;
@@ -2867,8 +2867,8 @@ var app = (function () {
     		c: function create() {
     			span = element("span");
     			span.textContent = "Passing";
-    			attr_dev(span, "class", "message success svelte-8757eo");
-    			add_location(span, file$2, 146, 14, 3811);
+    			attr_dev(span, "class", "message success svelte-1huot15");
+    			add_location(span, file$2, 145, 12, 3728);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -2899,14 +2899,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1$1.name,
     		type: "if",
-    		source: "(146:12) {#if test.passed == 1}",
+    		source: "(145:10) {#if test.passed == 1}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (151:12) {#if test.error}
+    // (150:10) {#if test.error}
     function create_if_block$1(ctx) {
     	let span;
     	let t_value = /*test*/ ctx[11].error + "";
@@ -2918,8 +2918,8 @@ var app = (function () {
     		c: function create() {
     			span = element("span");
     			t = text(t_value);
-    			attr_dev(span, "class", "message error svelte-8757eo");
-    			add_location(span, file$2, 151, 14, 4048);
+    			attr_dev(span, "class", "message error svelte-1huot15");
+    			add_location(span, file$2, 150, 12, 3955);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -2954,7 +2954,7 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(151:12) {#if test.error}",
+    		source: "(150:10) {#if test.error}",
     		ctx
     	});
 
@@ -2963,7 +2963,6 @@ var app = (function () {
 
     // (119:4) {#each tests as test, i (test.id)}
     function create_each_block(key_1, ctx) {
-    	let div3;
     	let div2;
     	let div0;
     	let span;
@@ -3029,7 +3028,6 @@ var app = (function () {
     		key: key_1,
     		first: null,
     		c: function create() {
-    			div3 = element("div");
     			div2 = element("div");
     			div0 = element("div");
     			span = element("span");
@@ -3051,27 +3049,24 @@ var app = (function () {
     			t9 = space();
     			if (if_block2) if_block2.c();
     			t10 = space();
-    			attr_dev(span, "class", "svelte-8757eo");
-    			add_location(span, file$2, 126, 12, 3265);
-    			attr_dev(button, "class", "svelte-8757eo");
-    			add_location(button, file$2, 130, 12, 3361);
-    			attr_dev(div0, "class", "test-bar svelte-8757eo");
-    			add_location(div0, file$2, 125, 10, 3230);
-    			attr_dev(p0, "class", "test-name svelte-8757eo");
-    			add_location(p0, file$2, 143, 12, 3682);
-    			add_location(p1, file$2, 144, 12, 3736);
-    			attr_dev(div1, "class", "test-content svelte-8757eo");
-    			add_location(div1, file$2, 142, 10, 3643);
-    			attr_dev(div2, "class", "test-wrapper svelte-8757eo");
-    			add_location(div2, file$2, 124, 8, 3193);
-    			attr_dev(div3, "class", "test big svelte-8757eo");
-    			toggle_class(div3, "big", /*test*/ ctx[11].passed == 0);
-    			add_location(div3, file$2, 119, 6, 3069);
-    			this.first = div3;
+    			attr_dev(span, "class", "svelte-1huot15");
+    			add_location(span, file$2, 125, 10, 3222);
+    			attr_dev(button, "class", "svelte-1huot15");
+    			add_location(button, file$2, 129, 10, 3310);
+    			attr_dev(div0, "class", "test-bar svelte-1huot15");
+    			add_location(div0, file$2, 124, 8, 3189);
+    			attr_dev(p0, "class", "test-name svelte-1huot15");
+    			add_location(p0, file$2, 142, 10, 3605);
+    			add_location(p1, file$2, 143, 10, 3657);
+    			attr_dev(div1, "class", "test-content svelte-1huot15");
+    			add_location(div1, file$2, 141, 8, 3568);
+    			attr_dev(div2, "class", "test svelte-1huot15");
+    			toggle_class(div2, "big", /*test*/ ctx[11].passed == 0);
+    			add_location(div2, file$2, 119, 6, 3069);
+    			this.first = div2;
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, div3, anchor);
-    			append_dev(div3, div2);
+    			insert_dev(target, div2, anchor);
     			append_dev(div2, div0);
     			append_dev(div0, span);
     			append_dev(span, t0);
@@ -3095,7 +3090,7 @@ var app = (function () {
 
     			append_dev(div1, t9);
     			if (if_block2) if_block2.m(div1, null);
-    			append_dev(div3, t10);
+    			append_dev(div2, t10);
     			current = true;
 
     			if (!mounted) {
@@ -3184,19 +3179,19 @@ var app = (function () {
     			}
 
     			if (dirty & /*tests*/ 1) {
-    				toggle_class(div3, "big", /*test*/ ctx[11].passed == 0);
+    				toggle_class(div2, "big", /*test*/ ctx[11].passed == 0);
     			}
     		},
     		r: function measure() {
-    			rect = div3.getBoundingClientRect();
+    			rect = div2.getBoundingClientRect();
     		},
     		f: function fix() {
-    			fix_position(div3);
+    			fix_position(div2);
     			stop_animation();
     		},
     		a: function animate() {
     			stop_animation();
-    			stop_animation = create_animation(div3, rect, flip, { duration: 400 });
+    			stop_animation = create_animation(div2, rect, flip, { duration: 400 });
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -3212,7 +3207,7 @@ var app = (function () {
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(div3);
+    			if (detaching) detach_dev(div2);
     			if_blocks[current_block_type_index].d();
 
     			if (~current_block_type_index_1) {
@@ -3307,14 +3302,14 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(h1, "class", "svelte-8757eo");
+    			attr_dev(h1, "class", "svelte-1huot15");
     			add_location(h1, file$2, 101, 2, 2536);
     			add_location(button, file$2, 103, 4, 2615);
-    			attr_dev(div0, "class", "controls svelte-8757eo");
+    			attr_dev(div0, "class", "controls svelte-1huot15");
     			add_location(div0, file$2, 102, 2, 2588);
-    			attr_dev(div1, "class", "tests svelte-8757eo");
+    			attr_dev(div1, "class", "tests svelte-1huot15");
     			add_location(div1, file$2, 117, 2, 3004);
-    			attr_dev(div2, "class", "wrapper svelte-8757eo");
+    			attr_dev(div2, "class", "wrapper svelte-1huot15");
     			add_location(div2, file$2, 100, 0, 2480);
     		},
     		l: function claim(nodes) {
