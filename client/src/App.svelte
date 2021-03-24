@@ -37,7 +37,7 @@
 <nav>
   <span class="button" on:click={disconnect}>Login</span>
   {#if $connected}
-    {#if $panel == 'Tests'}
+    {#if $panel == 'Tests' || $panel == 'Monitor'}
       <span>&nbsp;{'>'}&nbsp;</span>
       <span
         class="button"

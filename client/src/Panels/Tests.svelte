@@ -1,6 +1,7 @@
 <script>
   import { fly, slide } from 'svelte/transition';
   import { flip } from 'svelte/animate';
+  import { panel } from '../stores.js';
   import Loader from '../Components/Loader.svelte';
 
   // Obtaining tests info
@@ -15,6 +16,15 @@
       }
     }
     return false;
+  })();
+
+  $: all_passed = (() => {
+    for (let test of tests) {
+      if (test.passed != 1) {
+        return false;
+      }
+    }
+    return true;
   })();
 
   async function getTests() {
@@ -82,6 +92,10 @@
       testRun(i);
     }
   }
+
+  function startMonitor() {
+    $panel = 'Monitor';
+  }
 </script>
 
 <div in:fly={{ delay: 400 }} out:fly class="wrapper">
@@ -94,6 +108,9 @@
         Run all
       {/if}
     </button>
+    {#if all_passed}
+      <button class="success" on:click={startMonitor}>Start engines</button>
+    {/if}
   </div>
   {#if tests_error}
     <span transition:slide class="message error">{tests_error}</span>
@@ -160,6 +177,11 @@
     justify-content: center;
     margin-bottom: 50px;
   }
+
+  button.success {
+    margin-left: 20px;
+  }
+
   .tests {
     display: grid;
     grid-template-columns: 1fr 1fr;

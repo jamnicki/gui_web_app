@@ -304,8 +304,8 @@ def run_test(id):
                 'error': None}
 
     if DEBUG:
-        tests_to_pass = [1, 3, 4, 7, 8, 9]
-        if id in tests_to_pass:
+        failed = []
+        if id not in failed:
             response['passed'] = 1
         else:
             response['error'] = 'Our programmers are working day and night to solve this issue. Stay still. Stay positive. Hydrate yourself.'
