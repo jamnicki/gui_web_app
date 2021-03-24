@@ -82,7 +82,6 @@ def connect():
     except Exception as e:
         print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
         response['error'] = str(e)
-
         return response
 
     try:
@@ -98,7 +97,6 @@ def connect():
         print(f'Exception in {connect.__name__}():\n\t{e}')
         response['error'] = str(e)
         response['hint'] = 'Try different IP.'
-
         return response
     except OSError as e:
         if e.errno == 101:
@@ -115,7 +113,6 @@ def connect():
         else:
             print(f'Unexpected exception in {connect.__name__}():\n\t{e}')
             response['error'] = str(e)
-
             return response
     except TimeoutError as e:
         if e.errno == 110:
@@ -174,7 +171,6 @@ def get_available_addresses():
                 print('"pnscan" required.\n\tTry "sudo apt install pnscan"')
                 response['error'] = str(e)
                 response['hint'] = 'Try "sudo apt install pnscan".'
-
                 return response
         else:
             scan_report = subprocess.run(['arp', '-a'], capture_output=True,
@@ -268,12 +264,10 @@ def get_tests_info():
     except ssh_exception.SSHException as e:
         print(f'Exception in {get_tests_info.__name__}():\n\t{e}')
         response['error'] = str(e)
-
         return response
     except Exception as e:
         print(f'Unexpected exception in {get_tests_info.__name__}():\n\t{e}')
         response['error'] = str(e)
-
         return response
 
     for match in matches:
@@ -328,7 +322,6 @@ def run_test(id):
     except KeyError as e:
         print(f'Exception in {run_test.__name__}():\n\t{e}')
         response['error'] = str(e)
-
         return response
 
     try:
@@ -337,7 +330,6 @@ def run_test(id):
     except KeyError as e:
         print(f'Exception in {run_test.__name__}():\n\t{e}')
         response['error'] = str(e)
-
         return response
 
     command = f'python3 -m tests.{module_name} run'
@@ -349,7 +341,6 @@ def run_test(id):
     except ssh_exception.SSHException as e:
         print(f'Exception in {run_test.__name__}():\n\t{e}')
         response['error'] = str(e)
-
         return response
     except Exception as e:
         print(f'Unexpected exception in {run_test.__name__}():\n\t{e}')
