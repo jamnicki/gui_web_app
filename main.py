@@ -1,60 +1,37 @@
+import eel
 import re
 import subprocess
 import platform
-import webview
 import json
-from flask import Flask, request, send_from_directory
 from paramiko import SSHClient, ssh_exception, AutoAddPolicy
-from server.utils import (connection_alive, get_static_path, close_file_objects,
+from server.utils import (connection_alive, close_file_objects,
                           shorten_exception_message)
-
-from server.random_funny_text import get_funny_text
 
 
 DESKTOP = False
 DEBUG = True
 DEBUG_TESTS_FAILING = []
 
-
-app = Flask(__name__, static_folder=get_static_path('client/public'))
 client = SSHClient()
 system = platform.system()
 
 
-# Client page
-@app.route('/')
-def base():
-    return send_from_directory(app.static_folder, 'index.html')
-
-
-# Path for all the static files
-@app.route('/<path:path>')
-def home(path):
-    return send_from_directory(app.static_folder, path)
-
-
-# Connection test
-@app.route('/test')
-def test():
-    return get_funny_text()
-
-
 # Check if in DEBUG MODE
-@app.route('/debug')
+@eel.expose
 def debug():
     return str(int(DEBUG))
 
 
 # Testing loading animations
-@app.route('/loader', methods=['GET', 'POST'])
+@ell.expose
 def loader():
     import time
     time.sleep(5)
     return 'Loader test response.'
 
 
-@app.route('/connect', methods=['POST'])
-def connect():
+@ell.expose
+def connect(hostname, username, password):
     """Connect to ROV via SSH using hostname, username and password
        from POST request received data.
     """
@@ -63,14 +40,8 @@ def connect():
                 'error': None,
                 'hint': None}
 
-    json_data = request.json
-    try:
-        hostname = json_data['hostname']
-        username = json_data['username']
-        password = json_data['password']
-    except KeyError as e:
-        response['error'] = f'Missing {e}'
-        return response
+    if not hostname or not username or not password:
+        print('Missing hostname, username or password.')
 
     # Secret passage. For debugging.
     if username == 'conn' and password == 'conn':
@@ -134,7 +105,7 @@ def connect():
     return response
 
 
-@app.route('/check-connection', methods=['GET'])
+@ell.expose
 def check_connection():
     response = {'connected': 0}
 
@@ -144,7 +115,7 @@ def check_connection():
     return response
 
 
-@app.route('/available-addresses', methods=['GET'])
+@ell.expose
 def get_available_addresses():
     """Find available addresses on user's local network
        by executing 'arp -a' command.
@@ -191,7 +162,7 @@ def get_available_addresses():
     return response
 
 
-@app.route('/tests/info-all', methods=['GET'])
+@ell.expose
 def get_tests_info():
     """Get info about available tests by remotely running a dedicated script.
 
@@ -289,7 +260,7 @@ def get_tests_info():
     return response
 
 
-@app.route('/tests/run/<int:id>', methods=['GET'])
+@ell.expose
 def run_test(id):
     """Run test with given id.
 
@@ -358,9 +329,6 @@ def run_test(id):
 
 
 if __name__ == '__main__':
-    if DESKTOP:
-        webview.create_window('GUI Web App', app)
-        webview.start()
-    else:
-        app.run(debug=True)
+    eel.init('client/public')
+    eel.start('index.html')
     client.close()
