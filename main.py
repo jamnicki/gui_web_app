@@ -8,9 +8,13 @@ from server.utils import (connection_alive, close_file_objects,
                           shorten_exception_message)
 
 
-DESKTOP = False
 DEBUG = True
 DEBUG_TESTS_FAILING = []
+
+APP_MODE = 'chrome'
+APP_BROWSER = '/mnt/c/Program Files/Google/Chrome/Application/chrome.exe'
+APP_GEOMETRY = {'size': (200, 100), 'position': (300, 50)}
+
 
 client = SSHClient()
 system = platform.system()
@@ -23,14 +27,14 @@ def debug():
 
 
 # Testing loading animations
-@ell.expose
+@eel.expose
 def loader():
     import time
     time.sleep(5)
     return 'Loader test response.'
 
 
-@ell.expose
+@eel.expose
 def connect(hostname, username, password):
     """Connect to ROV via SSH using hostname, username and password
        from POST request received data.
@@ -105,7 +109,7 @@ def connect(hostname, username, password):
     return response
 
 
-@ell.expose
+@eel.expose
 def check_connection():
     response = {'connected': 0}
 
@@ -115,7 +119,7 @@ def check_connection():
     return response
 
 
-@ell.expose
+@eel.expose
 def get_available_addresses():
     """Find available addresses on user's local network
        by executing 'arp -a' command.
@@ -162,7 +166,7 @@ def get_available_addresses():
     return response
 
 
-@ell.expose
+@eel.expose
 def get_tests_info():
     """Get info about available tests by remotely running a dedicated script.
 
@@ -260,7 +264,7 @@ def get_tests_info():
     return response
 
 
-@ell.expose
+@eel.expose
 def run_test(id):
     """Run test with given id.
 
@@ -329,6 +333,9 @@ def run_test(id):
 
 
 if __name__ == '__main__':
+    eel.browsers.set_path(APP_MODE, APP_BROWSER)
+    print('The app is starting...')
+    print('Browser address: http://localhost:8000/')
     eel.init('client/public')
-    eel.start('index.html')
+    eel.start('index.html', mode=APP_MODE, geometry=APP_GEOMETRY)
     client.close()

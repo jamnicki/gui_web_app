@@ -6,6 +6,7 @@
   // Login data
   let hostname_select;
   let hostname_input;
+  $: hostname = addresses_input ? hostname_input : addresses[hostname_select];
   let username;
   let password;
 
@@ -13,10 +14,10 @@
   let addresses = ['192.168.1.1', '192.168.1.115'];
 
   // Addresses info
+  let addresses_input = false;
   let addresses_error;
   let addresses_hint;
   let addresses_loading = false;
-  let addresses_form = 'SELECT';
 
   // Login info
   let login_error;
@@ -26,20 +27,19 @@
   async function getAddresses() {
     addresses_loading = true;
     // Get data
-    const res = await fetch('/available-addresses');
     try {
-      const json = await res.json();
+      const json = await eel.get_available_addresses()();
       if (json.addresses) {
         // Filter out addresses that are already on the list
-        let new_addresses = json.addresses.filter((elem) => {
+        const new_addresses = json.addresses.filter((elem) => {
           return !addresses.includes(elem);
         });
         // Combine the old and new addresses
         addresses = addresses.concat(new_addresses);
       }
       // Replace Errors and Hints if there are new ones or empty them
-      addresses_error = json.error ? json.error : '';
-      addresses_hint = json.hint ? json.hint : '';
+      addresses_error = json.error || '';
+      addresses_hint = json.hint || '';
     } catch (error) {
       addresses_error = error;
     }
@@ -49,34 +49,18 @@
 
   async function login() {
     login_loading = true;
-    let data = {
-      // Load hostname from Select or Input field
-      hostname:
-        addresses_form == 'SELECT'
-          ? addresses[hostname_select]
-          : hostname_input,
-      username: username,
-      password: password,
-    };
-    // Filter out empty fields
-    for (let key in data) {
-      if (data[key] === '') {
-        data[key] = undefined;
-      }
-    }
-    console.log(JSON.stringify(data));
+    // Handle empty inputs
+    if (hostname == '') hostname = undefined;
+    if (username == '') username = undefined;
+    if (password == '') password = undefined;
     // Send data
-    const res = await fetch('/connect', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
+    console.log(hostname, username, password);
     try {
-      const json = await res.json();
+      const json = await eel.connect(hostname, username, password);
       $connected = json.connected;
       // Replace Errors and Hints if there are new ones or empty them
-      login_error = json.error ? json.error : '';
-      login_hint = json.hint ? json.hint : '';
+      login_error = json.error || '';
+      login_hint = json.hint || '';
     } catch (error) {
       login_error = error;
     }
@@ -84,12 +68,12 @@
   }
 
   function handleEnter(e) {
-    if (e.key === 'Enter') connect();
+    if (e.key === 'Enter') login();
   }
 </script>
 
 <div in:fly={{ delay: 400 }} out:fly class="wrapper">
-  <div class="login">
+  <div class="login" on:keydown={handleEnter}>
     <div class="address">
       <Loader
         loading={addresses_loading}
@@ -97,29 +81,29 @@
         always_visible={true}
       />
       <h3>SSH</h3>
-      {#if addresses_form == 'SELECT'}
+      {#if !addresses_input}
         <select bind:value={hostname_select}>
           {#each addresses as address, i}
             <option value={i}>{address}</option>
           {/each}
         </select>
-      {:else if addresses_form == 'INPUT'}
+      {:else}
         <input type="text" bind:value={hostname_input} />
       {/if}
-      {#if addresses_form == 'SELECT'}
+      {#if !addresses_input}
         <div
           class="addresses-action"
           on:click={() => {
-            addresses_form = 'INPUT';
+            addresses_input = true;
           }}
         >
           <img src="icon/edit.svg" alt="input" />
         </div>
-      {:else if addresses_form == 'INPUT'}
+      {:else}
         <div
           class="addresses-action"
           on:click={() => {
-            addresses_form = 'SELECT';
+            addresses_input = false;
           }}
         >
           <img src="icon/list.svg" alt="select" />
@@ -137,7 +121,7 @@
       <span transition:slide class="message hint">{addresses_hint}</span>
     {/if}
 
-    <form on:keydown={handleEnter}>
+    <form>
       <label
         >Username
         <input type="text" bind:value={username} />
@@ -176,7 +160,6 @@
     padding: 40px 200px;
     width: 700px;
     background-color: var(--main);
-    /* box-shadow: var(--elevated); */
   }
 
   input {
