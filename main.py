@@ -23,7 +23,7 @@ system = platform.system()
 # Check if in DEBUG MODE
 @eel.expose
 def debug():
-    return str(int(DEBUG))
+    return int(DEBUG)
 
 
 # Testing loading animations

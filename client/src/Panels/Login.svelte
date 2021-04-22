@@ -29,6 +29,7 @@
     // Get data
     try {
       const json = await eel.get_available_addresses()();
+      console.log(json);
       if (json.addresses) {
         // Filter out addresses that are already on the list
         const new_addresses = json.addresses.filter((elem) => {
@@ -54,9 +55,8 @@
     if (username == '') username = undefined;
     if (password == '') password = undefined;
     // Send data
-    console.log(hostname, username, password);
     try {
-      const json = await eel.connect(hostname, username, password);
+      const json = await eel.connect(hostname, username, password)();
       $connected = json.connected;
       // Replace Errors and Hints if there are new ones or empty them
       login_error = json.error || '';
