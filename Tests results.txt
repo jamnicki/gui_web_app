@@ -1,0 +1,14 @@
+1) Login page:
+	- auto IP list works
+	- login works
+	- trying to log in after already logged in gives "authentication failed" error
+2) Tests:
+	- running 'tests' works
+	- start engines 'works'
+3) Monitor:
+	- 'works'
+4) Misc:
+	- disconnect button says You will have to log in again, not true, can login without it - probably cookies
+	- checking for connection button drops connection
+	- dynamic checking for connection doesn't work
+	- after disconnecting the router it still 'works' - it doesn't get any real data and cookies make it act like it's all good
