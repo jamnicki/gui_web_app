@@ -333,9 +333,9 @@ def run_test(id):
 
 
 if __name__ == '__main__':
-    eel.browsers.set_path(APP_MODE, APP_BROWSER)
+    #eel.browsers.set_path(APP_MODE, APP_BROWSER)
     print('The app is starting...')
     print('Browser address: http://localhost:8000/')
     eel.init('client/public')
-    eel.start('index.html', mode=APP_MODE, geometry=APP_GEOMETRY)
+    eel.start('index.html', geometry=APP_GEOMETRY)
     client.close()
