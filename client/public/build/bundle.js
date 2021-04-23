@@ -1543,7 +1543,7 @@ var app = (function () {
     			img = element("img");
     			if (img.src !== (img_src_value = "icon/list.svg")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "select");
-    			add_location(img, file$3, 116, 10, 3157);
+    			add_location(img, file$3, 116, 10, 3155);
     			attr_dev(div, "class", "addresses-action svelte-7h8574");
     			add_location(div, file$3, 110, 8, 3017);
     		},
@@ -1633,7 +1633,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*addresses_error*/ ctx[6]);
     			attr_dev(span, "class", "message error svelte-7h8574");
-    			add_location(span, file$3, 125, 6, 3395);
+    			add_location(span, file$3, 125, 6, 3393);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1687,7 +1687,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*addresses_hint*/ ctx[7]);
     			attr_dev(span, "class", "message hint svelte-7h8574");
-    			add_location(span, file$3, 128, 6, 3506);
+    			add_location(span, file$3, 128, 6, 3504);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1740,7 +1740,7 @@ var app = (function () {
     			div = element("div");
     			div.textContent = "Connected!";
     			attr_dev(div, "class", "message success svelte-7h8574");
-    			add_location(div, file$3, 147, 6, 4013);
+    			add_location(div, file$3, 147, 6, 4011);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1790,7 +1790,7 @@ var app = (function () {
     			div = element("div");
     			t = text(/*login_error*/ ctx[9]);
     			attr_dev(div, "class", "message error svelte-7h8574");
-    			add_location(div, file$3, 150, 6, 4114);
+    			add_location(div, file$3, 150, 6, 4112);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1844,7 +1844,7 @@ var app = (function () {
     			div = element("div");
     			t = text(/*login_hint*/ ctx[10]);
     			attr_dev(div, "class", "message hint svelte-7h8574");
-    			add_location(div, file$3, 153, 6, 4215);
+    			add_location(div, file$3, 153, 6, 4213);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -2007,27 +2007,27 @@ var app = (function () {
     			add_location(h3, file$3, 90, 6, 2467);
     			if (img.src !== (img_src_value = "icon/refresh.svg")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "select");
-    			add_location(img, file$3, 120, 8, 3294);
+    			add_location(img, file$3, 120, 8, 3292);
     			attr_dev(div0, "class", "addresses-action svelte-7h8574");
-    			add_location(div0, file$3, 119, 6, 3231);
+    			add_location(div0, file$3, 119, 6, 3229);
     			attr_dev(div1, "class", "address svelte-7h8574");
     			add_location(div1, file$3, 84, 4, 2315);
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "class", "svelte-7h8574");
-    			add_location(input0, file$3, 134, 8, 3635);
-    			add_location(label0, file$3, 132, 6, 3602);
+    			add_location(input0, file$3, 134, 8, 3633);
+    			add_location(label0, file$3, 132, 6, 3600);
     			attr_dev(input1, "type", "password");
     			attr_dev(input1, "class", "svelte-7h8574");
-    			add_location(input1, file$3, 138, 8, 3733);
-    			add_location(label1, file$3, 136, 6, 3700);
+    			add_location(input1, file$3, 138, 8, 3731);
+    			add_location(label1, file$3, 136, 6, 3698);
     			attr_dev(input2, "type", "submit");
     			input2.value = "Login";
     			attr_dev(input2, "class", "svelte-7h8574");
-    			add_location(input2, file$3, 140, 6, 3802);
+    			add_location(input2, file$3, 140, 6, 3800);
     			attr_dev(div2, "class", "login-loader svelte-7h8574");
-    			add_location(div2, file$3, 141, 6, 3878);
+    			add_location(div2, file$3, 141, 6, 3876);
     			attr_dev(form, "class", "svelte-7h8574");
-    			add_location(form, file$3, 131, 4, 3589);
+    			add_location(form, file$3, 131, 4, 3587);
     			attr_dev(div3, "class", "login svelte-7h8574");
     			add_location(div3, file$3, 83, 2, 2266);
     			attr_dev(div4, "class", "wrapper svelte-7h8574");
@@ -2415,7 +2415,7 @@ var app = (function () {
     	};
 
     	const click_handler_1 = () => {
-    		addresses_form = "SELECT";
+    		$$invalidate(3, addresses_input = false);
     	};
 
     	function input0_input_handler() {

@@ -111,7 +111,7 @@
         <div
           class="addresses-action"
           on:click={() => {
-            addresses_form = 'SELECT';
+            addresses_input = false;
           }}
         >
           <img src="icon/list.svg" alt="select" />
