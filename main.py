@@ -332,10 +332,20 @@ def run_test(id):
     return response
 
 
+def on_exit(page_path, websockets):
+    print(f"""
+    The app was closed! 🛑
+    Shutting down the SSH client...
+    """)
+    client.close()
+    exit()
+
 if __name__ == '__main__':
     eel.browsers.set_path(APP_MODE, APP_BROWSER)
-    print('The app is starting...')
-    print('Browser address: http://localhost:8000/')
+    print(f"""
+    The app is running! 🚀
+    Local:  http://localhost:8000/
+    """)
     eel.init('client/public')
-    eel.start('index.html', mode=APP_MODE, geometry=APP_GEOMETRY)
-    client.close()
+    eel.start('index.html', mode=APP_MODE, geometry=APP_GEOMETRY,
+              close_callback=on_exit)
