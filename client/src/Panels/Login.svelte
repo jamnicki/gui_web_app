@@ -59,11 +59,14 @@
       const res = await fetch('/connect', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          hostname: hostname,
+          username: username,
+          password: password,
+        }),
       });
       const json = await res.json();
       $connected = json.connected;
-      // Replace Errors and Hints if there are new ones or empty them
       login_error = json.error || '';
       login_hint = json.hint || '';
     } catch (error) {

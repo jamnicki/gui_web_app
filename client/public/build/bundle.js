@@ -1360,7 +1360,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (95:6) {:else}
+    // (98:6) {:else}
     function create_else_block_1$1(ctx) {
     	let input;
     	let mounted;
@@ -1371,7 +1371,7 @@ var app = (function () {
     			input = element("input");
     			attr_dev(input, "type", "text");
     			attr_dev(input, "class", "svelte-7h8574");
-    			add_location(input, file$3, 95, 8, 2677);
+    			add_location(input, file$3, 98, 8, 2704);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, input, anchor);
@@ -1398,14 +1398,14 @@ var app = (function () {
     		block,
     		id: create_else_block_1$1.name,
     		type: "else",
-    		source: "(95:6) {:else}",
+    		source: "(98:6) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (89:6) {#if !addresses_input}
+    // (92:6) {#if !addresses_input}
     function create_if_block_6$2(ctx) {
     	let select;
     	let mounted;
@@ -1428,7 +1428,7 @@ var app = (function () {
 
     			attr_dev(select, "class", "svelte-7h8574");
     			if (/*hostname_select*/ ctx[0] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[15].call(select));
-    			add_location(select, file$3, 89, 8, 2490);
+    			add_location(select, file$3, 92, 8, 2517);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, select, anchor);
@@ -1485,14 +1485,14 @@ var app = (function () {
     		block,
     		id: create_if_block_6$2.name,
     		type: "if",
-    		source: "(89:6) {#if !addresses_input}",
+    		source: "(92:6) {#if !addresses_input}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (91:10) {#each addresses as address, i}
+    // (94:10) {#each addresses as address, i}
     function create_each_block$1(ctx) {
     	let option;
     	let t_value = /*address*/ ctx[22] + "";
@@ -1504,7 +1504,7 @@ var app = (function () {
     			t = text(t_value);
     			option.__value = /*i*/ ctx[24];
     			option.value = option.__value;
-    			add_location(option, file$3, 91, 12, 2582);
+    			add_location(option, file$3, 94, 12, 2609);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -1522,14 +1522,14 @@ var app = (function () {
     		block,
     		id: create_each_block$1.name,
     		type: "each",
-    		source: "(91:10) {#each addresses as address, i}",
+    		source: "(94:10) {#each addresses as address, i}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (107:6) {:else}
+    // (110:6) {:else}
     function create_else_block$2(ctx) {
     	let div;
     	let img;
@@ -1543,9 +1543,9 @@ var app = (function () {
     			img = element("img");
     			if (img.src !== (img_src_value = "icon/list.svg")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "select");
-    			add_location(img, file$3, 113, 10, 3130);
+    			add_location(img, file$3, 116, 10, 3157);
     			attr_dev(div, "class", "addresses-action svelte-7h8574");
-    			add_location(div, file$3, 107, 8, 2990);
+    			add_location(div, file$3, 110, 8, 3017);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1568,14 +1568,14 @@ var app = (function () {
     		block,
     		id: create_else_block$2.name,
     		type: "else",
-    		source: "(107:6) {:else}",
+    		source: "(110:6) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (98:6) {#if !addresses_input}
+    // (101:6) {#if !addresses_input}
     function create_if_block_5$2(ctx) {
     	let div;
     	let img;
@@ -1589,9 +1589,9 @@ var app = (function () {
     			img = element("img");
     			if (img.src !== (img_src_value = "icon/edit.svg")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "input");
-    			add_location(img, file$3, 104, 10, 2913);
+    			add_location(img, file$3, 107, 10, 2940);
     			attr_dev(div, "class", "addresses-action svelte-7h8574");
-    			add_location(div, file$3, 98, 8, 2776);
+    			add_location(div, file$3, 101, 8, 2803);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1614,14 +1614,14 @@ var app = (function () {
     		block,
     		id: create_if_block_5$2.name,
     		type: "if",
-    		source: "(98:6) {#if !addresses_input}",
+    		source: "(101:6) {#if !addresses_input}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (122:4) {#if addresses_error}
+    // (125:4) {#if addresses_error}
     function create_if_block_4$2(ctx) {
     	let span;
     	let t;
@@ -1633,7 +1633,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*addresses_error*/ ctx[6]);
     			attr_dev(span, "class", "message error svelte-7h8574");
-    			add_location(span, file$3, 122, 6, 3368);
+    			add_location(span, file$3, 125, 6, 3395);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1668,14 +1668,14 @@ var app = (function () {
     		block,
     		id: create_if_block_4$2.name,
     		type: "if",
-    		source: "(122:4) {#if addresses_error}",
+    		source: "(125:4) {#if addresses_error}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (125:4) {#if addresses_hint}
+    // (128:4) {#if addresses_hint}
     function create_if_block_3$2(ctx) {
     	let span;
     	let t;
@@ -1687,7 +1687,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*addresses_hint*/ ctx[7]);
     			attr_dev(span, "class", "message hint svelte-7h8574");
-    			add_location(span, file$3, 125, 6, 3479);
+    			add_location(span, file$3, 128, 6, 3506);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -1722,14 +1722,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3$2.name,
     		type: "if",
-    		source: "(125:4) {#if addresses_hint}",
+    		source: "(128:4) {#if addresses_hint}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (144:4) {#if $connected}
+    // (147:4) {#if $connected}
     function create_if_block_2$2(ctx) {
     	let div;
     	let div_transition;
@@ -1740,7 +1740,7 @@ var app = (function () {
     			div = element("div");
     			div.textContent = "Connected!";
     			attr_dev(div, "class", "message success svelte-7h8574");
-    			add_location(div, file$3, 144, 6, 3986);
+    			add_location(div, file$3, 147, 6, 4013);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1771,14 +1771,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2$2.name,
     		type: "if",
-    		source: "(144:4) {#if $connected}",
+    		source: "(147:4) {#if $connected}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (147:4) {#if login_error}
+    // (150:4) {#if login_error}
     function create_if_block_1$2(ctx) {
     	let div;
     	let t;
@@ -1790,7 +1790,7 @@ var app = (function () {
     			div = element("div");
     			t = text(/*login_error*/ ctx[9]);
     			attr_dev(div, "class", "message error svelte-7h8574");
-    			add_location(div, file$3, 147, 6, 4087);
+    			add_location(div, file$3, 150, 6, 4114);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1825,14 +1825,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1$2.name,
     		type: "if",
-    		source: "(147:4) {#if login_error}",
+    		source: "(150:4) {#if login_error}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (150:4) {#if login_hint}
+    // (153:4) {#if login_hint}
     function create_if_block$2(ctx) {
     	let div;
     	let t;
@@ -1844,7 +1844,7 @@ var app = (function () {
     			div = element("div");
     			t = text(/*login_hint*/ ctx[10]);
     			attr_dev(div, "class", "message hint svelte-7h8574");
-    			add_location(div, file$3, 150, 6, 4188);
+    			add_location(div, file$3, 153, 6, 4215);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1879,7 +1879,7 @@ var app = (function () {
     		block,
     		id: create_if_block$2.name,
     		type: "if",
-    		source: "(150:4) {#if login_hint}",
+    		source: "(153:4) {#if login_hint}",
     		ctx
     	});
 
@@ -2004,34 +2004,34 @@ var app = (function () {
     			t15 = space();
     			if (if_block6) if_block6.c();
     			attr_dev(h3, "class", "svelte-7h8574");
-    			add_location(h3, file$3, 87, 6, 2440);
+    			add_location(h3, file$3, 90, 6, 2467);
     			if (img.src !== (img_src_value = "icon/refresh.svg")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "select");
-    			add_location(img, file$3, 117, 8, 3267);
+    			add_location(img, file$3, 120, 8, 3294);
     			attr_dev(div0, "class", "addresses-action svelte-7h8574");
-    			add_location(div0, file$3, 116, 6, 3204);
+    			add_location(div0, file$3, 119, 6, 3231);
     			attr_dev(div1, "class", "address svelte-7h8574");
-    			add_location(div1, file$3, 81, 4, 2288);
+    			add_location(div1, file$3, 84, 4, 2315);
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "class", "svelte-7h8574");
-    			add_location(input0, file$3, 131, 8, 3608);
-    			add_location(label0, file$3, 129, 6, 3575);
+    			add_location(input0, file$3, 134, 8, 3635);
+    			add_location(label0, file$3, 132, 6, 3602);
     			attr_dev(input1, "type", "password");
     			attr_dev(input1, "class", "svelte-7h8574");
-    			add_location(input1, file$3, 135, 8, 3706);
-    			add_location(label1, file$3, 133, 6, 3673);
+    			add_location(input1, file$3, 138, 8, 3733);
+    			add_location(label1, file$3, 136, 6, 3700);
     			attr_dev(input2, "type", "submit");
     			input2.value = "Login";
     			attr_dev(input2, "class", "svelte-7h8574");
-    			add_location(input2, file$3, 137, 6, 3775);
+    			add_location(input2, file$3, 140, 6, 3802);
     			attr_dev(div2, "class", "login-loader svelte-7h8574");
-    			add_location(div2, file$3, 138, 6, 3851);
+    			add_location(div2, file$3, 141, 6, 3878);
     			attr_dev(form, "class", "svelte-7h8574");
-    			add_location(form, file$3, 128, 4, 3562);
+    			add_location(form, file$3, 131, 4, 3589);
     			attr_dev(div3, "class", "login svelte-7h8574");
-    			add_location(div3, file$3, 80, 2, 2239);
+    			add_location(div3, file$3, 83, 2, 2266);
     			attr_dev(div4, "class", "wrapper svelte-7h8574");
-    			add_location(div4, file$3, 79, 0, 2183);
+    			add_location(div4, file$3, 82, 0, 2210);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2380,15 +2380,12 @@ var app = (function () {
     			const res = await fetch("/connect", {
     				method: "POST",
     				headers: { "Content-Type": "application/json" },
-    				body: JSON.stringify(data)
+    				body: JSON.stringify({ hostname, username, password })
     			});
 
     			const json = await res.json();
     			set_store_value(connected, $connected = json.connected, $connected);
-
-    			// Replace Errors and Hints if there are new ones or empty them
     			$$invalidate(9, login_error = json.error || "");
-
     			$$invalidate(10, login_hint = json.hint || "");
     		} catch(error) {
     			$$invalidate(9, login_error = error);
