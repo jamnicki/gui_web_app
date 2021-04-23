@@ -11,8 +11,8 @@ from server.utils import (connection_alive, close_file_objects,
 DEBUG = True
 DEBUG_TESTS_FAILING = []
 
-APP_MODE = 'chrome'
-APP_BROWSER = '/mnt/c/Program Files/Google/Chrome/Application/chrome.exe'
+APP_MODE = 'firefox'
+APP_BROWSER = '/c/Program Files/Mozilla Firefox/firefox.exe'
 APP_GEOMETRY = {'size': (200, 100), 'position': (300, 50)}
 
 
