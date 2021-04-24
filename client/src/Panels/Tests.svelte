@@ -30,8 +30,8 @@
   async function getTests() {
     tests_loading = true;
     // Get data
-    const res = await fetch('/tests/info-all');
     try {
+      const res = await fetch('/tests/info-all');
       const json = await res.json();
       if (!json.error) {
         // Additional fields intended for running tests
@@ -43,7 +43,7 @@
         tests = json.tests_info;
       }
       // Replace Errors if there are new ones or empty them
-      tests_error = json.error ? json.error : '';
+      tests_error = json.error || '';
     } catch (error) {
       tests_error = error;
     }
@@ -55,17 +55,16 @@
     let test = tests[i];
     console.log(`Running test number ${test.id}`);
     test.running = true;
-    tests = tests;
     // Get data
-    const res = await fetch(`/tests/run/${test.id}`);
     try {
+      const res = await fetch(`/tests/run/${test.id}`);
       const json = await res.json();
-      // elevate a failed test to the top of the list
+      // if the test fails - elevate it to the top of the list
       if (json.passed == 0 && test.passed != 0) {
         tests = tests.filter((t) => t.id != test.id);
         tests.unshift(test);
       }
-      // find a proper place for a resolved test
+      // if the test passes after a previous failure - put it back in place
       else if (json.passed == 1 && test.passed == 0) {
         tests = tests.filter((t) => t.id != test.id);
         let index = 0;
@@ -78,7 +77,7 @@
       }
       test.passed = json.passed;
       // Replace Errors if there are new ones or empty them
-      test.error = json.error ? json.error : '';
+      test.error = json.error || '';
     } catch (error) {
       test.error = error;
     }
