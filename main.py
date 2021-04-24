@@ -402,7 +402,7 @@ def get_frame_socket(msg):
 
         response['frame'] = frame_b64.decode('utf-8')
 
-        emit('frame', response)
+        socketio.emit('frame', response)
 
 
 @app.route('/monitor/sensor/<int:id>', methods=['GET'])
