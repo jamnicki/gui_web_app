@@ -9,20 +9,31 @@ from server.utils import (connection_alive, get_static_path,
                           close_file_objects, shorten_exception_message)
 
 from server.random_funny_text import get_funny_text
-import cv2
+# from flask_socketio import SocketIO, emit
+import socketio
+from datetime import datetime as dtime
 import base64
 import random
-from datetime import datetime as dtime
+import webbrowser
 
 
-DESKTOP = False
+DESKTOP = True
 DEBUG = True
 DEBUG_TESTS_FAILING = []
 
 
+socket_io = socketio.Server(async_mode='threading')
 app = Flask(__name__, static_folder=get_static_path('client/public'))
+app.wsgi_app = socketio.WSGIApp(socket_io, app.wsgi_app)
 client = SSHClient()
 system = platform.system()
+
+
+@app.before_first_request
+def before_first_request():
+    import cv2
+    global CAP
+    CAP = cv2.VideoCapture(0)
 
 
 # Client page
@@ -365,7 +376,6 @@ def run_test(id):
     return response
 
 
-CAP = cv2.VideoCapture(0)
 @app.route('/monitor/cam/<int:id>', methods=['POST'])  # noqa: E302
 def get_frame(id):
     response = {'frame': None,
@@ -378,6 +388,21 @@ def get_frame(id):
     response['frame'] = frame_b64.decode('utf-8')
 
     return response
+
+
+@socket_io.on('get_frame_socket')
+def get_frame_socket(msg):
+    response = {'frame': None,
+                'error': None}
+
+    while 1:
+        _, frame = CAP.read()
+        _, buffer = cv2.imencode('.jpg', frame)
+        frame_b64 = base64.b64encode(buffer)
+
+        response['frame'] = frame_b64.decode('utf-8')
+
+        emit('frame', response)
 
 
 @app.route('/monitor/sensor/<int:id>', methods=['GET'])
@@ -393,6 +418,6 @@ if __name__ == '__main__':
         webview.create_window('GUI Web App', app)
         webview.start()
     else:
-        app.run(debug=True, use_reloader=False)
+        app.run(debug=True)
     client.close()
     CAP.release()
