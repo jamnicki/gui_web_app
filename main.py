@@ -366,7 +366,7 @@ def run_test(id):
 
 
 CAP = cv2.VideoCapture(0)
-@app.route('/monitor/cam/<int:id>', methods=['POST'])
+@app.route('/monitor/cam/<int:id>', methods=['POST'])  # noqa: E302
 def get_frame(id):
     response = {'frame': None,
                 'error': None}
