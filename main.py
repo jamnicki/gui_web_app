@@ -9,23 +9,31 @@ from server.utils import (connection_alive, get_static_path,
                           close_file_objects, shorten_exception_message)
 
 from server.random_funny_text import get_funny_text
-from flask_socketio import SocketIO, emit
+# from flask_socketio import SocketIO, emit
+import socketio
 from datetime import datetime as dtime
-import cv2
 import base64
 import random
+import webbrowser
 
 
-DESKTOP = False
+DESKTOP = True
 DEBUG = True
 DEBUG_TESTS_FAILING = []
 
 
+socket_io = socketio.Server(async_mode='threading')
 app = Flask(__name__, static_folder=get_static_path('client/public'))
+app.wsgi_app = socketio.WSGIApp(socket_io, app.wsgi_app)
 client = SSHClient()
 system = platform.system()
-socketio = SocketIO(app, cors_allowed_origins='*',
-                    logger=True, async_handlers=True)
+
+
+@app.before_first_request
+def before_first_request():
+    import cv2
+    global CAP
+    CAP = cv2.VideoCapture(0)
 
 
 # Client page
@@ -368,7 +376,6 @@ def run_test(id):
     return response
 
 
-CAP = cv2.VideoCapture(0)
 @app.route('/monitor/cam/<int:id>', methods=['POST'])  # noqa: E302
 def get_frame(id):
     response = {'frame': None,
@@ -383,7 +390,7 @@ def get_frame(id):
     return response
 
 
-@socketio.on('get_frame_socket')
+@socket_io.on('get_frame_socket')
 def get_frame_socket(msg):
     response = {'frame': None,
                 'error': None}
@@ -411,7 +418,6 @@ if __name__ == '__main__':
         webview.create_window('GUI Web App', app)
         webview.start()
     else:
-        # app.run(debug=True, use_reloader=False)
-        socketio.run(app, debug=True, use_reloader=False)
+        app.run(debug=True)
     client.close()
     CAP.release()
