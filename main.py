@@ -9,10 +9,11 @@ from server.utils import (connection_alive, get_static_path,
                           close_file_objects, shorten_exception_message)
 
 from server.random_funny_text import get_funny_text
+from flask_socketio import SocketIO, emit
+from datetime import datetime as dtime
 import cv2
 import base64
 import random
-from datetime import datetime as dtime
 
 
 DESKTOP = False
@@ -23,6 +24,8 @@ DEBUG_TESTS_FAILING = []
 app = Flask(__name__, static_folder=get_static_path('client/public'))
 client = SSHClient()
 system = platform.system()
+socketio = SocketIO(app, cors_allowed_origins='*',
+                    logger=True, async_handlers=True)
 
 
 # Client page
@@ -380,6 +383,21 @@ def get_frame(id):
     return response
 
 
+@socketio.on('get_frame_socket')
+def get_frame_socket(msg):
+    response = {'frame': None,
+                'error': None}
+
+    while 1:
+        _, frame = CAP.read()
+        _, buffer = cv2.imencode('.jpg', frame)
+        frame_b64 = base64.b64encode(buffer)
+
+        response['frame'] = frame_b64.decode('utf-8')
+
+        emit('frame', response)
+
+
 @app.route('/monitor/sensor/<int:id>', methods=['GET'])
 def get_sensor_data(id):
     response = {'shit1': dtime.now().second + id*100,
@@ -393,6 +411,7 @@ if __name__ == '__main__':
         webview.create_window('GUI Web App', app)
         webview.start()
     else:
-        app.run(debug=True, use_reloader=False)
+        # app.run(debug=True, use_reloader=False)
+        socketio.run(app, debug=True, use_reloader=False)
     client.close()
     CAP.release()
