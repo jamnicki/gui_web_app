@@ -5,10 +5,14 @@ import webview
 import json
 from flask import Flask, request, send_from_directory
 from paramiko import SSHClient, ssh_exception, AutoAddPolicy
-from server.utils import (connection_alive, get_static_path, close_file_objects,
-                          shorten_exception_message)
+from server.utils import (connection_alive, get_static_path,
+                          close_file_objects, shorten_exception_message)
 
 from server.random_funny_text import get_funny_text
+import cv2
+import base64
+import random
+from datetime import datetime as dtime
 
 
 DESKTOP = False
@@ -234,7 +238,8 @@ def get_tests_info():
             {'id': 5,
              'script_name': 'just.py',
              'test_name':   'Like fuck dammit',
-             'description': 'Where am I supposed to find fucking boat tests huh? What the fuck.'},
+             'description': 'Where am I supposed to find fucking boat tests \
+                            huh? What the fuck.'},
             {'id': 6,
              'script_name': 'like.py',
              'test_name':   'Like am i supposed to',
@@ -250,7 +255,8 @@ def get_tests_info():
             {'id': 9,
              'script_name': 'okay.py',
              'test_name':   'Im done',
-             'description': 'Like fucking done how do I work like this. Get me a goddamn mockup boat.'}
+             'description': 'Like fucking done how do I work like this. \
+                            Get me a goddamn mockup boat.'}
         ]
         return response
 
@@ -310,7 +316,9 @@ def run_test(id):
         if id not in DEBUG_TESTS_FAILING:
             response['passed'] = 1
         else:
-            response['error'] = 'Our programmers are working day and night to solve this issue. Stay still. Stay positive. Hydrate yourself.'
+            response['error'] = 'Our programmers are working day and night to \
+                                solve this issue. Stay still. Stay positive. \
+                                Hydrate yourself.'
         return response
 
     path = "server/data/tests.json"
@@ -357,10 +365,34 @@ def run_test(id):
     return response
 
 
+CAP = cv2.VideoCapture(0)
+@app.route('/monitor/cam/<int:id>', methods=['POST'])
+def get_frame(id):
+    response = {'frame': None,
+                'error': None}
+
+    _, frame = CAP.read()
+    _, buffer = cv2.imencode('.jpg', frame)
+    frame_b64 = base64.b64encode(buffer)
+
+    response['frame'] = frame_b64.decode('utf-8')
+
+    return response
+
+
+@app.route('/monitor/sensor/<int:id>', methods=['GET'])
+def get_sensor_data(id):
+    response = {'shit1': dtime.now().second + id*100,
+                'shit2': random.random()}
+
+    return response
+
+
 if __name__ == '__main__':
     if DESKTOP:
         webview.create_window('GUI Web App', app)
         webview.start()
     else:
-        app.run(debug=True)
+        app.run(debug=True, use_reloader=False)
     client.close()
+    CAP.release()
