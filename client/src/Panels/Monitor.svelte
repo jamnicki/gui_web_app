@@ -1,12 +1,15 @@
 <script>
   import { fly, slide } from 'svelte/transition';
   import { onDestroy } from 'svelte';
+  import { io } from 'socket.io-client';
 
   let frame_interval;
 
   let video_visible = false;
   let video_frame;
   let video_error;
+
+  const socket = io();
 
   async function getFrame() {
     // Get data
@@ -26,9 +29,7 @@
   function startVideoStream() {
     console.log('Starting the video stream...');
     video_visible = true;
-    frame_interval = setInterval(() => {
-      getFrame();
-    }, 30);
+    socket.emit('get_frame_socket', { fps: 15 });
   }
   async function stopVideoStream() {
     console.log('Stopping the video stream...');
@@ -38,6 +39,28 @@
     console.log(text);
     video_visible = false;
   }
+
+  socket.on('frame', (data) => {
+    video_visible = true;
+    video_frame = data.frame;
+  });
+
+  // HTTP STREAMING (NOT VERY SMART STUFF)
+  // function startVideoStream() {
+  //   console.log('Starting the video stream...');
+  //   video_visible = true;
+  //   frame_interval = setInterval(() => {
+  //     getFrame();
+  //   }, 30);
+  // }
+  // async function stopVideoStream() {
+  //   console.log('Stopping the video stream...');
+  //   clearInterval(frame_interval);
+  //   const res = await fetch('/monitor/stop');
+  //   const text = await res.text();
+  //   console.log(text);
+  //   video_visible = false;
+  // }
 
   async function getSingleFrame() {
     console.log('Getting a single frame...');
