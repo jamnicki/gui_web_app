@@ -38,7 +38,7 @@
   }
 
   async function getSingleFrame() {
-    getFrame();
+    await getFrame();
     await stopVideoStream();
     video_visible = true;
   }
