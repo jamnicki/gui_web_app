@@ -80,7 +80,7 @@
   }
 </script>
 
-<div in:fly={{ delay: 400 }} out:fly class="wrapper">
+<div in:fly={{ y: 50, delay: 400 }} out:fly={{ y: 50 }} class="wrapper">
   <div class="login" on:keydown={handleEnter}>
     <div class="address">
       <Loader

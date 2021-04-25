@@ -97,7 +97,7 @@
   }
 </script>
 
-<div in:fly={{ delay: 400 }} out:fly class="wrapper">
+<div in:fly={{ y: 50, delay: 400 }} out:fly={{ y: 50 }} class="wrapper">
   <h1><Loader loading={tests_loading} /> Tests</h1>
   <div class="controls">
     <button on:click={runAllTests}>

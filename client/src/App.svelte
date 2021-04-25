@@ -6,8 +6,8 @@
   import Loader from './Components/Loader.svelte';
 
   async function checkConnection() {
-    let res = await fetch('/check-connection');
-    let json = await res.json();
+    const res = await fetch('/check-connection');
+    const json = await res.json();
     console.log('Połączenie: ' + Boolean(json.connected));
     $connected = json.connected;
   }
@@ -28,8 +28,8 @@
 
   async function checkDebugMode() {
     const res = await fetch('/debug');
-    const mess = await res.json();
-    $debug = mess;
+    const text = await res.text();
+    $debug = text;
   }
   checkDebugMode();
 </script>

@@ -1,26 +1,35 @@
-import re
-import subprocess
-import platform
 import webview
-import json
 from flask import Flask, request, send_from_directory
+import eventlet
+import socketio
+
 from paramiko import SSHClient, ssh_exception, AutoAddPolicy
 from server.utils import (connection_alive, get_static_path,
                           close_file_objects, shorten_exception_message)
 
-from server.random_funny_text import get_funny_text
+import re
+import json
+import random
+import subprocess
+import platform
+
 import cv2
 import base64
-import random
 from datetime import datetime as dtime
+
+from server.random_funny_text import get_funny_text
 
 
 DESKTOP = False
 DEBUG = True
 DEBUG_TESTS_FAILING = []
 
+VIDEO_CAPTURE = cv2.VideoCapture()
+
 
 app = Flask(__name__, static_folder=get_static_path('client/public'))
+sio = socketio.Server(async_mode='eventlet')
+app.wsgi_app = socketio.WSGIApp(sio, app.wsgi_app)
 client = SSHClient()
 system = platform.system()
 
@@ -365,19 +374,36 @@ def run_test(id):
     return response
 
 
-CAP = cv2.VideoCapture(0)
 @app.route('/monitor/cam/<int:id>', methods=['POST'])  # noqa: E302
 def get_frame(id):
     response = {'frame': None,
                 'error': None}
 
-    _, frame = CAP.read()
+    if not VIDEO_CAPTURE.isOpened():
+        VIDEO_CAPTURE.open(0)
+
+    _, frame = VIDEO_CAPTURE.read()
     _, buffer = cv2.imencode('.jpg', frame)
     frame_b64 = base64.b64encode(buffer)
 
     response['frame'] = frame_b64.decode('utf-8')
 
     return response
+
+
+@app.route('/monitor/stop', methods=['GET'])  # noqa: E302
+def stop_video():
+    if VIDEO_CAPTURE.isOpened():
+        VIDEO_CAPTURE.release()
+    message = "Closing the video stream!"
+    print(message)
+    return message
+
+
+@sio.event
+def get_frame_socket(msg):
+    while 1:
+        socketio.emit('frame', get_frame(0))
 
 
 @app.route('/monitor/sensor/<int:id>', methods=['GET'])
@@ -393,6 +419,7 @@ if __name__ == '__main__':
         webview.create_window('GUI Web App', app)
         webview.start()
     else:
-        app.run(debug=True, use_reloader=False)
+        app.run(debug=True)   
     client.close()
-    CAP.release()
+    if VIDEO_CAPTURE.isOpened():
+        VIDEO_CAPTURE.release()
