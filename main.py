@@ -1,23 +1,21 @@
-import webview
-from flask import Flask, request, send_from_directory
-import eventlet
-import socketio
-
-from paramiko import SSHClient, ssh_exception, AutoAddPolicy
-from server.utils import (connection_alive, get_static_path,
-                          close_file_objects, shorten_exception_message)
-
 import re
+import time
+import cv2
+import base64
 import json
 import random
 import subprocess
 import platform
+import webview
+import eventlet  # noqa: F401
+import socketio
 
-import cv2
-import base64
+from flask import Flask, request, send_from_directory
+from paramiko import SSHClient, ssh_exception, AutoAddPolicy
+from server.utils import (connection_alive, get_static_path,
+                          close_file_objects, shorten_exception_message)
+
 from datetime import datetime as dtime
-
-from server.random_funny_text import get_funny_text
 
 
 DESKTOP = False
@@ -44,12 +42,6 @@ def base():
 @app.route('/<path:path>')
 def home(path):
     return send_from_directory(app.static_folder, path)
-
-
-# Connection test
-@app.route('/test')
-def test():
-    return get_funny_text()
 
 
 # Check if in DEBUG MODE
@@ -374,10 +366,12 @@ def run_test(id):
     return response
 
 
-@app.route('/monitor/cam/<int:id>', methods=['POST'])  # noqa: E302
+@app.route('/monitor/cam/<int:id>', methods=['POST'])
 def get_frame(id):
     response = {'frame': None,
                 'error': None}
+
+    global VIDEO_CAPTURE
 
     if not VIDEO_CAPTURE.isOpened():
         VIDEO_CAPTURE.open(0)
@@ -391,19 +385,35 @@ def get_frame(id):
     return response
 
 
-@app.route('/monitor/stop', methods=['GET'])  # noqa: E302
+@app.route('/monitor/stop', methods=['GET'])
 def stop_video():
+    global VIDEO_CAPTURE
+
     if VIDEO_CAPTURE.isOpened():
         VIDEO_CAPTURE.release()
-    message = "Closing the video stream!"
+        message = "Closing the video stream!"
+    else:
+        message = 'Video stream is already closed!'
     print(message)
     return message
 
 
 @sio.event
-def get_frame_socket(msg):
-    while 1:
-        socketio.emit('frame', get_frame(0))
+def get_frame_socket(data):
+    global VIDEO_CAPTURE
+
+    delay = 1 / data['fps']
+    while VIDEO_CAPTURE.isOpened():
+        sio.emit('frame', get_frame(0))
+        time.sleep(delay)
+
+
+@sio.event
+def get_sensor_data_socket(data):
+    response = {'shit1': dtime.now().second + data['id']*100,
+                'shit2': random.random()}
+
+    return response
 
 
 @app.route('/monitor/sensor/<int:id>', methods=['GET'])
@@ -419,7 +429,9 @@ if __name__ == '__main__':
         webview.create_window('GUI Web App', app)
         webview.start()
     else:
-        app.run(debug=True)   
+        app.run(debug=True)
+
     client.close()
+
     if VIDEO_CAPTURE.isOpened():
         VIDEO_CAPTURE.release()
