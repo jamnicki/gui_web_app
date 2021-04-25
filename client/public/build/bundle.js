@@ -3649,7 +3649,7 @@ var app = (function () {
     const { console: console_1$1 } = globals;
     const file$1 = "src\\Panels\\Monitor.svelte";
 
-    // (50:2) {#if video_error}
+    // (51:2) {#if video_error}
     function create_if_block_1$1(ctx) {
     	let span;
     	let t;
@@ -3661,7 +3661,7 @@ var app = (function () {
     			span = element("span");
     			t = text(/*video_error*/ ctx[2]);
     			attr_dev(span, "class", "message error svelte-1lpkeaz");
-    			add_location(span, file$1, 50, 4, 1360);
+    			add_location(span, file$1, 51, 4, 1354);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -3696,14 +3696,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1$1.name,
     		type: "if",
-    		source: "(50:2) {#if video_error}",
+    		source: "(51:2) {#if video_error}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (56:4) {:else}
+    // (57:4) {:else}
     function create_else_block$1(ctx) {
     	let img;
     	let img_src_value;
@@ -3714,7 +3714,7 @@ var app = (function () {
     			if (img.src !== (img_src_value = "tumbleweed.gif")) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "tumbleweed");
     			attr_dev(img, "class", "svelte-1lpkeaz");
-    			add_location(img, file$1, 56, 6, 1580);
+    			add_location(img, file$1, 57, 6, 1574);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, img, anchor);
@@ -3729,14 +3729,14 @@ var app = (function () {
     		block,
     		id: create_else_block$1.name,
     		type: "else",
-    		source: "(56:4) {:else}",
+    		source: "(57:4) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (54:4) {#if video_visible}
+    // (55:4) {#if video_visible}
     function create_if_block$1(ctx) {
     	let img;
     	let img_src_value;
@@ -3747,7 +3747,7 @@ var app = (function () {
     			if (img.src !== (img_src_value = "data:image/jpg;base64, " + /*video_frame*/ ctx[1])) attr_dev(img, "src", img_src_value);
     			attr_dev(img, "alt", "video stream");
     			attr_dev(img, "class", "svelte-1lpkeaz");
-    			add_location(img, file$1, 54, 6, 1490);
+    			add_location(img, file$1, 55, 6, 1484);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, img, anchor);
@@ -3766,7 +3766,7 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(54:4) {#if video_visible}",
+    		source: "(55:4) {#if video_visible}",
     		ctx
     	});
 
@@ -3826,20 +3826,20 @@ var app = (function () {
     			div1 = element("div");
     			if_block1.c();
     			attr_dev(h1, "class", "svelte-1lpkeaz");
-    			add_location(h1, file$1, 40, 2, 1007);
+    			add_location(h1, file$1, 41, 2, 1001);
     			attr_dev(button0, "class", "single svelte-1lpkeaz");
-    			add_location(button0, file$1, 42, 4, 1054);
-    			add_location(br, file$1, 43, 4, 1136);
+    			add_location(button0, file$1, 43, 4, 1048);
+    			add_location(br, file$1, 44, 4, 1130);
     			attr_dev(button1, "class", "success");
-    			add_location(button1, file$1, 44, 4, 1148);
+    			add_location(button1, file$1, 45, 4, 1142);
     			attr_dev(button2, "class", "error");
-    			add_location(button2, file$1, 47, 4, 1251);
+    			add_location(button2, file$1, 48, 4, 1245);
     			attr_dev(div0, "class", "buttons svelte-1lpkeaz");
-    			add_location(div0, file$1, 41, 2, 1027);
+    			add_location(div0, file$1, 42, 2, 1021);
     			attr_dev(div1, "class", "video svelte-1lpkeaz");
-    			add_location(div1, file$1, 52, 2, 1438);
+    			add_location(div1, file$1, 53, 2, 1432);
     			attr_dev(div2, "class", "wrapper svelte-1lpkeaz");
-    			add_location(div2, file$1, 39, 0, 931);
+    			add_location(div2, file$1, 40, 0, 925);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -3957,7 +3957,9 @@ var app = (function () {
     	eel.expose(setFrame);
 
     	function setFrame(json) {
-    		if (!data.error) {
+    		console.log(json);
+
+    		if (!json.error) {
     			$$invalidate(1, video_frame = json.frame);
     		}
 
@@ -3968,18 +3970,18 @@ var app = (function () {
     	function startVideoStream() {
     		console.log("Starting the video stream...");
     		$$invalidate(0, video_visible = true);
-    		eel.start_sending_frames(30)();
+    		eel.start_sending_frames(30);
     	}
 
-    	async function stopVideoStream() {
+    	function stopVideoStream() {
     		console.log("Stopping the video stream...");
-    		await eel.stop_sending_frames()();
+    		eel.stop_sending_frames();
     		$$invalidate(0, video_visible = false);
     	}
 
-    	async function getSingleFrame() {
+    	function getSingleFrame() {
     		console.log("Getting a single frame...");
-    		await eel.send_single_frame()();
+    		eel.send_single_frame();
     		$$invalidate(0, video_visible = true);
     	}
 

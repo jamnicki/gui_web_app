@@ -19,17 +19,17 @@
   function startVideoStream() {
     console.log('Starting the video stream...');
     video_visible = true;
-    eel.start_sending_frames(30)();
+    eel.start_sending_frames(30);
   }
-  async function stopVideoStream() {
+  function stopVideoStream() {
     console.log('Stopping the video stream...');
-    await eel.stop_sending_frames()();
+    eel.stop_sending_frames();
     video_visible = false;
   }
 
-  async function getSingleFrame() {
+  function getSingleFrame() {
     console.log('Getting a single frame...');
-    await eel.send_single_frame()();
+    eel.send_single_frame();
     video_visible = true;
   }
 
