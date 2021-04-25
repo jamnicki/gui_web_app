@@ -24,12 +24,14 @@
   }
 
   function startVideoStream() {
+    console.log('Starting the video stream...');
     video_visible = true;
     frame_interval = setInterval(() => {
       getFrame();
     }, 30);
   }
   async function stopVideoStream() {
+    console.log('Stopping the video stream...');
     clearInterval(frame_interval);
     const res = await fetch('/monitor/stop');
     const text = await res.text();
@@ -38,6 +40,7 @@
   }
 
   async function getSingleFrame() {
+    console.log('Getting a single frame...');
     await getFrame();
     await stopVideoStream();
     video_visible = true;
