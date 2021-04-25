@@ -1,39 +1,37 @@
-import re
-import subprocess
-import platform
 import webview
-import json
 from flask import Flask, request, send_from_directory
+import eventlet
+import socketio
+
 from paramiko import SSHClient, ssh_exception, AutoAddPolicy
 from server.utils import (connection_alive, get_static_path,
                           close_file_objects, shorten_exception_message)
 
-from server.random_funny_text import get_funny_text
-# from flask_socketio import SocketIO, emit
-import socketio
-from datetime import datetime as dtime
-import base64
+import re
+import json
 import random
-import webbrowser
+import subprocess
+import platform
+
+import cv2
+import base64
+from datetime import datetime as dtime
+
+from server.random_funny_text import get_funny_text
 
 
-DESKTOP = True
+DESKTOP = False
 DEBUG = True
 DEBUG_TESTS_FAILING = []
 
+VIDEO_CAPTURE = cv2.VideoCapture()
 
-socket_io = socketio.Server(async_mode='threading')
+
 app = Flask(__name__, static_folder=get_static_path('client/public'))
-app.wsgi_app = socketio.WSGIApp(socket_io, app.wsgi_app)
+sio = socketio.Server(async_mode='eventlet')
+app.wsgi_app = socketio.WSGIApp(sio, app.wsgi_app)
 client = SSHClient()
 system = platform.system()
-
-
-@app.before_first_request
-def before_first_request():
-    import cv2
-    global CAP
-    CAP = cv2.VideoCapture(0)
 
 
 # Client page
@@ -381,7 +379,10 @@ def get_frame(id):
     response = {'frame': None,
                 'error': None}
 
-    _, frame = CAP.read()
+    if not VIDEO_CAPTURE.isOpened():
+        VIDEO_CAPTURE.open(0)
+
+    _, frame = VIDEO_CAPTURE.read()
     _, buffer = cv2.imencode('.jpg', frame)
     frame_b64 = base64.b64encode(buffer)
 
@@ -390,19 +391,19 @@ def get_frame(id):
     return response
 
 
-@socket_io.on('get_frame_socket')
+@app.route('/monitor/stop', methods=['GET'])  # noqa: E302
+def stop_video():
+    if VIDEO_CAPTURE.isOpened():
+        VIDEO_CAPTURE.release()
+    message = "Closing the video stream!"
+    print(message)
+    return message
+
+
+@sio.event
 def get_frame_socket(msg):
-    response = {'frame': None,
-                'error': None}
-
     while 1:
-        _, frame = CAP.read()
-        _, buffer = cv2.imencode('.jpg', frame)
-        frame_b64 = base64.b64encode(buffer)
-
-        response['frame'] = frame_b64.decode('utf-8')
-
-        socketio.emit('frame', response)
+        socketio.emit('frame', get_frame(0))
 
 
 @app.route('/monitor/sensor/<int:id>', methods=['GET'])
@@ -418,6 +419,7 @@ if __name__ == '__main__':
         webview.create_window('GUI Web App', app)
         webview.start()
     else:
-        app.run(debug=True)
+        app.run(debug=True)   
     client.close()
-    CAP.release()
+    if VIDEO_CAPTURE.isOpened():
+        VIDEO_CAPTURE.release()
