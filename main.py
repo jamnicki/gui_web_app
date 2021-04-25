@@ -1,3 +1,4 @@
+import sys
 import re
 import json
 import time
@@ -406,8 +407,7 @@ def on_exit(page_path, websockets):
     Shutting down the SSH client...
     """)
     client.close()
-    close_capture()
-    exit()
+    sys.exit()
 
 if __name__ == '__main__':
     print(f"""
