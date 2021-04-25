@@ -1,34 +1,37 @@
-import eel
 import re
-import subprocess
-import platform
 import json
+import time
+import cv2
+import base64
+import eel
+import platform
+import subprocess
 from paramiko import SSHClient, ssh_exception, AutoAddPolicy
 from server.utils import (connection_alive, close_file_objects,
                           shorten_exception_message)
+from datetime import datetime as dtime
 
 
 DEBUG = True
 DEBUG_TESTS_FAILING = []
 
-APP_MODE = 'chrome'
-APP_BROWSER = '/mnt/c/Program Files/Google/Chrome/Application/chrome.exe'
-APP_GEOMETRY = {'size': (200, 100), 'position': (300, 50)}
+SIZE = (200, 100)
+POSITION = (300, 50)
 
-
-client = SSHClient()
 system = platform.system()
+client = SSHClient()
+camera = cv2.VideoCapture()
 
 
-# Check if in DEBUG MODE
 @eel.expose
 def debug():
+    """Check if in DEBUG MODE"""
     return int(DEBUG)
 
 
-# Testing loading animations
 @eel.expose
 def loader():
+    """Delay the return to test loading animations"""
     import time
     time.sleep(5)
     return 'Loader test response.'
@@ -332,20 +335,85 @@ def run_test(id):
     return response
 
 
+def open_capture(camera_id=0):
+    """Open the video stream if it's closed."""
+    global camera
+    if not camera.isOpened():
+        camera.open(0)
+        print("Opened the video stream!")
+    else:
+        print("Video stream is already opened!")
+
+def close_capture():
+    """Close the video stream if it's opened."""
+    global camera
+    if camera.isOpened():
+        camera.release()
+        print("Closed the video stream!")
+    else:
+        print("Video stream is already closed!")
+
+def get_frame():
+    """Get a camera frame from an opened video stream."""
+    response = {'frame': None,
+                'error': None}
+    global camera
+    try:
+        _, frame = camera.read()
+        _, buffer = cv2.imencode('.jpg', frame)
+        frame_b64 = base64.b64encode(buffer)
+        frame_utf8 = frame_b64.decode('utf-8')
+        response['frame'] = frame_utf8
+    except Exception as e:
+        error_message = "Could not read a frame. Is the video stream closed?\n{e}"
+        print(error_message)
+        response['error'] = error_message
+    return response
+
+
+def stream_frames(fps):
+    """Take and send frames to the frontend continuously."""
+    global camera
+    frames_counter = 0
+    while camera.isOpened():
+        frames_counter += 1
+        eel.setFrame(get_frame())
+        print(f"Sent the frame to the frontend ({frames_counter})!")
+        eel.sleep(1/fps)
+
+@eel.expose
+def start_sending_frames(fps, camera_id=0):
+    """Initiate sending frames to the frontend continuously."""
+    open_capture(camera_id)
+    eel.spawn(stream_frames(fps))
+
+@eel.expose
+def stop_sending_frames():
+    """Stop sending frames to the frontend."""
+    close_capture()
+
+@eel.expose
+def send_single_frame(camera_id=0):
+    """Take and send a single frame to the frontend."""
+    open_capture(camera_id)
+    eel.setFrame(get_frame())
+    close_capture()
+
+
 def on_exit(page_path, websockets):
     print(f"""
     The app was closed! 🛑
     Shutting down the SSH client...
     """)
     client.close()
+    close_capture()
     exit()
 
 if __name__ == '__main__':
-    eel.browsers.set_path(APP_MODE, APP_BROWSER)
     print(f"""
     The app is running! 🚀
     Local:  http://localhost:8000/
     """)
+    geometry = { 'size': SIZE, 'position': POSITION }
     eel.init('client/public')
-    eel.start('index.html', mode=APP_MODE, geometry=APP_GEOMETRY,
-              close_callback=on_exit)
+    eel.start('index.html', geometry=geometry, close_callback=on_exit)
