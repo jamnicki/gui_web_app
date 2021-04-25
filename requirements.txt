@@ -1,4 +1,8 @@
+wheel==0.36.2
 Flask==1.1.2
 pyinstaller==4.2
 pywebview==3.4
 paramiko==2.7.2
+python-socketio==5.2.1
+opencv-python==4.5.1.48
+eventlet==0.30.2
