@@ -7,9 +7,11 @@ import base64
 import eel
 import platform
 import subprocess
+
 from paramiko import SSHClient, ssh_exception, AutoAddPolicy
 from server.utils import (connection_alive, close_file_objects,
                           shorten_exception_message)
+
 from datetime import datetime as dtime
 
 
@@ -24,6 +26,65 @@ client = SSHClient()
 camera = cv2.VideoCapture()
 
 
+def open_capture(camera_id=0):
+    """Open the video stream if it's closed."""
+    global camera
+    if not camera.isOpened():
+        camera.open(0)
+        print("Opened the video stream!")
+    else:
+        print("Video stream is already opened!")
+
+
+def close_capture():
+    """Close the video stream if it's opened."""
+    global camera
+    if camera.isOpened():
+        camera.release()
+        print("Closed the video stream!")
+    else:
+        print("Video stream is already closed!")
+
+
+def get_frame():
+    """Get a camera frame from an opened video stream."""
+    response = {'frame': None,
+                'error': None}
+    global camera
+    try:
+        _, frame = camera.read()
+        _, buffer = cv2.imencode('.jpg', frame)
+        frame_b64 = base64.b64encode(buffer)
+        frame_utf8 = frame_b64.decode('utf-8')
+        response['frame'] = frame_utf8
+    except Exception as e:
+        error_message = f"Could not read a frame. Is the video\
+            stream closed?\n{e}"
+        print(error_message)
+        response['error'] = error_message
+    return response
+
+
+def stream_frames(fps):
+    """Take and send frames to the frontend continuously."""
+    global camera
+    frames_counter = 0
+    while camera.isOpened():
+        frames_counter += 1
+        eel.setFrame(get_frame())
+        print(f"Sent the frame to the frontend ({frames_counter})!")
+        eel.sleep(1/fps)
+
+
+def on_exit(page_path, websockets):
+    print("""
+    The app was closed! 🛑
+    Shutting down the SSH client...
+    """)
+    client.close()
+    sys.exit()
+
+
 @eel.expose
 def debug():
     """Check if in DEBUG MODE"""
@@ -33,7 +94,6 @@ def debug():
 @eel.expose
 def loader():
     """Delay the return to test loading animations"""
-    import time
     time.sleep(5)
     return 'Loader test response.'
 
@@ -213,7 +273,8 @@ def get_tests_info():
             {'id': 5,
              'script_name': 'just.py',
              'test_name':   'Like fuck dammit',
-             'description': 'Where am I supposed to find fucking boat tests huh? What the fuck.'},
+             'description': 'Where am I supposed to find fucking boat tests\
+                 huh? What the fuck.'},
             {'id': 6,
              'script_name': 'like.py',
              'test_name':   'Like am i supposed to',
@@ -229,7 +290,8 @@ def get_tests_info():
             {'id': 9,
              'script_name': 'okay.py',
              'test_name':   'Im done',
-             'description': 'Like fucking done how do I work like this. Get me a goddamn mockup boat.'}
+             'description': 'Like fucking done how do I work like this.\
+                 Get me a goddamn mockup boat.'}
         ]
         return response
 
@@ -279,9 +341,6 @@ def run_test(id):
             'error' (str):	Exception message if an unexpected error occurred.
                             None if not.
     """
-
-    # TODO: actual path to tests json file
-
     response = {'passed': 0,
                 'error': None}
 
@@ -289,7 +348,8 @@ def run_test(id):
         if id not in DEBUG_TESTS_FAILING:
             response['passed'] = 1
         else:
-            response['error'] = 'Our programmers are working day and night to solve this issue. Stay still. Stay positive. Hydrate yourself.'
+            response['error'] = 'Our programmers are working day and night to\
+                solve this issue. Stay still. Stay positive. Hydrate yourself.'
         return response
 
     path = "server/data/tests.json"
@@ -336,62 +396,18 @@ def run_test(id):
     return response
 
 
-def open_capture(camera_id=0):
-    """Open the video stream if it's closed."""
-    global camera
-    if not camera.isOpened():
-        camera.open(0)
-        print("Opened the video stream!")
-    else:
-        print("Video stream is already opened!")
-
-def close_capture():
-    """Close the video stream if it's opened."""
-    global camera
-    if camera.isOpened():
-        camera.release()
-        print("Closed the video stream!")
-    else:
-        print("Video stream is already closed!")
-
-def get_frame():
-    """Get a camera frame from an opened video stream."""
-    response = {'frame': None,
-                'error': None}
-    global camera
-    try:
-        _, frame = camera.read()
-        _, buffer = cv2.imencode('.jpg', frame)
-        frame_b64 = base64.b64encode(buffer)
-        frame_utf8 = frame_b64.decode('utf-8')
-        response['frame'] = frame_utf8
-    except Exception as e:
-        error_message = "Could not read a frame. Is the video stream closed?\n{e}"
-        print(error_message)
-        response['error'] = error_message
-    return response
-
-
-def stream_frames(fps):
-    """Take and send frames to the frontend continuously."""
-    global camera
-    frames_counter = 0
-    while camera.isOpened():
-        frames_counter += 1
-        eel.setFrame(get_frame())
-        print(f"Sent the frame to the frontend ({frames_counter})!")
-        eel.sleep(1/fps)
-
 @eel.expose
 def start_sending_frames(fps, camera_id=0):
     """Initiate sending frames to the frontend continuously."""
     open_capture(camera_id)
     eel.spawn(stream_frames(fps))
 
+
 @eel.expose
 def stop_sending_frames():
     """Stop sending frames to the frontend."""
     close_capture()
+
 
 @eel.expose
 def send_single_frame(camera_id=0):
@@ -401,19 +417,11 @@ def send_single_frame(camera_id=0):
     close_capture()
 
 
-def on_exit(page_path, websockets):
-    print(f"""
-    The app was closed! 🛑
-    Shutting down the SSH client...
-    """)
-    client.close()
-    sys.exit()
-
 if __name__ == '__main__':
-    print(f"""
+    print("""
     The app is running! 🚀
     Local:  http://localhost:8000/
     """)
-    geometry = { 'size': SIZE, 'position': POSITION }
+    geometry = {'size': SIZE, 'position': POSITION}
     eel.init('client/public')
     eel.start('index.html', geometry=geometry, close_callback=on_exit)
