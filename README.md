@@ -11,7 +11,6 @@ The script sets up a local server on port 8000 so you can always view the app in
 1. Create a [virutal enviroment](https://docs.python.org/3/tutorial/venv.html) and activate it.
 2. Install dependencies:\
    `pip install -r requirements.txt`\
-   (Linux) `pip install pywebview[qt]`\
    (Linux) `xargs -a packages.txt sudo apt install`
 3. Run `main.py`
 
