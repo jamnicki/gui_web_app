@@ -6,10 +6,8 @@
   import Loader from './Components/Loader.svelte';
 
   async function checkConnection() {
-    const res = await fetch('/check-connection');
-    const json = await res.json();
-    console.log('Połączenie: ' + Boolean(json.connected));
-    $connected = json.connected;
+    $connected = await eel.check_connection()().connected;
+    console.log('Połączenie: ' + Boolean($connected));
   }
   function connect() {
     $connected = 1;
@@ -27,9 +25,7 @@
   }
 
   async function checkDebugMode() {
-    const res = await fetch('/debug');
-    const text = await res.text();
-    $debug = text;
+    $debug = await eel.debug()();
   }
   checkDebugMode();
 </script>

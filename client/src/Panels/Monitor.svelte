@@ -3,69 +3,34 @@
   import { onDestroy } from 'svelte';
   import { io } from 'socket.io-client';
 
-  let frame_interval;
-
   let video_visible = false;
   let video_frame;
   let video_error;
 
-  const socket = io();
-
-  async function getFrame() {
-    // Get data
-    try {
-      const res = await fetch('/monitor/cam/1', { method: 'POST' });
-      const json = await res.json();
-      if (!json.error) {
-        video_frame = json.frame;
-      }
-      // Replace Errors if there are new ones or empty them
-      video_error = json.error || '';
-    } catch (error) {
-      video_error = error;
+  eel.expose(setFrame);
+  function setFrame(json) {
+    console.log(json);
+    if (!json.error) {
+      video_frame = json.frame;
     }
+    // Replace Errors if there are new ones or empty them
+    video_error = json.error || '';
   }
 
   function startVideoStream() {
     console.log('Starting the video stream...');
     video_visible = true;
-    socket.emit('get_frame_socket', { fps: 15 });
+    eel.start_sending_frames(30);
   }
-  async function stopVideoStream() {
+  function stopVideoStream() {
     console.log('Stopping the video stream...');
-    clearInterval(frame_interval);
-    const res = await fetch('/monitor/stop');
-    const text = await res.text();
-    console.log(text);
+    eel.stop_sending_frames();
     video_visible = false;
   }
 
-  socket.on('frame', (data) => {
-    video_visible = true;
-    video_frame = data.frame;
-  });
-
-  // HTTP STREAMING (NOT VERY SMART STUFF)
-  // function startVideoStream() {
-  //   console.log('Starting the video stream...');
-  //   video_visible = true;
-  //   frame_interval = setInterval(() => {
-  //     getFrame();
-  //   }, 30);
-  // }
-  // async function stopVideoStream() {
-  //   console.log('Stopping the video stream...');
-  //   clearInterval(frame_interval);
-  //   const res = await fetch('/monitor/stop');
-  //   const text = await res.text();
-  //   console.log(text);
-  //   video_visible = false;
-  // }
-
-  async function getSingleFrame() {
+  function getSingleFrame() {
     console.log('Getting a single frame...');
-    await getFrame();
-    await stopVideoStream();
+    eel.send_single_frame();
     video_visible = true;
   }
 
