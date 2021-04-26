@@ -4,7 +4,7 @@ A versatile GUI in a from of a desktop web app used for operating our underwater
 
 # Development
 
-To run the app in a browser (http://localhost:5000/) set `DESKTOP=False` in `main.py`.
+The script sets up a local server on port 8000 so you can always view the app in the browser (http://localhost:8000/).
 
 ## Backend
 
@@ -23,19 +23,23 @@ To run the app in a browser (http://localhost:5000/) set `DESKTOP=False` in `mai
 4. `npm run dev`\
    This command will rebuild the `client/public` folder everytime you save a file in the `client` folder.
 
-Developing the Frontend requires a running Backend.\
-You should be running the Backend with `DESKTOP=False` in `main.py`.
+Developing the Frontend requires a running Backend.
 
 ## Packaging
 
 In order to freeze the app into an executable:
 
-1. Set `DESKTOP=True` in `main.py`
+1. Set `DEBUG=False` in `main.py`!
 2. Use this command:\
-   `pyinstaller --clean --windowed --onefile --paths "./server" --add-data "client/public;client/public" --distpath "./export" --name "GUI Web App" -i "./icon.ico" main.py`\
-   (Linux) Swap `;` with `:`
+   `python -m eel main.py client/public --onefile --noconsole --distpath "./export" --name "GUI Web App" -i "./icon.ico"`
 
-The execs are saved into the `export` folder.
+The executables are saved into the `export` folder.
+
+It will also generate some stuff (you can safely remove it):
+
+- yummy `__pycache__` of course
+- `build` folder
+- `GUI_Web_App.spec` file
 
 # Running the app
 

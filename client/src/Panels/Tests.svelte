@@ -31,8 +31,7 @@
     tests_loading = true;
     // Get data
     try {
-      const res = await fetch('/tests/info-all');
-      const json = await res.json();
+      const json = await eel.get_tests_info()();
       if (!json.error) {
         // Additional fields intended for running tests
         for (let test of json.tests_info) {
@@ -55,16 +54,14 @@
     let test = tests[i];
     console.log(`Running test number ${test.id}`);
     test.running = true;
-    // Get data
     try {
-      const res = await fetch(`/tests/run/${test.id}`);
-      const json = await res.json();
-      // if the test fails - elevate it to the top of the list
+      const json = await eel.run_test(test.id)();
+      // if the test fails elevate it to the top of the list
       if (json.passed == 0 && test.passed != 0) {
         tests = tests.filter((t) => t.id != test.id);
         tests.unshift(test);
       }
-      // if the test passes after a previous failure - put it back in place
+      // if the test passes after a failure put it back in place
       else if (json.passed == 1 && test.passed == 0) {
         tests = tests.filter((t) => t.id != test.id);
         let index = 0;

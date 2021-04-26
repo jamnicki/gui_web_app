@@ -28,8 +28,8 @@
     addresses_loading = true;
     // Get data
     try {
-      const res = await fetch('/available-addresses');
-      const json = await res.json();
+      const json = await eel.get_available_addresses()();
+      console.log(json);
       if (json.addresses) {
         // Filter out addresses that are already on the list
         const new_addresses = json.addresses.filter((elem) => {
@@ -56,17 +56,9 @@
     if (password == '') password = undefined;
     // Send data
     try {
-      const res = await fetch('/connect', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          hostname: hostname,
-          username: username,
-          password: password,
-        }),
-      });
-      const json = await res.json();
+      const json = await eel.connect(hostname, username, password)();
       $connected = json.connected;
+      // Replace Errors and Hints if there are new ones or empty them
       login_error = json.error || '';
       login_hint = json.hint || '';
     } catch (error) {
@@ -76,7 +68,7 @@
   }
 
   function handleEnter(e) {
-    if (e.key === 'Enter') connect();
+    if (e.key === 'Enter') login();
   }
 </script>
 

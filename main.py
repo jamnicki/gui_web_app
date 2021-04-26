@@ -1,65 +1,105 @@
+import sys
 import re
+import json
 import time
 import cv2
 import base64
-import json
-import random
-import subprocess
+import eel
 import platform
-import webview
-import eventlet  # noqa: F401
-import socketio
+import subprocess
 
-from flask import Flask, request, send_from_directory
 from paramiko import SSHClient, ssh_exception, AutoAddPolicy
-from server.utils import (connection_alive, get_static_path,
-                          close_file_objects, shorten_exception_message)
+from server.utils import (connection_alive, close_file_objects,
+                          shorten_exception_message)
 
 from datetime import datetime as dtime
 
 
-DESKTOP = False
 DEBUG = True
 DEBUG_TESTS_FAILING = []
 
-VIDEO_CAPTURE = cv2.VideoCapture()
+SIZE = (200, 100)
+POSITION = (300, 50)
 
-
-app = Flask(__name__, static_folder=get_static_path('client/public'))
-sio = socketio.Server(async_mode='eventlet')
-app.wsgi_app = socketio.WSGIApp(sio, app.wsgi_app)
-client = SSHClient()
 system = platform.system()
+client = SSHClient()
+camera = cv2.VideoCapture()
 
 
-# Client page
-@app.route('/')
-def base():
-    return send_from_directory(app.static_folder, 'index.html')
+def open_capture(camera_id=0):
+    """Open the video stream if it's closed."""
+    global camera
+    if not camera.isOpened():
+        camera.open(0)
+        print("Opened the video stream!")
+    else:
+        print("Video stream is already opened!")
 
 
-# Path for all the static files
-@app.route('/<path:path>')
-def home(path):
-    return send_from_directory(app.static_folder, path)
+def close_capture():
+    """Close the video stream if it's opened."""
+    global camera
+    if camera.isOpened():
+        camera.release()
+        print("Closed the video stream!")
+    else:
+        print("Video stream is already closed!")
 
 
-# Check if in DEBUG MODE
-@app.route('/debug')
+def get_frame():
+    """Get a camera frame from an opened video stream."""
+    response = {'frame': None,
+                'error': None}
+    global camera
+    try:
+        _, frame = camera.read()
+        _, buffer = cv2.imencode('.jpg', frame)
+        frame_b64 = base64.b64encode(buffer)
+        frame_utf8 = frame_b64.decode('utf-8')
+        response['frame'] = frame_utf8
+    except Exception as e:
+        error_message = f"Could not read a frame. Is the video\
+            stream closed?\n{e}"
+        print(error_message)
+        response['error'] = error_message
+    return response
+
+
+def stream_frames(fps):
+    """Take and send frames to the frontend continuously."""
+    global camera
+    frames_counter = 0
+    while camera.isOpened():
+        frames_counter += 1
+        eel.setFrame(get_frame())
+        print(f"Sent the frame to the frontend ({frames_counter})!")
+        eel.sleep(1/fps)
+
+
+def on_exit(page_path, websockets):
+    print("""
+    The app was closed! 🛑
+    Shutting down the SSH client...
+    """)
+    client.close()
+    sys.exit()
+
+
+@eel.expose
 def debug():
-    return str(int(DEBUG))
+    """Check if in DEBUG MODE"""
+    return int(DEBUG)
 
 
-# Testing loading animations
-@app.route('/loader', methods=['GET', 'POST'])
+@eel.expose
 def loader():
-    import time
+    """Delay the return to test loading animations"""
     time.sleep(5)
     return 'Loader test response.'
 
 
-@app.route('/connect', methods=['POST'])
-def connect():
+@eel.expose
+def connect(hostname, username, password):
     """Connect to ROV via SSH using hostname, username and password
        from POST request received data.
     """
@@ -68,14 +108,8 @@ def connect():
                 'error': None,
                 'hint': None}
 
-    json_data = request.json
-    try:
-        hostname = json_data['hostname']
-        username = json_data['username']
-        password = json_data['password']
-    except KeyError as e:
-        response['error'] = f'Missing {e}'
-        return response
+    if not hostname or not username or not password:
+        print('Missing hostname, username or password.')
 
     # Secret passage. For debugging.
     if username == 'conn' and password == 'conn':
@@ -139,7 +173,7 @@ def connect():
     return response
 
 
-@app.route('/check-connection', methods=['GET'])
+@eel.expose
 def check_connection():
     response = {'connected': 0}
 
@@ -149,7 +183,7 @@ def check_connection():
     return response
 
 
-@app.route('/available-addresses', methods=['GET'])
+@eel.expose
 def get_available_addresses():
     """Find available addresses on user's local network
        by executing 'arp -a' command.
@@ -196,7 +230,7 @@ def get_available_addresses():
     return response
 
 
-@app.route('/tests/info-all', methods=['GET'])
+@eel.expose
 def get_tests_info():
     """Get info about available tests by remotely running a dedicated script.
 
@@ -239,8 +273,8 @@ def get_tests_info():
             {'id': 5,
              'script_name': 'just.py',
              'test_name':   'Like fuck dammit',
-             'description': 'Where am I supposed to find fucking boat tests \
-                            huh? What the fuck.'},
+             'description': 'Where am I supposed to find fucking boat tests\
+                 huh? What the fuck.'},
             {'id': 6,
              'script_name': 'like.py',
              'test_name':   'Like am i supposed to',
@@ -256,8 +290,8 @@ def get_tests_info():
             {'id': 9,
              'script_name': 'okay.py',
              'test_name':   'Im done',
-             'description': 'Like fucking done how do I work like this. \
-                            Get me a goddamn mockup boat.'}
+             'description': 'Like fucking done how do I work like this.\
+                 Get me a goddamn mockup boat.'}
         ]
         return response
 
@@ -296,7 +330,7 @@ def get_tests_info():
     return response
 
 
-@app.route('/tests/run/<int:id>', methods=['GET'])
+@eel.expose
 def run_test(id):
     """Run test with given id.
 
@@ -307,9 +341,6 @@ def run_test(id):
             'error' (str):	Exception message if an unexpected error occurred.
                             None if not.
     """
-
-    # TODO: actual path to tests json file
-
     response = {'passed': 0,
                 'error': None}
 
@@ -317,9 +348,8 @@ def run_test(id):
         if id not in DEBUG_TESTS_FAILING:
             response['passed'] = 1
         else:
-            response['error'] = 'Our programmers are working day and night to \
-                                solve this issue. Stay still. Stay positive. \
-                                Hydrate yourself.'
+            response['error'] = 'Our programmers are working day and night to\
+                solve this issue. Stay still. Stay positive. Hydrate yourself.'
         return response
 
     path = "server/data/tests.json"
@@ -366,72 +396,32 @@ def run_test(id):
     return response
 
 
-@app.route('/monitor/cam/<int:id>', methods=['POST'])
-def get_frame(id):
-    response = {'frame': None,
-                'error': None}
-
-    global VIDEO_CAPTURE
-
-    if not VIDEO_CAPTURE.isOpened():
-        VIDEO_CAPTURE.open(0)
-
-    _, frame = VIDEO_CAPTURE.read()
-    _, buffer = cv2.imencode('.jpg', frame)
-    frame_b64 = base64.b64encode(buffer)
-
-    response['frame'] = frame_b64.decode('utf-8')
-
-    return response
+@eel.expose
+def start_sending_frames(fps, camera_id=0):
+    """Initiate sending frames to the frontend continuously."""
+    open_capture(camera_id)
+    eel.spawn(stream_frames(fps))
 
 
-@app.route('/monitor/stop', methods=['GET'])
-def stop_video():
-    global VIDEO_CAPTURE
-
-    if VIDEO_CAPTURE.isOpened():
-        VIDEO_CAPTURE.release()
-        message = "Closing the video stream!"
-    else:
-        message = 'Video stream is already closed!'
-    print(message)
-    return message
+@eel.expose
+def stop_sending_frames():
+    """Stop sending frames to the frontend."""
+    close_capture()
 
 
-@sio.event
-def get_frame_socket(data):
-    global VIDEO_CAPTURE
-
-    delay = 1 / data['fps']
-    while VIDEO_CAPTURE.isOpened():
-        sio.emit('frame', get_frame(0))
-        time.sleep(delay)
-
-
-@sio.event
-def get_sensor_data_socket(data):
-    response = {'shit1': dtime.now().second + data['id']*100,
-                'shit2': random.random()}
-
-    return response
-
-
-@app.route('/monitor/sensor/<int:id>', methods=['GET'])
-def get_sensor_data(id):
-    response = {'shit1': dtime.now().second + id*100,
-                'shit2': random.random()}
-
-    return response
+@eel.expose
+def send_single_frame(camera_id=0):
+    """Take and send a single frame to the frontend."""
+    open_capture(camera_id)
+    eel.setFrame(get_frame())
+    close_capture()
 
 
 if __name__ == '__main__':
-    if DESKTOP:
-        webview.create_window('GUI Web App', app)
-        webview.start()
-    else:
-        app.run(debug=True)
-
-    client.close()
-
-    if VIDEO_CAPTURE.isOpened():
-        VIDEO_CAPTURE.release()
+    print("""
+    The app is running! 🚀
+    Local:  http://localhost:8000/
+    """)
+    geometry = {'size': SIZE, 'position': POSITION}
+    eel.init('client/public')
+    eel.start('index.html', geometry=geometry, close_callback=on_exit)
