@@ -137,7 +137,7 @@
     </form>
 
     {#if $connected}
-      <div transition:slide class="message success">Połączono!</div>
+      <div transition:slide class="message success">Connected!</div>
     {/if}
     {#if login_error}
       <div transition:slide class="message error">{login_error}</div>
