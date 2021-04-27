@@ -1,6 +1,7 @@
 <script>
   import { fly, slide } from 'svelte/transition';
   import { onDestroy } from 'svelte';
+  import { io } from 'socket.io-client';
 
   let video_visible = false;
   let video_frame;

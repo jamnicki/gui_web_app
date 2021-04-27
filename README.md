@@ -4,7 +4,9 @@ A versatile GUI in a from of a desktop web app used for operating our underwater
 
 # Development
 
-The script sets up a local server on port 8000 so you can always view the app in the browser (http://localhost:8000/).
+The script sets up a local server on port 8000 so you can always view the app in a browser (http://localhost:8000/).
+
+You can find the app settings inside the `server/settings.ini` file.
 
 ## Backend
 
@@ -24,11 +26,11 @@ The script sets up a local server on port 8000 so you can always view the app in
 
 Developing the Frontend requires a running Backend.
 
-## Packaging
+# Packaging
 
 In order to freeze the app into an executable:
 
-1. Set `DEBUG=False` in `main.py`!
+1. Set `debug = False` in `server/settings.ini`!
 2. Use this command:\
    `python -m eel main.py client/public --onefile --noconsole --distpath "./export" --name "GUI Web App" -i "./icon.ico"`
 
@@ -40,7 +42,7 @@ It will also generate some stuff (you can safely remove it):
 - `build` folder
 - `GUI_Web_App.spec` file
 
-# Running the app
+## Running the app
 
 Run one of the executables inside the `export` folder.\
 Yeah. It's that easy.

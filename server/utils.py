@@ -1,5 +1,3 @@
-import os
-import sys
 import re
 
 
@@ -13,43 +11,17 @@ def close_file_objects(file_objects):
         file.close()
 
 
-def connection_alive(paramiko_SSHClient):
-    """Check if the connection is still availlable.
-
-    Return (bool) : True if it's still alive, False otherwise.
-    """
-    get_transport = paramiko_SSHClient.get_transport()
-    if get_transport is not None:
-        if get_transport.is_active():
-            return True
-    else:
-        try:
-            paramiko_SSHClient.exec_command('pwd', timeout=5)
-        except AttributeError as e:
-            print(f'\tConnection lost: session not found ({e})')
-            return False
-        except Exception as e:
-            print(f'Unexpected exception in connection checking: {e}')
-            return False
-        else:
-            return True
-
-
-def get_static_path(path):
-    is_frozen = getattr(sys, 'frozen', False)
-    return os.path.join(sys._MEIPASS, path) if is_frozen else path
-
-
 def shorten_exception_message(exception_message_raw):
-    """
-    Shortens exception message so it contains only the most valuable informations.
+    """Shortens an exception message so that it contains
+       only the most valuable information.
 
     Args:
-        exception_message_raw (str): Whole exception message when one is encountered.
+        exception_message_raw (str): The original exception message.
     Return (str): Shortened string.
     """
-    
-    # All lines in message containing 'File' and '.py' expression and not containing '/python3.' expression.
+
+    # All lines in message containing
+    # both 'File' and '.py' expressions but not '/python3.'.
     regex_including = re.compile(r'File.+.py.+')
     regex_excluding = re.compile(r'.+/python3..+')
     valuable_lines = regex_including.findall(exception_message_raw)
@@ -60,6 +32,4 @@ def shorten_exception_message(exception_message_raw):
 
     valuable_lines.append(exception_message_raw.splitlines()[-1])
 
-    response = '\n'.join(valuable_lines)
-
-    return response
+    return '\n'.join(valuable_lines)
