@@ -1,17 +1,19 @@
 import re
+import json
 from server.network import CLIENT
 from server.settings import CONFIG
 from server.utils import (close_file_objects, shorten_exception_message)
+from paramiko import ssh_exception
 
 
-DEBUG = bool(CONFIG['DEBUG']['debug'])
+DEBUG = bool(int(CONFIG['DEBUG']['debug']))
 DEBUG_TESTS_FAILING = []
 
 
 def get_tests_info():
     """Get info about available tests by remotely running a dedicated script.
 
-    Returns on GET:
+    Returns:
         dict:
             'tests_info' (list of dicts):
                 {'id' (int): Unique test id.
@@ -24,52 +26,16 @@ def get_tests_info():
     response = {'tests_info': [],
                 'error': None}
 
-    # Jokes aside, I need something of a mockup script, that would simulate the
-    # behaviours of the real boat. Maybe create a /mockup folder in the root
-    # and have a main.py script there. And the scripts here would use the
-    # mockup with some variable like MOCKUP set to True. We need something like
-    # this while the real boat's scripts are still in dev.
+    # będzie :)
     if DEBUG:
-        response['tests_info'] = [
-            {'id': 1,
-             'script_name': 'fuck_you.py',
-             'test_name':   'Fuck you',
-             'description': 'Just go fuck yourselves'},
-            {'id': 2,
-             'script_name': 'ehh.py',
-             'test_name':   'This is not my job',
-             'description': 'Why am I doing this'},
-            {'id': 3,
-             'script_name': 'god_dammit.py',
-             'test_name':   'Fucking backend devs',
-             'description': 'Always have to do everyting by myself'},
-            {'id': 4,
-             'script_name': 'millenials.py',
-             'test_name':   'Millenials these days',
-             'description': 'Can you start thinking of stuff like this?'},
-            {'id': 5,
-             'script_name': 'just.py',
-             'test_name':   'Like fuck dammit',
-             'description': 'Where am I supposed to find fucking boat tests \
-                huh? What the fuck.'},
-            {'id': 6,
-             'script_name': 'like.py',
-             'test_name':   'Like am i supposed to',
-             'description': 'Go to a fucking shop and ask for a boat?'},
-            {'id': 7,
-             'script_name': 'jesus.py',
-             'test_name':   'Fuck do you even',
-             'description': 'Know how much it costs to buy a fucking boat?'},
-            {'id': 8,
-             'script_name': 'yeah.py',
-             'test_name':   'Thats what I thot',
-             'description': 'Hehe get it.'},
-            {'id': 9,
-             'script_name': 'okay.py',
-             'test_name':   'Im done',
-             'description': 'Like fucking done how do I work like this. \
-                Get me a goddamn mockup boat.'}
-        ]
+        for i in range(10):
+            test_dict = {'id': i,
+                         'script_name': f'test{i}.py',
+                         'test_name': f'Test{i} name',
+                         'description': f'Test{i} description '*5}
+
+            response['tests_info'].append(test_dict)
+
         return response
 
     command = 'python3 get_tests_info.py'
@@ -108,9 +74,10 @@ def get_tests_info():
 
 
 def run_test(id):
-    """Run test with given id.
+    """Run test with given id by executing dedicated script fetched
+       from /data/tests.json temporary file.
 
-    Returns on GET:
+    Returns:
         dict:
             'passed' (int): 1 if test passed.
                             0 if not.

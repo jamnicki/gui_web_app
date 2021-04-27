@@ -1,5 +1,3 @@
-import os
-import sys
 import re
 
 
@@ -21,7 +19,7 @@ def shorten_exception_message(exception_message_raw):
         exception_message_raw (str): The original exception message.
     Return (str): Shortened string.
     """
-    
+
     # All lines in message containing
     # both 'File' and '.py' expressions but not '/python3.'.
     regex_including = re.compile(r'File.+.py.+')
