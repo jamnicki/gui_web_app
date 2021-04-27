@@ -1,5 +1,4 @@
 import sys
-import json
 import eel
 import server.network as network
 import server.tests as tests
@@ -8,7 +7,7 @@ from server.network import CLIENT
 from server.settings import CONFIG
 
 
-DEBUG = bool(CONFIG['DEBUG']['debug'])
+DEBUG = bool(int(CONFIG['DEBUG']['debug']))
 
 WINDOW_SIZE = tuple(CONFIG['WINDOW']['size'])
 WINDOW_POSITION = tuple(CONFIG['WINDOW']['position'])
@@ -18,6 +17,7 @@ WINDOW_POSITION = tuple(CONFIG['WINDOW']['position'])
 def debug():
     """Check if in DEBUG MODE"""
     return int(DEBUG)
+
 
 eel.expose(tests.get_tests_info)
 eel.expose(tests.run_test)
@@ -41,9 +41,10 @@ def on_exit(page_path, websockets):
 
 
 if __name__ == '__main__':
-    print("""
+    print(f"""
     The app is running! 🚀
     Local:  http://localhost:8000/
+    DEBUG = {DEBUG}
     """)
     geometry = {'size': WINDOW_SIZE, 'position': WINDOW_POSITION}
     eel.init('client/public')

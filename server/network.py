@@ -15,7 +15,6 @@ def connect(hostname, username, password):
     """Connect to ROV via SSH using hostname, username and password
        received from the frontend.
     """
-    # TODO: docstring, hints based on exceptions, ?hint database?
     response = {'connected': 0,
                 'error': None,
                 'hint': None}
@@ -113,7 +112,7 @@ def get_available_addresses():
     """Find available addresses on the local network with 'arp -a' command.
        If on linux scan only on [ssh_port] in [scan_range] using 'pnscan'.
 
-    Returns on GET:
+    Returns:
         dict:
             'addresses' (list): local IP addresses that match
                                 this pattern: 192.168.x.x
@@ -124,7 +123,7 @@ def get_available_addresses():
     response = {'addresses': [],
                 'error': None,
                 'hint': None}
-    
+
     try:
         if SYSTEM == 'Linux':
             scan_range = '192.168.0.0:192.168.1.255'
